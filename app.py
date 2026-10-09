@@ -12009,6 +12009,7 @@ elif mode == 'Regression Models':
 		# REGRESSION MODELS
 		# ------------------------------------------------------------------
 		with st.expander( 'Linear Models', expanded=False ):
+			
 			with st.expander( 'Ordinary Least Squares', expanded=False ):
 				ols_defaults = { 'regression_ols_test_size': 0.20,
 					'regression_ols_random_state': 42, 'regression_ols_fit_intercept': True,
@@ -12085,15 +12086,13 @@ elif mode == 'Regression Models':
 				if train_ols:
 					try:
 						if X is None or y is None:
-							st.warning( '⚠️ Ordinary Least Squares requires prepared '
-							            'feature and target arrays.' )
+							st.warning( '⚠️ OLS requires feature and target arrays.' )
 							st.stop( )
 						
 						X_ols = np.asarray( X, dtype=float )
 						y_ols = np.asarray( y, dtype=float ).reshape( -1 )
 						if X_ols.ndim != 2 or X_ols.shape[ 1 ] < 1:
-							st.warning( '⚠️ Ordinary Least Squares requires at least '
-							            'one numeric feature.' )
+							st.warning( '⚠️ OLSrequires at least one numeric feature.' )
 							st.stop( )
 						
 						if y_ols.ndim != 1:
@@ -13502,8 +13501,12 @@ elif mode == 'Regression Models':
 					
 					except Exception as ex:
 						st.error( f'Stochastic Gradient Descent training failed: {ex}' )
-		
+
+		# ------------------------------------------------------------------
+		# Instance Models
+		# ------------------------------------------------------------------
 		with st.expander( 'Instance Models', expanded=False ):
+			
 			with st.expander( 'k-Nearest Neighbors', expanded=False ):
 				knn_defaults = { 'regression_knn_neighbors': 5, 'regression_knn_weights':
 					'uniform',
@@ -14058,8 +14061,12 @@ elif mode == 'Regression Models':
 					
 					except Exception as ex:
 						st.error( f'Support Vector Regression training failed: {ex}' )
-		
+
+		# ------------------------------------------------------------------
+		# Tree Models
+		# ------------------------------------------------------------------
 		with st.expander( 'Tree Models', expanded=False ):
+			
 			with st.expander( 'Extra Trees Regressor', expanded=False ):
 				extra_defaults = { 'regression_extra_estimators': 100,
 					'regression_extra_criterion': 'squared_error',
@@ -14772,8 +14779,12 @@ elif mode == 'Regression Models':
 					
 					except Exception as ex:
 						st.error( f'Random Forest training failed: {ex}' )
-		
+
+		# ------------------------------------------------------------------
+		# Ensemble Models
+		# ------------------------------------------------------------------
 		with st.expander( 'Ensemble Models', expanded=False ):
+			
 			with st.expander( 'Adaptive Boosting', expanded=False ):
 				ada_defaults = { 'regression_ada_estimators': 50,
 					'regression_ada_learning_rate': 1.0, 'regression_ada_loss': 'linear',
