@@ -1,0 +1,32 @@
+name: Package validation
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build distribution
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+      - name: Inspect wheel and source imports
+        run: |
+          python -m compileall -q mathy app.py
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          wheel = next(Path('dist').glob('*.whl'))
+          with ZipFile(wheel) as z:
+              paths = set(z.namelist())
+              assert 'mathy/__init__.py' in paths
+              assert 'mathy/classifications.py' in paths
+              assert 'mathy/app.py' in paths
+              assert 'mathy/cli.py' in paths
+          print('Wheel contains the Mathy package and UI.')
+          PY
