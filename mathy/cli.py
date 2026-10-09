@@ -16,5 +16,5 @@ def main( ) -> None:
         None: Exits with the Streamlit process status.
     """
     app_path = Path( __file__ ).resolve( ).parent / 'app.py'
-    code = subprocess.call( [ sys.executable, '-m', 'streamlit', 'run', str( app_path ) ] )
+    code = subprocess.call( [ sys.executable, '-m', 'streamlit', 'run', str( app_path ) ], cwd=str( app_path.parent ) )
     raise SystemExit( code )

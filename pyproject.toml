@@ -28,4 +28,4 @@ packages = ["mathy"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-mathy = ["resources/**/*", ".streamlit/*"]
+mathy = ["resources/**/*", ".streamlit/*", "stores/**/*"]
