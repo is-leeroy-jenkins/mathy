@@ -5856,6 +5856,9 @@ elif mode == 'Classification Models':
 		st.session_state[ 'classification_processing_source_signature' ] = source_signature
 		feature_c1, feature_c2 = st.columns( [ 0.50, 0.50 ], border=True )
 		with feature_c1:
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Scaling', icon='⚖️', key='classification_scalers' ):
 				
 				with st.expander( 'Standard Scaler', expanded=False ):
@@ -6043,7 +6046,10 @@ elif mode == 'Classification Models':
 							clear_classification_processed_state( )
 							st.success( 'Processed data cleared.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Imputation', icon='🧹', key='classification_imputers' ):
 				
 				with st.expander( 'Mean Imputer', expanded=False ):
@@ -6232,7 +6238,10 @@ elif mode == 'Classification Models':
 							clear_classification_processed_state( )
 							st.success( 'Processed data cleared.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Encoding', icon='🔣', key='classification_encoders' ):
 				
 				with st.expander( 'One-Hot Encoder', expanded=False ):
@@ -6438,6 +6447,10 @@ elif mode == 'Classification Models':
 							st.rerun( )
 		
 		with feature_c2:
+
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Transformation', icon='⚡',
 					key='classification_transformers' ):
 				
@@ -6728,7 +6741,10 @@ elif mode == 'Classification Models':
 							clear_classification_processed_state( )
 							st.success( 'Processed data cleared.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Feature Extration', icon='⛏️',
 					key='classification_extractors' ):
 				
@@ -6960,7 +6976,10 @@ elif mode == 'Classification Models':
 							clear_classification_processed_state( )
 							st.success( 'Processed data cleared.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			#
+			# -----------------------------------------------------------------
 			with st.expander( label='Dimensionality Reduction', icon='🎚️',
 					key='classification_selectors' ):
 				
@@ -8387,6 +8406,9 @@ elif mode == 'Classification Models':
 					except Exception as ex:
 						st.error( f'Gradient Descent training failed: {ex}' )
 		
+		# -----------------------------------------------------------------
+		# Instance Models
+		# -----------------------------------------------------------------
 		with st.expander( 'Instance Models', expanded=True ):
 			
 			with st.expander( 'Nearest Neighbor', expanded=False ):
@@ -8498,24 +8520,20 @@ elif mode == 'Classification Models':
 				if train_nearest:
 					try:
 						if X is None or y is None:
-							st.warning( '⚠️ Nearest Neighbor requires prepared feature and target '
-							            'arrays.' )
+							st.warning( '⚠️ Nearest Neighbor requires prepared feature and target arrays.' )
 							st.stop( )
 						
 						if np.asarray( X ).ndim != 2 or np.asarray( X ).shape[ 1 ] < 1:
-							st.warning(
-								'⚠️ Nearest Neighbor requires at least one numeric feature.' )
+							st.warning( '⚠️ Nearest Neighbor requires at least one numeric feature.' )
 							st.stop( )
 						
 						y = np.ravel( y ) if np.asarray( y ).ndim != 1 else y
 						if len( np.unique( y ) ) < 2:
-							st.warning(
-								'⚠️ Nearest Neighbor requires at least two target classes.' )
+							st.warning( '⚠️ Nearest Neighbor requires at least two target classes.' )
 							st.stop( )
 						
 						if int( nearest_num ) > len( X ):
-							st.warning(
-								'⚠️ Neighbors cannot exceed the number of available samples.' )
+							st.warning( '⚠️ Neighbors cannot exceed the number of available samples.' )
 							st.stop( )
 						
 						if str( nearest_metric ) in [ 'mahalanobis', 'seuclidean' ]:
@@ -8624,13 +8642,9 @@ elif mode == 'Classification Models':
 					svm_kernel = st.selectbox( 'Kernel',
 						options=[ 'linear', 'poly', 'rbf', 'sigmoid' ],
 						index=[ 'linear', 'poly', 'rbf', 'sigmoid' ].index(
-							st.session_state[ 'classification_svm_kernel' ] ) if st.session_state[
-								                                                     'classification_svm_kernel' ] in [
-								                                                     'linear',
-								                                                     'poly', 'rbf',
-								                                                     'sigmoid' ]
-						else 2,
-						key='classification_svm_kernel' )
+							st.session_state[ 'classification_svm_kernel' ] ) if \
+							st.session_state[ 'classification_svm_kernel' ] in [ 'linear',  'poly',
+								'rbf', 'sigmoid' ] else 2, key='classification_svm_kernel' )
 					
 					svm_degree = st.number_input( 'Degree', min_value=1,
 						value=int( st.session_state[ 'classification_svm_degree' ] ), step=1,
@@ -8742,6 +8756,9 @@ elif mode == 'Classification Models':
 					except Exception as ex:
 						st.error( f'Support Vector training failed: {ex}' )
 		
+		# -----------------------------------------------------------------
+		# Tree Models
+		# -----------------------------------------------------------------
 		with st.expander( 'Tree Models', expanded=True ):
 			
 			with st.expander( 'Decision Tree', expanded=False ):
@@ -9087,6 +9104,9 @@ elif mode == 'Classification Models':
 					except Exception as ex:
 						st.error( f'Random Forest training failed: {ex}' )
 		
+		# -----------------------------------------------------------------
+		# Ensemble Models
+		# -----------------------------------------------------------------
 		with st.expander( 'Ensemble Models', expanded=False ):
 			
 			with st.expander( 'Gradient Boost', expanded=False ):
@@ -9933,6 +9953,9 @@ elif mode == 'Classification Models':
 					except Exception as ex:
 						st.error( f'Stacking Model training failed: {ex}' )
 		
+		# -----------------------------------------------------------------
+		# Neural Models
+		# -----------------------------------------------------------------
 		with st.expander( 'Neural Models', expanded=True ):
 			
 			with st.expander( 'Multi-Layer Perceptron', expanded=False ):
@@ -10407,8 +10430,7 @@ elif mode == 'Regression Models':
 				selected_all.append( target )
 				df_working = df_original[ selected_all ].copy( )
 				if df_working.empty:
-					st.warning(
-						'⚠️ The selected feature and target columns contain no observations.' )
+					st.warning( '⚠️ The selected feature and target columns contain no observations.' )
 					st.stop( )
 				
 				st.session_state[ 'features' ] = features.copy( )
@@ -10447,8 +10469,7 @@ elif mode == 'Regression Models':
 		blue_divider( )
 		df_working = st.session_state.get( 'df_working', pd.DataFrame( ) )
 		if not has_loaded_dataset( df_working ):
-			i = ('Select regression features and one numeric target, then create the working '
-			     'dataset.')
+			i = ('Select regression features and one numeric target, then create the working dataset.')
 			st.info( i )
 			st.stop( )
 		
@@ -10477,14 +10498,17 @@ elif mode == 'Regression Models':
 		
 		render_data_editor( df_working, key='regression_working_data', use_container_width=True )
 		
-		# -----------------------------------------------------------------
-		# Data Processing
-		# -----------------------------------------------------------------
+		# ----- Feature-Engineering
 		blue_divider( )
 		st.markdown( '##### Feature-Engineering' )
 		feature_c1, feature_c2 = st.columns( [ 0.50, 0.50 ], border=True )
 		with feature_c1:
+			
+			# -----------------------------------------------------------------
+			# Data Scaling
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Scaling', icon='⚖️', key='regression_scalers' ):
+				
 				with st.expander( 'Standard Scaler', expanded=False ):
 					st.caption( 'Scaler Description', width='stretch', text_alignment='left',
 						help=cfg.STANDARD_SCALER )
@@ -10645,8 +10669,12 @@ elif mode == 'Regression Models':
 							st.session_state[ 'df_processed' ]=None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			# Data Imputation
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Imputation', icon='🧹', key='regression_imputers' ):
+				
 				with st.expander( 'Mean Imputer', expanded=False ):
 					st.caption( 'Imputer Description', width='stretch', text_alignment='left',
 						help=cfg.MEAN_IMPUTER )
@@ -10824,8 +10852,12 @@ elif mode == 'Regression Models':
 							st.session_state[ 'df_processed' ]=None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			# Data Encoding
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Encoding', icon='🔣', key='regression_encoders' ):
+				
 				with st.expander( 'One-Hot Encoder', expanded=False ):
 					st.caption( 'Encoder Description', width='stretch', text_alignment='left',
 						help=cfg.ONEHOT_ENCODER )
@@ -11012,8 +11044,13 @@ elif mode == 'Regression Models':
 							st.rerun( )
 		
 		with feature_c2:
+
+			# -----------------------------------------------------------------
+			# Data Transformation
+			# -----------------------------------------------------------------
 			with st.expander( label='Data Transformation', icon='⚡',
 					key='regression_transformers' ):
+				
 				with st.expander( 'Binarizer', expanded=False ):
 					st.caption( 'Transformer Description', width='stretch', text_alignment='left',
 						help=cfg.BINARIZER )
@@ -11281,8 +11318,12 @@ elif mode == 'Regression Models':
 							st.session_state[ 'df_processed' ]=None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			# Feature Extraction
+			# -----------------------------------------------------------------
 			with st.expander( label='Feature Extration', icon='⛏️', key='regression_extractors' ):
+				
 				with st.expander( 'TF-IDF Vectorizer', expanded=False ):
 					st.caption( 'Transformer Description', width='stretch', text_alignment='left',
 						help=cfg.TDIDF_VECTORIZER )
@@ -11500,9 +11541,13 @@ elif mode == 'Regression Models':
 							st.session_state[ 'df_processed' ]=None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
-			
+
+			# -----------------------------------------------------------------
+			# Dimensionality Reduction
+			# -----------------------------------------------------------------
 			with st.expander( label='Dimensionality Reduction', icon='🎚️',
 					key='regression_selectors' ):
+				
 				with st.expander( 'Variance Threshold', expanded=False ):
 					st.caption( 'Reducer Description', width='stretch', text_alignment='left',
 						help=cfg.VARIANCE_THRESHOLD )
