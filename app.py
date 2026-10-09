@@ -2882,7 +2882,6 @@ def convert_dataframe( table_name: str, df: pd.DataFrame ):
 		columns.append( f'{safe_col} {sql_type}' )
 	
 	create_stmt = f'CREATE TABLE IF NOT EXISTS {table_name} ({", ".join( columns )});'
-	
 	with create_connection( ) as conn:
 		conn.execute( create_stmt )
 		conn.commit( )
@@ -2904,10 +2903,8 @@ def insert_data( table_name: str, df: pd.DataFrame ):
 	"""
 	df = df.copy( )
 	df.columns = [ c.replace( ' ', '_' ) for c in df.columns ]
-	
 	placeholders = ', '.join( [ '?' ] * len( df.columns ) )
 	stmt = f'INSERT INTO {table_name} VALUES ({placeholders});'
-	
 	with create_connection( ) as conn:
 		conn.executemany( stmt, df.values.tolist( ) )
 		conn.commit( )
