@@ -44,7 +44,7 @@
 from __future__ import annotations
 
 import base64
-from boogr import Error, Logger
+from mathy.boogr import Error, Logger
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -54,7 +54,7 @@ from scipy import stats
 from typing import List, Dict, Optional, Tuple, Any
 
 # Mathy
-import config as cfg
+import mathy.config as cfg
 
 # sklearn / statsmodels
 import numpy as np
@@ -90,29 +90,29 @@ from sklearn.cluster import DBSCAN, KMeans
 import sklearn.feature_selection as sf
 import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split as split
-from scalers import (StandardScaler, MinMaxScaler, RobustScaler, NormalScaler, MaxAbsScaler)
-from imputers import (MeanImputer, NearestImputer, IterativeImputer, SimpleImputer)
-from encoders import (OneHotEncoder, OrdinalEncoder, LabelEncoder, TargetEncoder,
+from mathy.scalers import (StandardScaler, MinMaxScaler, RobustScaler, NormalScaler, MaxAbsScaler)
+from mathy.imputers import (MeanImputer, NearestImputer, IterativeImputer, SimpleImputer)
+from mathy.encoders import (OneHotEncoder, OrdinalEncoder, LabelEncoder, TargetEncoder,
                       PolynomialFeatures)
 
-from transformers import (Binarizer, LabelBinarizer, MultiLabelBinarizer, TfidfTransformer,
+from mathy.transformers import (Binarizer, LabelBinarizer, MultiLabelBinarizer, TfidfTransformer,
                           ColumnTransformer, TfidfVectorizer, CountVectorizer, HashVectorizer,
                           DictVectorizer, FeatureHasher)
 
-from clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
+from mathy.clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
                       AffinityPropagation, Birch)
 
-from features import (VarianceThreshold, CCA, PCA, SelectBest, SelectPercent, SBS, RFE)
-import classifications as classification_model
-import regressions as regression_model
+from mathy.features import (VarianceThreshold, CCA, PCA, SelectBest, SelectPercent, SBS, RFE)
+import mathy.classifications as classification_model
+import mathy.regressions as regression_model
 
-from classifications import (Perceptron, LogisticRegression, DecisionTree, SupportVector,
+from mathy.classifications import (Perceptron, LogisticRegression, DecisionTree, SupportVector,
                              RandomForest, NearestNeighbor, BaggingModel, AdaptiveBoost,
                              GradientBoost)
 
-from encoders import (OneHotEncoder, OrdinalEncoder, TargetEncoder)
-from imputers import (MeanImputer, SimpleImputer, NearestImputer, IterativeImputer)
-from forecasting import (LaggingSeries, LagQuantileSeries, LagBoostingSeries, ARIMA, SARIMA,
+from mathy.encoders import (OneHotEncoder, OrdinalEncoder, TargetEncoder)
+from mathy.imputers import (MeanImputer, SimpleImputer, NearestImputer, IterativeImputer)
+from mathy.forecasting import (LaggingSeries, LagQuantileSeries, LagBoostingSeries, ARIMA, SARIMA,
                          TimeSeriesSpliter)
 
 # ============================================

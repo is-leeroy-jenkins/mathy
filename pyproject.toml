@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mathy-py"
+version = "0.1.0"
+description = "Machine learning, data analysis, forecasting, and a Streamlit interface."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+authors = [{name = "Terry D. Eppler"}]
+dependencies = [
+    "numpy", "pandas", "scipy", "scikit-learn>=1.4", "matplotlib",
+    "seaborn", "statsmodels", "pydantic", "openpyxl",
+    "plotly", "streamlit", "streamlit-extras",
+]
+
+[project.optional-dependencies]
+ml = ["torch", "xgboost"]
+dev = ["build", "twine", "pytest", "mkdocs", "mkdocs-material", "mkdocstrings[python]", "mkdocs-autorefs"]
+
+[project.scripts]
+mathy-app = "mathy.cli:main"
+
+[tool.setuptools]
+packages = ["mathy"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+mathy = ["resources/**/*", ".streamlit/*"]
