@@ -20342,8 +20342,9 @@ elif mode == 'Data Overview':
 		m1, m2, m3, m4, m5 = st.columns( 5, border=True )
 		m1.metric( 'Rows', f'{len( df_source ):,}' )
 		m2.metric( 'Numeric', f'{int( type_counts.get( "numeric", 0 ) ):,}' )
-		m3.metric( 'Ordinal / ID', f'{int( type_counts.get( "ordinal", 0 ) ) + int(
-			type_counts.get( "identifier", 0 ) ):,}' )
+		ordinal_id_count = (int( type_counts.get( "ordinal", 0 ) )
+			+ int( type_counts.get( "identifier", 0 ) ))
+		m3.metric( 'Ordinal / ID', f'{ordinal_id_count:,}' )
 		m4.metric( 'Categorical', f'{int( type_counts.get( "categorical", 0 ) ):,}' )
 		m5.metric( 'Datetime', f'{int( type_counts.get( "datetime", 0 ) ):,}' )
 		st.caption( f'Columns: {len( df_source.columns ):,} · Missing cells: {missing_cells:,} · '
