@@ -36,6 +36,38 @@ jobs:
         run: |
           python -m PyInstaller --noconfirm --clean --onedir --name Mathy --console --collect-all streamlit --collect-all streamlit_extras --collect-all mathy --collect-submodules sklearn --collect-submodules statsmodels --collect-submodules plotly --add-data "mathy;mathy" windows/launcher.py
           if (-not (Test-Path 'dist/Mathy/Mathy.exe')) { throw "Missing bundled executable" }
+      - name: Smoke test bundled executable
+        shell: pwsh
+        run: |
+          $executable = (Resolve-Path 'dist/Mathy/Mathy.exe').Path
+          $stdout = Join-Path $env:RUNNER_TEMP 'mathy-stdout.log'
+          $stderr = Join-Path $env:RUNNER_TEMP 'mathy-stderr.log'
+          $process = Start-Process -FilePath $executable -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          $healthy = $false
+          try {
+            for ($attempt = 0; $attempt -lt 60; $attempt++) {
+              Start-Sleep -Seconds 2
+              if ($process.HasExited) { break }
+              try {
+                $response = Invoke-WebRequest 'http://127.0.0.1:8501/_stcore/health' -TimeoutSec 2 -UseBasicParsing
+                if ($response.StatusCode -eq 200) {
+                  $healthy = $true
+                  break
+                }
+              } catch {
+                # The local Streamlit endpoint may not be ready yet.
+              }
+            }
+            if (-not $healthy) {
+              Write-Host 'Bundled launcher stdout:'
+              if (Test-Path $stdout) { Get-Content $stdout -Tail 120 }
+              Write-Host 'Bundled launcher stderr:'
+              if (Test-Path $stderr) { Get-Content $stderr -Tail 120 }
+              throw 'Mathy executable did not start a healthy Streamlit server on port 8501.'
+            }
+          } finally {
+            if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
+          }
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup --yes --no-progress
