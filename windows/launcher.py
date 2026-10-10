@@ -15,7 +15,7 @@ def main( ) -> None:
     if not app_path.is_file( ):
         raise FileNotFoundError( f'Mathy app not found: {app_path}' )
     os.chdir( str( Path.home( ) ) )
-    sys.argv = [ 'streamlit', 'run', str( app_path ), '--server.headless=true', '--browser.gatherUsageStats=false' ]
+    sys.argv = [ 'streamlit', 'run', str( app_path ), '--server.headless=false', '--browser.gatherUsageStats=false' ]
     raise SystemExit( stcli.main( ) )
 
 if __name__ == '__main__':
