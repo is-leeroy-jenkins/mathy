@@ -1,0 +1,58 @@
+name: Build Windows installer
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  installer:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: x64
+      - name: Check release version
+        shell: pwsh
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          $version = python -c "import tomllib; from pathlib import Path; print(tomllib.loads(Path('pyproject.toml').read_text())['project']['version'])"
+          if ($env:REF_TYPE -eq 'tag' -and $env:REF_NAME -ne "v$version") { throw "Release tag does not match version" }
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[ml]" pyinstaller
+          python -m pip check
+      - name: Bundle Mathy application
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onedir --name Mathy --console --collect-all streamlit --collect-all streamlit_extras --collect-all mathy --collect-submodules sklearn --collect-submodules statsmodels --collect-submodules plotly --add-data "mathy;mathy" windows/launcher.py
+          if (-not (Test-Path 'dist/Mathy/Mathy.exe')) { throw "Missing bundled executable" }
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+      - name: Compile installer
+        shell: pwsh
+        run: |
+          $version = python -c "import tomllib; from pathlib import Path; print(tomllib.loads(Path('pyproject.toml').read_text())['project']['version'])"
+          $compiler = Join-Path (Get-Item 'Env:ProgramFiles(x86)').Value 'Inno Setup 6\ISCC.exe'
+          & $compiler "/DAppVersion=$version" 'windows\Mathy.iss'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathy-windows-installer
+          path: installer-dist/*.exe
+          if-no-files-found: error
+      - name: Attach installer to release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$env:GITHUB_REF_NAME" installer-dist/*.exe --clobber

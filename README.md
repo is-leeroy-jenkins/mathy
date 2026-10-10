@@ -86,6 +86,14 @@ ___
 </tr>
 </table>
 
+## Windows installer and PyPI
+
+**Windows (64-bit):** Download the `Mathy-Setup-0.1.1-win64.exe` installer from the [GitHub Releases page](https://github.com/is-leeroy-jenkins/mathy/releases) once the v0.1.1 release build has succeeded. Run the installer and launch Mathy from the Start Menu. The installer bundles Python and starts the Streamlit interface in a browser. No separate Python installation is required. The local Streamlit process must remain open while using Mathy.
+
+**Python package:** The distribution is named `mathy-py`; its importable package is `mathy`. Install with `python -m pip install mathy-py`, then launch the interface with `mathy-app`. The Python package and Windows installer are separate distribution formats.
+
+**Release process:** The published GitHub release tag must match the version in `pyproject.toml`, e.g. `v0.1.1`. The existing `publish-to-pypi.yml` workflow builds and publishes the package through PyPI Trusted Publishing. The `windows-installer.yml` workflow builds a Windows installer and attaches it to the GitHub release. Confirm clean-install startup and representative analysis modes before marking the installer production-ready.
+
 ## 🧠 Overview
 
 | Capability             | Description                                                                                                                                                      |
