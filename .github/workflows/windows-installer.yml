@@ -1,8 +1,8 @@
 name: Build Windows installer
 on:
   workflow_dispatch:
-  push:
-    tags: ['v*']
+  release:
+    types: [published]
 permissions:
   contents: read
 jobs:
