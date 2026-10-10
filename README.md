@@ -89,7 +89,7 @@ ___
 
 ## 🪟 Windows Installer
 
-Mathy supports a standalone **64-bit Windows installer** in addition to its Python distribution. GitHub Actions packages the existing Streamlit application and Python runtime with PyInstaller, then uses Inno Setup to create a graphical setup executable with a Start Menu shortcut, optional desktop shortcut, and uninstaller. Launching Mathy starts the local Streamlit interface in the default web browser without requiring a separately installed Python environment.
+Mathy supports a standalone **64-bit Windows installer** in addition to its Python distribution. GitHub Actions packages Streamlit, Python, and PyWebView with PyInstaller, then uses Inno Setup to create the installer, Start Menu shortcut, optional desktop shortcut, and uninstaller. **The Windows installer launches Mathy in a dedicated Microsoft Edge WebView2 application window—with no browser tabs or address bar.** Closing that window shuts down the local Streamlit server. A separate Python installation is not required; Microsoft Edge WebView2 Runtime is required.
 
 When the **v0.1.1** build is complete, download `Mathy-Setup-0.1.1-win64.exe` from [GitHub Releases](https://github.com/is-leeroy-jenkins/mathy/releases). For detailed download, installation, launch, upgrade, uninstall, troubleshooting, and installer build instructions, see **[Installation.md](Installation.md)**.
 
