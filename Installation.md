@@ -6,7 +6,7 @@ Mathy is a Streamlit-based machine-learning and statistical-analysis application
 
 - 64-bit Windows.
 - Sufficient disk space for a bundled Python, scientific-computing libraries, and Mathy application resources.
-- A modern web browser for the local Streamlit interface.
+- Microsoft Edge WebView2 Runtime, used by the dedicated desktop window.
 
 The Windows installer is distributed separately from the `mathy-py` Python package.
 
@@ -30,9 +30,9 @@ The installer creates a **Mathy** shortcut in the Start Menu and can create a de
 ## Run Mathy
 
 1. Launch **Mathy** from the Windows Start Menu or optional desktop shortcut.
-2. The application starts a local Streamlit server and opens its interface in your default web browser.
-3. Keep the Mathy launcher process running while using the browser interface.
-4. Close the launcher process when finished to stop the local Streamlit server.
+2. Mathy starts a local Streamlit server and opens a dedicated Microsoft Edge WebView2 desktop window with no browser tabs or address bar.
+3. Use Mathy in its standalone application window; no external browser is launched.
+4. Close the Mathy window to stop its local Streamlit server.
 
 Mathy runs locally on your computer; the Streamlit user interface is served through a local browser connection. Some analytical features may have additional resource or dependency requirements.
 
@@ -56,7 +56,7 @@ Files that you separately created or saved outside the application installation 
 
 **The installer is not listed under a release.** The Windows build may not have completed, or its asset upload may have failed. Check the [Build Windows installer workflow](https://github.com/is-leeroy-jenkins/mathy/actions/workflows/windows-installer.yml).
 
-**Mathy does not open in a browser.** Check whether the launcher is still running, and inspect its console output for Streamlit startup errors. Local security software or port conflicts may block startup.
+**Mathy does not open its desktop window.** Confirm Microsoft Edge WebView2 Runtime is installed. A local security policy or Streamlit startup error can also prevent launch; report the version and error output in GitHub Issues.
 
 **A Windows security warning appears.** Windows may warn about an installer that has not been code-signed. Verify the download is from this repository's GitHub Release and evaluate the publisher before choosing whether to proceed.
 
@@ -78,7 +78,7 @@ The PyPI distribution is `mathy-py`; the import namespace remains `mathy`. This 
 The automated Windows packaging workflow uses **GitHub Actions**, **PyInstaller**, and **Inno Setup**.
 
 1. The Windows workflow installs Mathy's package requirements and packaging tools on a Windows runner.
-2. PyInstaller bundles the existing Streamlit application, Python runtime, package modules, and configured resources into a Windows application directory.
+2. PyInstaller bundles the existing Streamlit application, Python runtime, PyWebView, package modules, and resources into a Windows application directory. The launcher runs Streamlit on loopback and displays it in a dedicated WebView2 window; closing the window ends its child server.
 3. Inno Setup builds the graphical `Mathy-Setup-<version>-win64.exe` installer, Start Menu shortcut, optional desktop shortcut, and uninstaller.
 4. GitHub Actions publishes the installer as a workflow artifact and, for a published versioned release, attaches the installer to that release.
 
