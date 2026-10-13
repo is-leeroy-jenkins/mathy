@@ -190,7 +190,7 @@ LOGO = r'resources/mathy_logo.png'
 FAVICON = r'resources/favicon.ico'
 BLUE_DIVIDER = "<div style='height:1.5px;align:left;background:#0078FC;margin:30px 0px 30px 0px;'></div>"
 DEFAULT_DATA = r'stores/excel/Combined Schedules.xlsx'
-DB_PATH = r'stores/sqlite/Data.db'
+DB_PATH = r'mathy/stores/sqlite/Data.db'
 LLM_PATH = ''
 DEFAULT_CTX = 4096
 CORES = multiprocessing.cpu_count( )

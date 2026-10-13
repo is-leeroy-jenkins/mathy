@@ -44,12 +44,12 @@ from .classifications import *
 from .regressions import *
 from .clusters import *
 from .encoders import *
-from .transformers import *
+from mathy.transformers import *
 from .imputers import *
 from .forecasting import  *
 from .features import *
 from .outliers import *
-from .scalers import *
+from mathy.scalers import *
 from .data import *
 from .encoders import *
 

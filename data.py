@@ -51,7 +51,7 @@ import seaborn as sns
 from pandas.core.interchange.dataframe_protocol import DataFrame
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split as split
-from .scalers import Scaler, NormalScaler, StandardScaler, MinMaxScaler
+from mathy.scalers import Scaler, NormalScaler, StandardScaler, MinMaxScaler
 import scipy.stats as stats
 from typing import Dict, Optional, List, Any
 from .boogr import Error, Logger

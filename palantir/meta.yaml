@@ -1,0 +1,54 @@
+package:
+  name: '{{ PACKAGE_NAME }}'
+  version: '{{ PACKAGE_VERSION }}'
+
+source:
+  path: ../src
+
+requirements:
+  run:
+    # Foundry Jupyter Workspace / Linux x86-64 / Python 3.13
+    - python 3.13.*
+    - ipykernel
+    - pip
+    - foundry-transforms-lib-python
+
+    # Mathy application / numerical analysis
+    - streamlit
+    - numpy>=2,<3
+    - pandas
+    - statsmodels
+    - scipy
+    - scikit-learn
+    - xgboost
+    - pydantic
+    - openpyxl
+
+    # Visualization
+    - matplotlib
+    - seaborn
+    # Original: plotly-express (legacy distribution).
+    # plotly provides plotly.express; verify Mathy imports plotly.express.
+    - plotly
+
+    # Local machine learning; CPU build / Python 3.13 ABI unverified
+    # Original PyPI distribution 'torch'; Conda identity is 'pytorch'.
+    - pytorch>=2.4,<2.7
+
+    # Documentation / development
+    - mkdocs
+    - mkdocs-material
+    # Original: mkdocstrings[python]
+    - mkdocstrings
+    - mkdocstrings-python
+    - mkdocs-autorefs
+    - pymdown-extensions
+    - black
+
+    # Original requirements excluded pending a supported installation path:
+    # - streamlit-extras  # Foundry PyPI; Conda resolution failed in Boo.
+    # - pywebview        # Linux GTK/Qt backend and display requirements;
+    #                    # Conda availability and Workspace GUI support unverified.
+
+    # Previously failing Foundry baseline package, not in Mathy source:
+    # - python_sdk>=0.1.0
