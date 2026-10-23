@@ -357,6 +357,9 @@ Data Management provides a SQLite administration workspace for local data operat
 The SQL console blocks mutation statements and accepts read-only query patterns such as `SELECT`,
 `WITH`, `EXPLAIN`, and read-only `PRAGMA` usage.
 
+## 🏗️ Palantir (Foundry)
+
+
 ## ⚙️ Quickstart Example
 
 ```python

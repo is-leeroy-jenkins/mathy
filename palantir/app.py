@@ -40,7 +40,6 @@
 	</summary>
 	******************************************************************************************
 '''
-
 from __future__ import annotations
 
 import base64
@@ -56,7 +55,6 @@ from typing import List, Dict, Optional, Tuple, Any
 # Mathy
 import mathy.config as cfg
 
-# Initialize Streamlit before accessing session state or rendering widgets.
 from pathlib import Path as _MathyPath
 _mathy_icon = cfg.ROOT_DIR / cfg.FAVICON
 _mathy_logo = cfg.ROOT_DIR / cfg.LOGO
@@ -66,7 +64,6 @@ st.set_page_config( page_title='Mathy', layout='wide',
 if _mathy_logo.is_file( ):
     st.logo( image=str( _mathy_logo ), size='large', link=cfg.REPO_URL )
 
-# sklearn / statsmodels
 import numpy as np
 import pandas as pd
 import re
