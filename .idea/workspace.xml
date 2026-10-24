@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="36bfb57a-5abe-4c37-b940-845fabab367c" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boogr.py" beforeDir="false" afterPath="$PROJECT_DIR$/boogr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encoders.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clusters.py" beforeDir="false" afterPath="$PROJECT_DIR$/clusters.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,23 +216,7 @@
       <workItem from="1791657437029" duration="2895000" />
       <workItem from="1791853748372" duration="1607000" />
       <workItem from="1791877471546" duration="945000" />
-      <workItem from="1792795826373" duration="3637000" />
-    </task>
-    <task id="LOCAL-00163" summary="update">
-      <option name="closed" value="true" />
-      <created>1786837834587</created>
-      <option name="number" value="00163" />
-      <option name="presentableId" value="LOCAL-00163" />
-      <option name="project" value="LOCAL" />
-      <updated>1786837834587</updated>
-    </task>
-    <task id="LOCAL-00164" summary="update">
-      <option name="closed" value="true" />
-      <created>1787132690205</created>
-      <option name="number" value="00164" />
-      <option name="presentableId" value="LOCAL-00164" />
-      <option name="project" value="LOCAL" />
-      <updated>1787132690207</updated>
+      <workItem from="1792795826373" duration="7163000" />
     </task>
     <task id="LOCAL-00165" summary="update">
       <option name="closed" value="true" />
@@ -611,7 +594,23 @@
       <option name="project" value="LOCAL" />
       <updated>1792800450634</updated>
     </task>
-    <option name="localTasksCounter" value="212" />
+    <task id="LOCAL-00212" summary="update">
+      <option name="closed" value="true" />
+      <created>1792802448121</created>
+      <option name="number" value="00212" />
+      <option name="presentableId" value="LOCAL-00212" />
+      <option name="project" value="LOCAL" />
+      <updated>1792802448121</updated>
+    </task>
+    <task id="LOCAL-00213" summary="update">
+      <option name="closed" value="true" />
+      <created>1792803875925</created>
+      <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1792803875928</updated>
+    </task>
+    <option name="localTasksCounter" value="214" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
