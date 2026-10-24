@@ -43,7 +43,7 @@
     scoring utilities behind a consistent selector interface.
 </summary>
 ******************************************************************************************"""
-from typing import Optional, Tuple, List, Dict
+from typing import Optional, Tuple, List, Dict, Callable
 import numpy as np
 import pandas as pd
 import sklearn.cross_decomposition as sd
@@ -146,7 +146,7 @@ class Selector( ):
 		                         or when the base interface is called directly."""
 		raise NotImplementedError
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> object | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> object | None:
 		"""Fit Selector.
 		
 		Purpose:
@@ -166,7 +166,7 @@ class Selector( ):
 		                         or when the base interface is called directly."""
 		raise NotImplementedError
 	
-	def project( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def project( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Project features with Selector.
 		
 		Purpose:
@@ -186,7 +186,7 @@ class Selector( ):
 		                         or when the base interface is called directly."""
 		raise NotImplementedError
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> object | None:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> object | None:
 		"""Transform features with Selector.
 		
 		Purpose:
@@ -206,7 +206,7 @@ class Selector( ):
 		                         or when the base interface is called directly."""
 		raise NotImplementedError
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> object | None:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> object | None:
 		"""Fit and transform with Selector.
 		
 		Purpose:
@@ -275,7 +275,7 @@ class VarianceThreshold( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, thresh: float = 0.0 ) -> None:
+	def __init__( self, thresh: float=0.0 ) -> None:
 		"""Initialize VarianceThreshold.
 		
 		Purpose:
@@ -309,8 +309,8 @@ class VarianceThreshold( Selector ):
 		return [ 'threshold', 'model', 'prediction', 'transformed_data', 'split_data', 'train',
 			'project', 'score', 'transform', 'train_transform' ]
 	
-	def split_data( self, X: np.ndarray, y: np.ndarray, size: float = 0.2,
-			random: int = 42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
+	def split_data( self, X: np.ndarray, y: np.ndarray, size: float=0.2,
+			random: int=42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
 		"""Split training and testing data.
 		
 		Purpose:
@@ -594,8 +594,8 @@ class CCA( Selector ):
 		return [ 'model', 'n_components', 'scale', 'max_iter', 'prediction', 'transformed_data',
 			'split_data', 'train', 'project', 'score', 'transform', 'train_transform' ]
 	
-	def split_data( self, X: np.ndarray, y: np.ndarray, size: float = 0.2,
-			random: int = 42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
+	def split_data( self, X: np.ndarray, y: np.ndarray, size: float=0.2,
+			random: int=42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
 		"""Split training and testing data.
 		
 		Purpose:
@@ -604,16 +604,14 @@ class CCA( Selector ):
 		
 		Args:
 		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		        scoring routine.
 		    y (np.ndarray): Target vector or target matrix aligned to the rows of `X`.
 		    size (float): Testing-set proportion used by train/test splitting.
 		    random (int): Random seed used by train/test splitting.
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Tuple containing training
-		                                                           features, testing features,
-		                                                           training targets, and testing
-		                                                           targets.
+		        features, testing features, training targets, and testing targets.
 		
 		Raises:
 		    Error: Raised when validation, fitting, transformation, projection, or scoring fails
@@ -740,7 +738,7 @@ class CCA( Selector ):
 			raise exception
 	
 	def transform( self, X: np.ndarray,
-			y: Optional[ np.ndarray ]=None ) -> Tuple[ np.ndarray, np.ndarray ] | np.ndarray:
+		y: Optional[ np.ndarray ]=None ) -> Tuple[ np.ndarray, np.ndarray ] | np.ndarray:
 		"""Transform features with CCA.
 		
 		Purpose:
@@ -816,17 +814,14 @@ class PCA( Selector ):
 	    for reduced feature sets.
 	
 	Attributes:
-	    model (Optional[object]): Underlying sklearn selector, decomposition, or
-	                              cross-decomposition estimator.
-	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated
-	                                       during scoring.
+	    model (Optional[object]): Underlying sklearn selector, decomposition, or cross-decomposition
+	        estimator.
+	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated during scoring.
 	    svd_solver (Optional[str]): SVD solver strategy used by PCA.
-	    n_components (Optional[int]): Number of components retained or projected by the
-	                                  selector.
-	    transformed_data (Optional[np.ndarray]): Most recent feature matrix produced by
-	                                             projection or transformation.
-	    accuracy (Optional[float]): Most recent accuracy score produced by selector
-	                                evaluation.
+	    n_components (Optional[int]): Number of components retained or projected by the selector.
+	    transformed_data (Optional[np.ndarray]): Most recent feature matrix produced by  projection
+	        or transformation.
+	    accuracy (Optional[float]): Most recent accuracy score produced by selector evaluation.
 	    training_score (Optional[float]): Estimator score calculated on the training split.
 	    testing_score (Optional[float]): Estimator score calculated on the testing split."""
 	model: Optional[ PrincipalComponentAnalysis ]
@@ -838,7 +833,7 @@ class PCA( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, num: int = 2, solver: str = 'auto' ) -> None:
+	def __init__( self, num: int=2, solver: str='auto' ) -> None:
 		"""Initialize PCA.
 		
 		Purpose:
@@ -896,17 +891,14 @@ class PCA( Selector ):
 		    the configured random seed and test-size proportion.
 		
 		Args:
-		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or scoring routine.
 		    y (np.ndarray): Target vector or target matrix aligned to the rows of `X`.
 		    size (float): Testing-set proportion used by train/test splitting.
 		    random (int): Random seed used by train/test splitting.
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Tuple containing training
-		                                                           features, testing features,
-		                                                           training targets, and testing
-		                                                           targets.
+		        features, testing features, training targets, and testing targets.
 		
 		Raises:
 		    Error: Raised when validation, fitting, transformation, projection, or scoring fails
@@ -1038,7 +1030,7 @@ class PCA( Selector ):
 		
 		Args:
 		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		        scoring routine.
 		    y (Optional[np.ndarray]): Target vector or target matrix aligned to the rows of `X`.
 		
 		Returns:
@@ -1066,8 +1058,7 @@ class PCA( Selector ):
 		    Fits the PCA selector and returns the transformed feature matrix in one operation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or scoring routine.
 		    y (Optional[np.ndarray]): Target vector or target matrix aligned to the rows of `X`.
 		
 		Returns:
@@ -1098,17 +1089,14 @@ class SelectBest( Selector ):
 	    of features.
 	
 	Attributes:
-	    model (Optional[object]): Underlying sklearn selector, decomposition, or
-	                              cross-decomposition estimator.
-	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated
-	                                       during scoring.
-	    score_function (Optional[object]): Univariate scoring function used to rank
-	                                       candidate features.
+	    model (Optional[object]): Underlying sklearn selector, decomposition, or cross-decomposition
+	        estimator.
+	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated during scoring.
+	    score_function (Optional[object]): Univariate scoring function used to rank candidate features.
 	    n_features (Optional[int]): Number of top-ranked features retained by SelectBest.
-	    transformed_data (Optional[np.ndarray]): Most recent feature matrix produced by
-	                                             projection or transformation.
-	    accuracy (Optional[float]): Most recent accuracy score produced by selector
-	                                evaluation.
+	    transformed_data (Optional[np.ndarray]): Most recent feature matrix produced by  projection
+	        or transformation.
+	    accuracy (Optional[float]): Most recent accuracy score produced by selector evaluation.
 	    training_score (Optional[float]): Estimator score calculated on the training split.
 	    testing_score (Optional[float]): Estimator score calculated on the testing split."""
 	model: Optional[ sf.SelectKBest ]
@@ -1165,17 +1153,15 @@ class SelectBest( Selector ):
 		    the configured random seed and test-size proportion.
 		
 		Args:
-		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator,
+		        or scoring routine.
 		    y (np.ndarray): Target vector or target matrix aligned to the rows of `X`.
 		    size (float): Testing-set proportion used by train/test splitting.
 		    random (int): Random seed used by train/test splitting.
 		
 		Returns:
-		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Tuple containing training
-		                                                           features, testing features,
-		                                                           training targets, and testing
-		                                                           targets.
+		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Tuple containing training features,
+		        testing features, training targets, and testing targets.
 		
 		Raises:
 		    Error: Raised when validation, fitting, transformation, projection, or scoring fails
@@ -1201,13 +1187,12 @@ class SelectBest( Selector ):
 		    target vector using the SelectBest scoring configuration.
 		
 		Args:
-		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or
-		                    scoring routine.
+		    X (np.ndarray): Feature matrix supplied to the selector, projector, estimator, or scoring
+		        routine.
 		    y (np.ndarray): Target vector or target matrix aligned to the rows of `X`.
 		
 		Returns:
-		    Tuple[np.ndarray, np.ndarray] | None: Tuple containing chi-square scores and
-		                                          p-values.
+		    Tuple[np.ndarray, np.ndarray] | None: Tuple containing chi-square scores and p-values.
 		
 		Raises:
 		    Error: Raised when validation, fitting, transformation, projection, or scoring fails
@@ -1676,7 +1661,7 @@ class SelectPercent( Selector ):
 			raise exception
 
 class SBS( Selector ):
-	"""SBS feature-selection class.
+	"""Sequential Back-Selector, feature-selection class.
 	
 	Purpose:
 	    Implements sequential backward selection with a cloned classifier and scoring
@@ -1685,27 +1670,20 @@ class SBS( Selector ):
 	    evaluation.
 	
 	Attributes:
-	    scoring (Optional[callable]): Callable used to score classifier predictions during
-	                                  sequential selection.
-	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated
-	                                       during scoring.
-	    classifier (Optional[Classifier]): Classifier instance cloned or fitted by the
-	                                       feature selector.
-	    random_state (Optional[int]): Random seed used for reproducible train/test
-	                                  splitting.
-	    test_size (Optional[float]): Testing-set proportion used during feature-selection
-	                                 evaluation.
-	    k_features (Optional[int]): Target number of features retained by sequential
-	                                backward selection.
-	    accuracy (Optional[float]): Most recent accuracy score produced by selector
-	                                evaluation.
-	    indices_ (Optional[Tuple[int, ...]]): Selected feature-index tuple produced by the
-	                                          selector.
-	    subsets_ (Optional[List[Tuple[int, ...]]]): Feature-index subsets evaluated during
-	                                                sequential selection.
+	    scoring (Optional[callable]): Callable used to score classifier predictions during sequential
+	        selection.
+	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated during scoring.
+	    classifier (Optional[Classifier]): Classifier instance cloned or fitted by the feature selector.
+	    random_state (Optional[int]): Random seed used for reproducible train/test splitting.
+	    test_size (Optional[float]): Testing-set proportion used during feature-selection evaluation.
+	    k_features (Optional[int]): Target number of features retained by sequential backward selection.
+	    accuracy (Optional[float]): Most recent accuracy score produced by selector evaluation.
+	    indices_ (Optional[Tuple[int, ...]]): Selected feature-index tuple produced by the selector.
+	    subsets_ (Optional[List[Tuple[int, ...]]]): Feature-index subsets evaluated during sequential
+	        selection.
 	    scores_ (Optional[List[float]]): Scores recorded for evaluated feature subsets.
 	    k_score_ (Optional[float]): Best score associated with the selected feature subset."""
-	scoring: Optional[ callable ]
+	scoring: Optional[ Callable ]
 	prediction: Optional[ np.ndarray ]
 	classifier: Optional[ Classifier ]
 	random_state: Optional[ int ]
@@ -1717,7 +1695,7 @@ class SBS( Selector ):
 	scores_: Optional[ List[ float ] ]
 	k_score_: Optional[ float ]
 	
-	def __init__( self, classifier: Classifier, k_features: int, scoring: callable=accuracy_score,
+	def __init__( self, classifier: Classifier, k_features: int, scoring: Callable=accuracy_score,
 			test_size: float=0.25, random_state: int=1 ) -> None:
 		"""Initialize SBS.
 		
