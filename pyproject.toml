@@ -20,12 +20,14 @@ dependencies = [
 ml = ["torch", "xgboost"]
 dev = ["build", "twine", "pytest", "mkdocs", "mkdocs-material", "mkdocstrings[python]", "mkdocs-autorefs"]
 
-[project.scripts]
-mathy-app = "mathy.cli:main"
-
 [tool.setuptools]
 packages = ["mathy"]
+package-dir = {"mathy" = "."}
 include-package-data = true
 
 [tool.setuptools.package-data]
-mathy = ["resources/**/*", ".streamlit/*", "stores/**/*"]
+mathy = [
+    "resources/**/*",
+    ".streamlit/*",
+    "stores/**/*",
+]
