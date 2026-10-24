@@ -1800,8 +1800,7 @@ class SBS( Selector ):
 		try:
 			throw_if( 'X', X )
 			throw_if( 'y', y )
-			X_train, X_test, y_train, y_test = split( X, y,
-				test_size=self.test_size,
+			X_train, X_test, y_train, y_test = split( X, y, test_size=self.test_size,
 				random_state=self.random_state )
 			dim = X_train.shape[ 1 ]
 			self.indices_ = tuple( range( dim ) )
@@ -1811,7 +1810,6 @@ class SBS( Selector ):
 			while dim > self.k_features:
 				scores = [ ]
 				subsets = [ ]
-				
 				for p in combinations( self.indices_, r=dim - 1 ):
 					score = self.calc_score( X_train, y_train, X_test, y_test, p )
 					scores.append( score )
@@ -2116,8 +2114,8 @@ class RFE( Selector ):
 			raise AttributeError( 'The model data has not been trained!' )
 		return self.model.ranking_
 	
-	def split_data( self, X: np.ndarray, y: np.ndarray, size: float = 0.2,
-			random: int = 42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
+	def split_data( self, X: np.ndarray, y: np.ndarray, size: float=0.2,
+			random: int=42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
 		"""Split training and testing data.
 		
 		Purpose:
