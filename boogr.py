@@ -124,7 +124,6 @@ def sanitize_text( value: object, max_length: int=1000 ) -> str:
 		text = text.replace( '\x00', '' )
 		text = re.sub( r'[\r\n\t]+', ' ', text )
 		text = re.sub( r'\s{2,}', ' ', text ).strip( )
-		
 		if not get_config_bool( 'ENABLE_FILE_PATH_LOGGING', False ):
 			text = re.sub( r'[A-Za-z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*', '[PATH]',
 				text )
@@ -144,7 +143,6 @@ def sanitize_text( value: object, max_length: int=1000 ) -> str:
 		if not get_config_bool( 'ENABLE_RAW_TEXT_LOGGING', False ):
 			text = re.sub( r'"[^"]{120,}"', '"[LONG_TEXT]"', text )
 			text = re.sub( r"'[^']{120,}'", "'[LONG_TEXT]'", text )
-			
 			if len( text ) > 300 and text.count( ',' ) >= 5:
 				text = '[MANIFEST_ROW]'
 			elif len( text ) > 500 and len( re.findall( r'\b[A-Za-z]{3,}\b', text ) ) > 60:
@@ -189,7 +187,7 @@ class Error( Exception ):
 		error (Optional[Exception]): Source exception being wrapped.
 		heading (Optional[str]): Optional sanitized user-facing heading or category.
 		cause (Optional[str]): Sanitized component, class, or module purpose associated with the
-		failure.
+			failure.
 		method (Optional[str]): Sanitized method or function signature associated with the failure.
 		module (Optional[str]): Sanitized module name associated with the failure.
 		type (Optional[type]): Exception type captured from ``sys.exc_info``.
@@ -203,7 +201,7 @@ class Error( Exception ):
 	cause: Optional[ str ]
 	method: Optional[ str ]
 	module: Optional[ str ]
-	type: Optional[ type ]
+	base_type: Optional[ str ]
 	trace: Optional[ str ]
 	info: Optional[ str ]
 	message: Optional[ str ]
@@ -233,7 +231,7 @@ class Error( Exception ):
 		self.cause = sanitize_text( cause, 120 ) if cause else None
 		self.method = sanitize_text( method, 180 ) if method else None
 		self.module = sanitize_text( module, 120 ) if module else None
-		self.type = exc_info( )[ 0 ]
+		self.base_type = exc_info( )[ 0 ]
 		self.message = sanitize_text( str( error ) if error else '',
 			get_config_int( 'MAX_LOG_MESSAGE_CHARS', 1000 ) )
 		self.trace = sanitize_traceback( traceback.format_exc( ),
@@ -291,9 +289,7 @@ class Error( Exception ):
 			Expose the primary fields that are useful for logging, diagnostics, and reviewer-safe
 			display. Implementation details and inherited exception internals are intentionally
 			omitted from the returned member list.
-
-		
-
+			
 		Returns:
 			List[str]: Public error member names.
 		"""
@@ -323,8 +319,6 @@ class Logger( ):
 			through ``get_table_name``. No database connection is opened until ``ensure_database``,
 			``write``, or ``purge_old_logs`` is called.
 
-		
-
 		Returns:
 			None.
 		"""
@@ -339,15 +333,12 @@ class Logger( ):
 			resolved under ``cfg.ROOT_DIR`` when available. If path resolution fails, the fallback
 			path ``logging/Exceptions.db`` is resolved relative to the current working directory.
 
-		
-
 		Returns:
 			Path: Resolved SQLite database path.
 		"""
 		try:
 			value = getattr( cfg, 'LOG_PATH', 'logging/Exceptions.db' )
 			path = Path( value )
-			
 			if not path.is_absolute( ):
 				path = getattr( cfg, 'ROOT_DIR', Path.cwd( ) ) / path
 			
@@ -363,14 +354,11 @@ class Logger( ):
 			identifier pattern beginning with a letter or underscore and containing only letters,
 			digits, and underscores. Unsafe or unavailable values fall back to ``Exceptions``.
 
-		
-
 		Returns:
 			str: Safe SQLite table name.
 		"""
 		try:
 			value = str( getattr( cfg, 'LOG_FILE', 'Exceptions' ) ).strip( )
-			
 			if re.fullmatch( r'[A-Za-z_][A-Za-z0-9_]*', value ):
 				return value
 			
@@ -412,8 +400,6 @@ class Logger( ):
 			module,
 			method, message, info, and trace values, with an autoincrementing primary key.
 
-		
-
 		Returns:
 			None.
 		"""
@@ -447,18 +433,16 @@ class Logger( ):
 
 		Purpose:
 			Ensure the database exists, build a parameterized insert statement, sanitize and
-			truncate
-			error fields, write the row, commit the transaction, optionally purge expired log rows,
+			truncate error fields, write the row, commit the transaction, optionally purge expired log rows,
 			and return the inserted row identifier. If exception logging is disabled or logging
-			fails,
-			return ``0`` without raising another exception.
+			fails, return ``0`` without raising another exception.
 
 		Args:
 			error (Error): Error object to persist.
 
 		Returns:
 			int: Inserted row identifier, or ``0`` when the error is missing, disabled, or logging
-			fails.
+				fails.
 		"""
 		try:
 			if not error or not get_config_bool( 'ENABLE_EXCEPTION_LOGGING', True ):
@@ -487,7 +471,6 @@ class Logger( ):
 				?
 			)
 			'''
-			
 			values = (datetime.utcnow( ).strftime( '%Y-%m-%d %H:%M:%S' ),
 				self.truncate( error.cause, 120 ), self.truncate( error.module, 120 ),
 				self.truncate( error.method, 180 ),
@@ -533,7 +516,6 @@ class Logger( ):
 			
 			cutoff = datetime.utcnow( ) - timedelta( days=days )
 			sql = f'DELETE FROM "{self.table_name}" WHERE "created_on" < ?'
-			
 			with sqlite3.connect( self.path ) as connection:
 				cursor = connection.execute( sql, (cutoff.strftime( '%Y-%m-%d %H:%M:%S' ),) )
 				connection.commit( )
@@ -560,6 +542,5 @@ def log_error( error: Exception, heading: str=None, cause: str=None, method: str
 		Error: Wrapped and sanitized error object.
 	"""
 	exception = Error( error=error, heading=heading, cause=cause, method=method, module=module )
-	
 	Logger( ).write( exception )
 	return exception

@@ -188,12 +188,11 @@ class OneHotEncoder( Encoder ):
 	    transformation.
 	
 	Attributes:
-	    unknown (Optional[str]): Strategy used by for unknown categories during
-	                             transform.
+	    unknown (Optional[str]): Strategy used by for unknown categories during transform.
 	    sparse (Optional[bool]): Flag controlling sparse or dense transformed output.
 	    model (pp.OneHotEncoder): Underlying preprocessing estimator.
 	    transformed_data (Optional[np.ndarray]): Most recent encoded output produced by the
-	                                             class/object."""
+	        class/object."""
 	unknown: Optional[ str ]
 	sparse: Optional[ bool ]
 	model: pp.OneHotEncoder
