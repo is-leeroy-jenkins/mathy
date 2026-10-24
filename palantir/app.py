@@ -23021,24 +23021,19 @@ elif mode == 'SQL Console':
 			# --------------------------------------------------------------
 			blue_divider( )
 			st.markdown( '##### Save / Export Results' )
-			
 			last_saved_table = st.session_state.get(
 				'sql_console_last_saved_table', None )
 			
 			left_container, right_container = st.columns( [ 0.50, 0.50 ] )
-			
 			with left_container:
 				with st.container( border=True, height=87 ):
 					table_name = st.text_input( 'New Table Name',
-						key='sql_console_table_name',
-						help='Creates a new SQLite table from the current query result.' )
+						key='sql_console_table_name', help='Creates a new SQLite table.' )
 			
 			with right_container:
 				with st.container( border=True, height=87 ):
 					st.write( '' )
-					
-					action_c1, action_c2, action_c3 = st.columns(
-						[ 0.34, 0.33, 0.33 ], border=False )
+					action_c1, action_c2, action_c3 = st.columns([ 0.34, 0.33, 0.33 ], border=False )
 					
 					with action_c1:
 						save_table = st.button( 'Save as New Table', icon='💾',
@@ -23046,7 +23041,6 @@ elif mode == 'SQL Console':
 					
 					with action_c2:
 						csv = df_result.to_csv( index=False ).encode( 'utf-8' )
-						
 						st.download_button( 'Download CSV', csv, 'query_results.csv',
 							'text/csv', icon='📥', use_container_width=True,
 							key='sql_console_download', disabled=df_result.empty )
@@ -23124,13 +23118,10 @@ elif mode == 'SQL Console':
 					
 					if tracked_table is None:
 						st.session_state[ 'sql_console_last_saved_table' ] = None
-						
-						st.warning(
-							f'Table "{last_saved_table}" no longer exists in the database.' )
+						st.warning( f'Table "{last_saved_table}" no longer exists in the database.' )
 					
 					else:
 						drop_table( tracked_table )
-						
 						st.session_state[
 							'sql_console_last_saved_table' ] = None
 						
