@@ -278,8 +278,8 @@ class ExpandingWindow( ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def get_n_splits( self, series: Optional[ np.ndarray ] = None,
-			y: Optional[ np.ndarray ] = None, groups: Optional[ np.ndarray ] = None ) -> int:
+	def get_n_splits( self, series: Optional[ np.ndarray ]=None,
+			y: Optional[ np.ndarray ]=None, groups: Optional[ np.ndarray ]=None ) -> int:
 		"""Count expanding-window splits.
 		
 		Purpose:
@@ -387,8 +387,8 @@ class TimeSeriesSpliter( ):
 	test_size: Optional[ int ]
 	gap: int
 	
-	def __init__( self, splits: int = 5, max_train_size: Optional[ int ] = None,
-			test_size: Optional[ int ] = None, gap: int = 0 ) -> None:
+	def __init__( self, splits: int=5, max_train_size: Optional[ int ]=None,
+			test_size: Optional[ int ]=None, gap: int=0 ) -> None:
 		"""Initialize time-series splitter.
 		
 		Purpose:
@@ -408,8 +408,8 @@ class TimeSeriesSpliter( ):
 		self.test_size = test_size
 		self.gap = int( gap )
 	
-	def split( self, series: np.ndarray, y: np.ndarray = None,
-			groups: np.ndarray = None ) -> Generator[ Tuple[ np.ndarray, np.ndarray ], None, None ]:
+	def split( self, series: np.ndarray, y: np.ndarray=None,
+			groups: np.ndarray=None ) -> Generator[ Tuple[ np.ndarray, np.ndarray ], None, None ]:
 		"""Yield time-series splits.
 		
 		Purpose:
@@ -573,7 +573,6 @@ class TimeSeriesSpliter( ):
 			throw_if( 'series', series )
 			values = np.asarray( series, dtype=float ).reshape( -1 )
 			splits = self.get_splits( values )
-			
 			if not splits:
 				raise ValueError( 'No time-series splits were generated.' )
 			
@@ -673,8 +672,7 @@ class LaggingSeries( TimeSeries ):
 			
 			values = np.asarray( series, dtype=float ).reshape( -1 )
 			n = len( values )
-			self.training_data = np.array(
-				[ values[ i - self.lag:i ] for i in range( self.lag, n ) ],
+			self.training_data = np.array( [ values[ i - self.lag:i ] for i in range( self.lag, n ) ],
 				dtype=float )
 			self.training_values = values[ self.lag: ]
 			return self.training_data, self.training_values
@@ -717,7 +715,7 @@ class LaggingSeries( TimeSeries ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def project( self, n_steps: int = 1 ) -> np.ndarray:
+	def project( self, n_steps: int=1 ) -> np.ndarray:
 		"""Project future observations.
 		
 		Purpose:
@@ -903,10 +901,11 @@ class LagBoostingSeries( TimeSeries ):
 	max_error: Optional[ float ]
 	
 	def __init__( self, lag: int=12, loss: str='squared_error', quantile: Optional[ float ]=None,
-		rate: float=0.1, iters: int=100, leaf_nodes: Optional[ int ]=31, depth: Optional[ int ]=None, leaf: int=20,
-		regularization: float=0.0, features: float=1.0, bins: int=255,
-		monotonic: Optional[ object ]=None, interaction: Optional[ object ]=None, warm: bool=False,
-		stopping: str | bool='auto', scoring: str='loss', validation: float=0.1, no_change: int=10,
+		rate: float=0.1, iters: int=100, leaf_nodes: Optional[ int ]=31,
+		depth: Optional[ int ]=None, leaf: int=20, regularization: float=0.0,
+		features: float=1.0, bins: int=255, monotonic: Optional[ object ]=None,
+		interaction: Optional[ object ]=None, warm: bool=False, stopping: str | bool='auto',
+		scoring: str='loss', validation: float=0.1, no_change: int=10,
 		tol: float=1e-7, verbose: int=0, rando: Optional[ int ]=None ) -> None:
 		"""Initialize boosting lag forecaster.
 		
@@ -1004,7 +1003,6 @@ class LagBoostingSeries( TimeSeries ):
 		    ValueError: Raised when the `lag_transform` operation cannot complete."""
 		try:
 			throw_if( 'series', series )
-			
 			if self.lag < 1:
 				raise ValueError( 'Argument "lag" must be greater than zero.' )
 			
@@ -1013,9 +1011,8 @@ class LagBoostingSeries( TimeSeries ):
 				raise ValueError(
 					f'Argument "series" must contain more than {self.lag} observations.' )
 			
-			self.training_data = np.array(
-				[ values[ i - self.lag:i ] for i in range( self.lag, len( values ) ) ],
-				dtype=float )
+			self.training_data = np.array( [ values[ i - self.lag:i ] for i in range( self.lag,
+				len( values ) ) ], dtype=float )
 			
 			self.training_values = values[ self.lag: ]
 			return self.training_data, self.training_values
@@ -1085,13 +1082,11 @@ class LagBoostingSeries( TimeSeries ):
 			throw_if( 'n_steps', n_steps )
 			throw_if( 'training_data', self.training_data )
 			throw_if( 'model', self.model )
-			
 			if n_steps < 1:
 				raise ValueError( 'Argument "n_steps" must be greater than zero.' )
 			
 			last_window = self.training_data[ -1 ].astype( float ).copy( )
 			preds = [ ]
-			
 			for _ in range( n_steps ):
 				next_value = float( self.model.predict( last_window.reshape( 1, -1 ) )[ 0 ] )
 				preds.append( next_value )
@@ -1303,9 +1298,8 @@ class LagQuantileSeries( TimeSeries ):
 				raise ValueError(
 					f'Argument "series" must contain more than {self.lag} observations.' )
 			
-			self.training_data = np.array(
-				[ values[ i - self.lag:i ] for i in range( self.lag, len( values ) ) ],
-				dtype=float )
+			self.training_data = np.array( [ values[ i - self.lag:i ] for i in range( self.lag,
+				len( values ) ) ], dtype=float )
 			self.training_values = values[ self.lag: ]
 			return self.training_data, self.training_values
 		except Exception as e:
@@ -1501,8 +1495,7 @@ class ARIMA( TimeSeries ):
 		    training-value, and prediction state for later forecasting.
 		
 		Args:
-		    order (Tuple[int, int, int]): Autoregressive, differencing, and moving-average
-		                                  order.
+		    order (Tuple[int, int, int]): Autoregressive, differencing, and moving-average order.
 		
 		Returns:
 		    None: This method initializes the object and does not return a value."""
@@ -1548,7 +1541,7 @@ class ARIMA( TimeSeries ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def project( self, n_steps: int = 1 ) -> np.ndarray:
+	def project( self, n_steps: int=1 ) -> np.ndarray:
 		"""Project future observations.
 		
 		Purpose:
@@ -1566,8 +1559,6 @@ class ARIMA( TimeSeries ):
 		           calculation fails.
 		    ValueError: Raised when the `project` operation cannot complete."""
 		try:
-			throw_if( 'results', self.results )
-			throw_if( 'n_steps', n_steps )
 			if n_steps < 1:
 				raise ValueError( 'Argument "n_steps" must be greater than zero.' )
 			
