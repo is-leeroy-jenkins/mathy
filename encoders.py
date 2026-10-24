@@ -179,7 +179,7 @@ class Encoder( ):
 		raise NotImplementedError( )
 
 class OneHotEncoder( Encoder ):
-	"""Provides One-Hot feature encoding functionality.
+	"""Provides One-Hot feature encoding functionality for categorical labels.
 	
 	Purpose:
 	    Encodes categorical feature columns as a one-hot numeric representation. The class
@@ -218,7 +218,7 @@ class OneHotEncoder( Encoder ):
 		self.sparse = sparse
 		self.model = pp.OneHotEncoder( sparse_output=self.sparse, handle_unknown=self.unknown )
 	
-	def __dir__( self ) -> list[ str ]:
+	def __dir__( self ) -> List[ str ]:
 		"""List public members.
 		
 		Purpose:
@@ -524,7 +524,7 @@ class OrdinalEncoder( Encoder ):
 			raise exception
 
 class LabelEncoder( Encoder ):
-	"""Wrap LabelEncoder.
+	"""Encodes categorical labels into integers.
 	
 	Purpose:
 	    Encodes one-dimensional target labels as integer values from zero to one less than
@@ -534,7 +534,7 @@ class LabelEncoder( Encoder ):
 	Attributes:
 	    model (pp.LabelEncoder): Underlying preprocessing estimator.
 	    transformed_data (Optional[np.ndarray]): Most recent encoded label vector produced
-	                                             by the object."""
+	        by the object."""
 	model: pp.LabelEncoder
 	transformed_data: Optional[ np.ndarray ]
 	
@@ -701,13 +701,13 @@ class TargetEncoder( Encoder ):
 	Attributes:
 	    model (pp.TargetEncoder): Underlying preprocessing estimator.
 	    transformed_data (Optional[np.ndarray]): Most recent target-encoded matrix produced
-	                                             by the object.
+	        by the object.
 	    categories (Optional[str]): Category configuration metadata retained for interface
-	                                compatibility.
+	        compatibility.
 	    smoothing (Optional[str]): Smoothing configuration metadata retained for interface
-	                               compatibility.
+	        compatibility.
 	    target_type (Optional[str]): Target-type metadata retained for interface
-	                                 compatibility."""
+	        compatibility."""
 	model: pp.TargetEncoder
 	transformed_data: Optional[ np.ndarray ]
 	categories: Optional[ str ]
@@ -922,7 +922,7 @@ class PolynomialFeatures( Encoder ):
 	model: pp.PolynomialFeatures
 	transformed_data: Optional[ np.ndarray ]
 	
-	def __init__( self, degree: int = 2, interaction: bool=True ) -> None:
+	def __init__( self, degree: int=2, interaction: bool=True ) -> None:
 		"""Initialize PolynomialFeatures.
 		
 		Purpose:
