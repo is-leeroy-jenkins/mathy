@@ -195,7 +195,7 @@ class Classifier( ):
 		
 		Returns:
 		    tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None: Value produced by the
-		                                                                  operation.
+		        operation.
 		
 		Raises:
 		    Exception: Raised when validation fails or required fitted metadata is unavailable.
@@ -221,7 +221,7 @@ class Classifier( ):
 		    NotImplementedError: Raised when the `train` operation cannot complete."""
 		raise NotImplementedError
 	
-	def project( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def project( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Generate classifier predictions.
 		
 		Purpose:
@@ -515,7 +515,6 @@ class Perceptron( Classifier ):
 		    ValueError: Raised when the `validate_configuration` operation cannot complete."""
 		try:
 			_valid_penalties = { None, 'l2', 'l1', 'elasticnet' }
-			
 			if self.penalty not in _valid_penalties:
 				raise ValueError( f'Unsupported penalty: {self.penalty}' )
 			
@@ -588,9 +587,8 @@ class Perceptron( Classifier ):
 			raise AttributeError( 'The model data has not been trained!' )
 		return self.model.classes_
 	
-	def split_data( self, X: np.ndarray, y: np.ndarray,
-			size: float=0.2, random: int=42 ) -> Tuple[
-		np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
+	def split_data( self, X: np.ndarray, y: np.ndarray, size: float=0.2,
+		random: int=42 ) -> Tuple[ np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
 		"""Split feature and target data.
 		
 		Purpose:
@@ -605,8 +603,7 @@ class Perceptron( Classifier ):
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Training features, testing
-		                                                           features, training labels,
-		                                                           and testing labels.
+		        features, training labels, and testing labels.
 		
 		Raises:
 		    Error: Raised when validation, estimator execution, metric calculation, or plotting
