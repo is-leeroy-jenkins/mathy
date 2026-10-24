@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="36bfb57a-5abe-4c37-b940-845fabab367c" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/palantir/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/palantir/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -217,15 +216,7 @@
       <workItem from="1791657437029" duration="2895000" />
       <workItem from="1791853748372" duration="1607000" />
       <workItem from="1791877471546" duration="945000" />
-      <workItem from="1792795826373" duration="340000" />
-    </task>
-    <task id="LOCAL-00160" summary="update">
-      <option name="closed" value="true" />
-      <created>1786830115551</created>
-      <option name="number" value="00160" />
-      <option name="presentableId" value="LOCAL-00160" />
-      <option name="project" value="LOCAL" />
-      <updated>1786830115551</updated>
+      <workItem from="1792795826373" duration="2066000" />
     </task>
     <task id="LOCAL-00161" summary="update">
       <option name="closed" value="true" />
@@ -611,7 +602,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791878189798</updated>
     </task>
-    <option name="localTasksCounter" value="209" />
+    <task id="LOCAL-00209" summary="update">
+      <option name="closed" value="true" />
+      <created>1792796253163</created>
+      <option name="number" value="00209" />
+      <option name="presentableId" value="LOCAL-00209" />
+      <option name="project" value="LOCAL" />
+      <updated>1792796253164</updated>
+    </task>
+    <option name="localTasksCounter" value="210" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

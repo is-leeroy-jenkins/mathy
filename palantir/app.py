@@ -193,25 +193,25 @@ if 'targets' not in st.session_state:
 	st.session_state[ 'targets' ] = [ ]
 
 if 'X_data' not in st.session_state:
-	st.session_state[ 'X_data' ]=None
+	st.session_state[ 'X_data' ] = None
 
 if 'X_train' not in st.session_state:
-	st.session_state[ 'X_train' ]=None
+	st.session_state[ 'X_train' ] = None
 
 if 'y_train' not in st.session_state:
-	st.session_state[ 'y_train' ]=None
+	st.session_state[ 'y_train' ] = None
 
 if 'X_test' not in st.session_state:
-	st.session_state[ 'X_test' ]=None
+	st.session_state[ 'X_test' ] = None
 
 if 'y_test' not in st.session_state:
-	st.session_state[ 'y_test' ]=None
+	st.session_state[ 'y_test' ] = None
 
 if 'y_prediction' not in st.session_state:
-	st.session_state[ 'y_prediction' ]=None
+	st.session_state[ 'y_prediction' ] = None
 
 if 'y_series' not in st.session_state:
-	st.session_state[ 'y_series' ]=None
+	st.session_state[ 'y_series' ] = None
 
 if 'target_count' not in st.session_state:
 	st.session_state[ 'target_count' ] = 0.0
@@ -260,12 +260,12 @@ if 'cluster_plot_features' not in st.session_state:
 	st.session_state[ 'cluster_plot_features' ] = [ ]
 
 if 'cluster_signature' not in st.session_state:
-	st.session_state[ 'cluster_signature' ]=None
+	st.session_state[ 'cluster_signature' ] = None
 
 # ----------- Data Management Members
 
 if 'data_upload_signature' not in st.session_state:
-	st.session_state[ 'data_upload_signature' ]=None
+	st.session_state[ 'data_upload_signature' ] = None
 
 if 'data_upload_tables' not in st.session_state:
 	st.session_state[ 'data_upload_tables' ] = { }
@@ -274,7 +274,7 @@ if 'data_upload_sheet_names' not in st.session_state:
 	st.session_state[ 'data_upload_sheet_names' ] = { }
 
 if 'data_upload_filename' not in st.session_state:
-	st.session_state[ 'data_upload_filename' ]=None
+	st.session_state[ 'data_upload_filename' ] = None
 
 if 'active_source_kind' not in st.session_state:
 	st.session_state[ 'active_source_kind' ] = ''
@@ -286,16 +286,16 @@ if 'active_declared_schema' not in st.session_state:
 	st.session_state[ 'active_declared_schema' ] = { }
 
 if 'custom_upload_signature' not in st.session_state:
-	st.session_state[ 'custom_upload_signature' ]=None
+	st.session_state[ 'custom_upload_signature' ] = None
 
 if 'custom_upload_tables' not in st.session_state:
 	st.session_state[ 'custom_upload_tables' ] = { }
 
 if 'custom_upload_filename' not in st.session_state:
-	st.session_state[ 'custom_upload_filename' ]=None
+	st.session_state[ 'custom_upload_filename' ] = None
 
 if 'database_operation_result' not in st.session_state:
-	st.session_state[ 'database_operation_result' ]=None
+	st.session_state[ 'database_operation_result' ] = None
 
 if 'crud_next_table' not in st.session_state:
 	st.session_state[ 'crud_next_table' ] = ''
@@ -406,7 +406,6 @@ def store_loaded_dataset( df_dataset: pd.DataFrame, df_original: pd.DataFrame=No
 	
 	df_source = df_dataset.copy( )
 	df_base = df_original.copy( ) if isinstance( df_original, pd.DataFrame ) else df_source.copy( )
-	
 	st.session_state[ 'raw_df' ] = df_source.copy( )
 	st.session_state[ 'df_original' ] = df_base.copy( )
 	st.session_state[ 'df_dataset' ] = df_source.copy( )
@@ -593,14 +592,14 @@ def reset_classification_mode_state( ) -> None:
 	st.session_state[ 'selected_all' ] = [ ]
 	st.session_state[ 'active_features' ] = [ ]
 	st.session_state[ 'active_targets' ] = [ ]
-	st.session_state[ 'X_data' ]=None
-	st.session_state[ 'X_train' ]=None
-	st.session_state[ 'X_test' ]=None
-	st.session_state[ 'y_train' ]=None
-	st.session_state[ 'y_test' ]=None
-	st.session_state[ 'y_series' ]=None
-	st.session_state[ 'y_prediction' ]=None
-	st.session_state[ 'model' ]=None
+	st.session_state[ 'X_data' ] = None
+	st.session_state[ 'X_train' ] = None
+	st.session_state[ 'X_test' ] = None
+	st.session_state[ 'y_train' ] = None
+	st.session_state[ 'y_test' ] = None
+	st.session_state[ 'y_series' ] = None
+	st.session_state[ 'y_prediction' ] = None
+	st.session_state[ 'model' ] = None
 	st.session_state[ 'elapsed_seconds' ] = 0.0
 	st.session_state[ 'target_count' ] = 0.0
 
@@ -636,14 +635,14 @@ def reset_regression_mode_state( ) -> None:
 	st.session_state[ 'selected_all' ] = [ ]
 	st.session_state[ 'active_features' ] = [ ]
 	st.session_state[ 'active_targets' ] = [ ]
-	st.session_state[ 'X_data' ]=None
-	st.session_state[ 'X_train' ]=None
-	st.session_state[ 'X_test' ]=None
-	st.session_state[ 'y_train' ]=None
-	st.session_state[ 'y_test' ]=None
-	st.session_state[ 'y_series' ]=None
-	st.session_state[ 'y_prediction' ]=None
-	st.session_state[ 'model' ]=None
+	st.session_state[ 'X_data' ] = None
+	st.session_state[ 'X_train' ] = None
+	st.session_state[ 'X_test' ] = None
+	st.session_state[ 'y_train' ] = None
+	st.session_state[ 'y_test' ] = None
+	st.session_state[ 'y_series' ] = None
+	st.session_state[ 'y_prediction' ] = None
+	st.session_state[ 'model' ] = None
 	st.session_state[ 'elapsed_seconds' ] = 0.0
 	st.session_state[ 'target_count' ] = 0.0
 
@@ -780,7 +779,6 @@ def auto_float_format( series: pd.Series, max_decimals: int=4 ) -> str:
 		return '{:,.2f}'
 	
 	mag = float( np.nanpercentile( np.abs( s.values ), 95 ) )
-	
 	if mag >= 1e9:
 		decimals = 0
 	elif mag >= 1e6:
@@ -1364,11 +1362,9 @@ def get_declared_type_family( declared_type: str ) -> str:
 		return 'datetime'
 	if 'BOOL' in type_name:
 		return 'boolean'
-	if any( token in type_name for token in (
-			'INT', 'REAL', 'FLOA', 'DOUB', 'NUMERIC', 'DECIMAL' ) ):
+	if any( token in type_name for token in ( 'INT', 'REAL', 'FLOA', 'DOUB', 'NUMERIC', 'DECIMAL' ) ):
 		return 'numeric'
-	if any( token in type_name for token in (
-			'CHAR', 'CLOB', 'TEXT', 'VARCHAR', 'NVARCHAR' ) ):
+	if any( token in type_name for token in ( 'CHAR', 'CLOB', 'TEXT', 'VARCHAR', 'NVARCHAR' ) ):
 		return 'text'
 	return 'unknown'
 
@@ -1836,7 +1832,6 @@ def create_crud_database_table( table_name: str,
 	initial_values: List[ object ] = [ ]
 	has_initial_values = False
 	seen_columns = { 'id' }
-
 	for index, column in enumerate( columns ):
 		column_name = str( column.get( 'name', '' ) )
 		throw_if( f'column_{index + 1}_name', column_name )
@@ -2031,7 +2026,7 @@ def clear_active_database_table( ) -> None:
 	st.session_state[ 'active_source_kind' ] = ''
 	st.session_state[ 'active_database_table' ] = ''
 	st.session_state[ 'active_declared_schema' ] = { }
-	st.session_state[ 'active_source_signature' ]=None
+	st.session_state[ 'active_source_signature' ] = None
 	st.session_state[ 'raw_df' ] = pd.DataFrame( )
 	st.session_state[ 'df_original' ] = pd.DataFrame( )
 	st.session_state[ 'df_dataset' ] = pd.DataFrame( )
@@ -2151,9 +2146,9 @@ def reconcile_import_table_metadata( old_table: str, new_table: str='' ) -> None
 				else:
 					clear_keys( [ 'data_upload_selected_table' ] )
 			if not table_map and not new_table:
-				st.session_state[ 'data_upload_signature' ]=None
+				st.session_state[ 'data_upload_signature' ] = None
 		elif key == 'custom_upload_tables' and not table_map and not new_table:
-			st.session_state[ 'custom_upload_signature' ]=None
+			st.session_state[ 'custom_upload_signature' ] = None
 
 	sheet_names = st.session_state.get( 'data_upload_sheet_names', { } )
 	if isinstance( sheet_names, dict ) and old_table in sheet_names:
@@ -2396,13 +2391,11 @@ def read_table( table: str, limit: int=None, offset: int=0 ) -> pd.DataFrame:
 	with create_connection( ) as conn:
 		cur = conn.cursor( )
 		cur.execute( query )
-		
 		raw_columns = [ d[ 0 ] for d in (cur.description or [ ]) ]
 		rows = cur.fetchall( )
 	
 	seen: Dict[ str, int ] = { }
 	columns: List[ str ] = [ ]
-	
 	for col in raw_columns:
 		name = str( col )
 		if name not in seen:
@@ -3289,9 +3282,9 @@ def create_profile_table( table: str ):
 			row[ 'max' ] = numeric_series.max( )
 			row[ 'mean' ] = numeric_series.mean( )
 		else:
-			row[ 'min' ]=None
-			row[ 'max' ]=None
-			row[ 'mean' ]=None
+			row[ 'min' ] = None
+			row[ 'max' ] = None
+			row[ 'mean' ] = None
 		
 		profile_rows.append( row )
 	
@@ -4147,7 +4140,7 @@ with st.sidebar:
 						loaded_declared_schema = create_declared_schema_map(
 							create_schema( selected_custom_table ) )
 				except Exception as ex:
-					st.session_state[ 'custom_upload_signature' ]=None
+					st.session_state[ 'custom_upload_signature' ] = None
 					st.error( f'Unable to import spreadsheet: {ex}' )
 			else:
 				st.info( 'Upload a spreadsheet to load data.' )
@@ -4244,8 +4237,8 @@ with st.sidebar:
 		if selected_mode is None:
 			return
 		
-		st.session_state[ 'db_mode_radio' ]=None
-		st.session_state[ 'visualization_mode_radio' ]=None
+		st.session_state[ 'db_mode_radio' ] = None
+		st.session_state[ 'visualization_mode_radio' ] = None
 		st.session_state[ 'active_mode' ] = selected_mode
 		
 		if selected_mode == 'Classification Models':
@@ -4268,8 +4261,8 @@ with st.sidebar:
 		if selected_mode is None:
 			return
 		
-		st.session_state[ 'ml_mode_radio' ]=None
-		st.session_state[ 'visualization_mode_radio' ]=None
+		st.session_state[ 'ml_mode_radio' ] = None
+		st.session_state[ 'visualization_mode_radio' ] = None
 		st.session_state[ 'active_mode' ] = selected_mode
 	
 	def handle_visualization_mode_change( ) -> None:
@@ -4288,8 +4281,8 @@ with st.sidebar:
 		if selected_mode is None:
 			return
 		
-		st.session_state[ 'ml_mode_radio' ]=None
-		st.session_state[ 'db_mode_radio' ]=None
+		st.session_state[ 'ml_mode_radio' ] = None
+		st.session_state[ 'db_mode_radio' ] = None
 		st.session_state[ 'active_mode' ] = selected_mode
 		
 	# ------- Available Modes
@@ -4306,26 +4299,26 @@ with st.sidebar:
 		st.session_state[ 'ml_mode_radio' ] = st.session_state[ 'active_mode' ]
 	
 	if 'db_mode_radio' not in st.session_state:
-		st.session_state[ 'db_mode_radio' ]=None
+		st.session_state[ 'db_mode_radio' ] = None
 	
 	if 'visualization_mode_radio' not in st.session_state:
-		st.session_state[ 'visualization_mode_radio' ]=None
+		st.session_state[ 'visualization_mode_radio' ] = None
 	
 	available_modes = ml_modes + db_modes + visualization_modes
 	if st.session_state[ 'active_mode' ] not in available_modes:
 		st.session_state[ 'active_mode' ] = ml_modes[ 0 ] if ml_modes else None
 		st.session_state[ 'ml_mode_radio' ] = st.session_state[ 'active_mode' ]
-		st.session_state[ 'db_mode_radio' ]=None
-		st.session_state[ 'visualization_mode_radio' ]=None
+		st.session_state[ 'db_mode_radio' ] = None
+		st.session_state[ 'visualization_mode_radio' ] = None
 	
 	if st.session_state.get( 'ml_mode_radio', None ) not in ml_modes:
-		st.session_state[ 'ml_mode_radio' ]=None
+		st.session_state[ 'ml_mode_radio' ] = None
 	
 	if st.session_state.get( 'db_mode_radio', None ) not in db_modes:
-		st.session_state[ 'db_mode_radio' ]=None
+		st.session_state[ 'db_mode_radio' ] = None
 	
 	if st.session_state.get( 'visualization_mode_radio', None ) not in visualization_modes:
-		st.session_state[ 'visualization_mode_radio' ]=None
+		st.session_state[ 'visualization_mode_radio' ] = None
 	
 	# ------- Data Visualization Selection Mode
 	st.sidebar.divider( )
@@ -5615,14 +5608,14 @@ elif mode == 'Classification Models':
 			st.session_state[ 'df_model' ] = pd.DataFrame( )
 			st.session_state[ 'df_scores' ] = pd.DataFrame( )
 			st.session_state[ 'df_predictions' ] = pd.DataFrame( )
-			st.session_state[ 'X_data' ]=None
-			st.session_state[ 'X_train' ]=None
-			st.session_state[ 'X_test' ]=None
-			st.session_state[ 'y_train' ]=None
-			st.session_state[ 'y_test' ]=None
-			st.session_state[ 'y_series' ]=None
-			st.session_state[ 'y_prediction' ]=None
-			st.session_state[ 'model' ]=None
+			st.session_state[ 'X_data' ] = None
+			st.session_state[ 'X_train' ] = None
+			st.session_state[ 'X_test' ] = None
+			st.session_state[ 'y_train' ] = None
+			st.session_state[ 'y_test' ] = None
+			st.session_state[ 'y_series' ] = None
+			st.session_state[ 'y_prediction' ] = None
+			st.session_state[ 'model' ] = None
 			st.session_state[ 'elapsed_seconds' ] = 0.0
 			
 		def get_classification_pipeline_frame( ) -> pd.DataFrame:
@@ -7452,12 +7445,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -7612,12 +7605,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -7829,15 +7822,15 @@ elif mode == 'Classification Models':
 					for key, value in logistic_defaults.items( ):
 						st.session_state[ key ] = value
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'df_model' ]=None
-					st.session_state[ 'df_scores' ]=None
-					st.session_state[ 'df_predictions' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'df_model' ] = None
+					st.session_state[ 'df_scores' ] = None
+					st.session_state[ 'df_predictions' ] = None
 					st.rerun( )
 				
 				if train_logistic:
@@ -7907,12 +7900,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8064,12 +8057,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8230,12 +8223,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8425,12 +8418,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8606,12 +8599,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8779,13 +8772,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -8951,12 +8944,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9124,13 +9117,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9279,13 +9272,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9430,12 +9423,12 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9572,13 +9565,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9768,13 +9761,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -9968,13 +9961,13 @@ elif mode == 'Classification Models':
 						st.session_state[ reset_key ] = reset_value
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'y_predictions' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'y_prediction' ] = None
+					st.session_state[ 'y_predictions' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 				
@@ -10428,14 +10421,14 @@ elif mode == 'Regression Models':
 				st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
 				st.session_state[ 'active_features' ] = [ ]
 				st.session_state[ 'active_targets' ] = [ ]
-				st.session_state[ 'X_data' ]=None
-				st.session_state[ 'X_train' ]=None
-				st.session_state[ 'X_test' ]=None
-				st.session_state[ 'y_train' ]=None
-				st.session_state[ 'y_test' ]=None
-				st.session_state[ 'y_series' ]=None
-				st.session_state[ 'y_prediction' ]=None
-				st.session_state[ 'model' ]=None
+				st.session_state[ 'X_data' ] = None
+				st.session_state[ 'X_train' ] = None
+				st.session_state[ 'X_test' ] = None
+				st.session_state[ 'y_train' ] = None
+				st.session_state[ 'y_test' ] = None
+				st.session_state[ 'y_series' ] = None
+				st.session_state[ 'y_prediction' ] = None
+				st.session_state[ 'model' ] = None
 				st.session_state[ 'elapsed_seconds' ] = 0.0
 				st.session_state[ 'target_count' ] = 1.0
 				commit_frame( df_working )
@@ -10517,7 +10510,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_standard_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10548,7 +10541,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔄',
 								key='regression_minmax_scaler_reset',
 								use_container_width=True ):
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							df_processed = None
 							st.success( 'Reset to Working.' )
 				
@@ -10580,7 +10573,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_robust_scaler_reset',
 								use_container_width=True ):
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							df_processed = None
 							st.success( 'Reset to Working.' )
 				
@@ -10615,7 +10608,7 @@ elif mode == 'Regression Models':
 								key='regression_normal_scaler_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10647,7 +10640,7 @@ elif mode == 'Regression Models':
 								key='regression_maxabs_scaler_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 			
@@ -10689,7 +10682,7 @@ elif mode == 'Regression Models':
 								key='regression_mean_imputer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10726,7 +10719,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_nearest_imputer_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10768,7 +10761,7 @@ elif mode == 'Regression Models':
 								key='regression_iterative_imputer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10826,7 +10819,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_simple_imputer_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 			
@@ -10866,7 +10859,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_onehot_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -10970,7 +10963,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_target_encoder_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11012,7 +11005,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_polynomial_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 		
@@ -11054,7 +11047,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_binarizer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11101,7 +11094,7 @@ elif mode == 'Regression Models':
 								key='regression_lblbinarizer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11146,7 +11139,7 @@ elif mode == 'Regression Models':
 								key='regression_multilabel_binarizer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11198,7 +11191,7 @@ elif mode == 'Regression Models':
 								key='regression_tfidf_transformer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11283,7 +11276,7 @@ elif mode == 'Regression Models':
 								key='regression_column_transformer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 			
@@ -11329,7 +11322,7 @@ elif mode == 'Regression Models':
 								key='regression_tfidf_vectorizer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11374,7 +11367,7 @@ elif mode == 'Regression Models':
 								key='regression_count_vectorizer_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11419,7 +11412,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_hash_vectorizer_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11462,7 +11455,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_dict_vectorizer_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11502,7 +11495,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁',
 								key='regression_feature_hasher_reset', use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 			
@@ -11543,7 +11536,7 @@ elif mode == 'Regression Models':
 								key='regression_variance_threshold_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11596,7 +11589,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_cca_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11637,7 +11630,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_pca_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11685,7 +11678,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_selectbest_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11734,7 +11727,7 @@ elif mode == 'Regression Models':
 								key='regression_selectpercent_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11785,7 +11778,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_sbs_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 				
@@ -11831,7 +11824,7 @@ elif mode == 'Regression Models':
 						if st.button( label='Reset', icon='🔁', key='regression_rfe_reset',
 								use_container_width=True ):
 							df_processed = None
-							st.session_state[ 'df_processed' ]=None
+							st.session_state[ 'df_processed' ] = None
 							st.success( 'Reset Processed Data.' )
 							st.rerun( )
 		
@@ -11959,11 +11952,11 @@ elif mode == 'Regression Models':
 		st.session_state[ 'df_regression' ] = df_regression.copy( )
 		st.session_state[ 'X_data' ] = X_data.copy( )
 		st.session_state[ 'y_series' ] = y_series.copy( )
-		st.session_state[ 'X_train' ]=None
-		st.session_state[ 'X_test' ]=None
-		st.session_state[ 'y_train' ]=None
-		st.session_state[ 'y_test' ]=None
-		st.session_state[ 'y_prediction' ]=None
+		st.session_state[ 'X_train' ] = None
+		st.session_state[ 'X_test' ] = None
+		st.session_state[ 'y_train' ] = None
+		st.session_state[ 'y_test' ] = None
+		st.session_state[ 'y_prediction' ] = None
 		
 		# ------------------------------------------------------------------
 		# REGRESSION MODELS
@@ -12030,12 +12023,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_ols_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
@@ -12232,12 +12225,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_ridge_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -12473,12 +12466,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_lasso_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -12728,12 +12721,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_elastic_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -12998,7 +12991,7 @@ elif mode == 'Regression Models':
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
 					st.session_state[ 'df_coefficients' ] = pd.DataFrame( )
-					st.session_state[ 'regression_bayes_elapsed_seconds' ]=None
+					st.session_state[ 'regression_bayes_elapsed_seconds' ] = None
 					st.rerun( )
 				
 				if train_bayes:
@@ -13260,12 +13253,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_sgd_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -13572,12 +13565,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_knn_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -13853,12 +13846,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_svr_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -14158,12 +14151,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_extra_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -14544,12 +14537,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_rf_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -14805,12 +14798,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_ada_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -15157,12 +15150,12 @@ elif mode == 'Regression Models':
 					
 					st.session_state[ 'elapsed_seconds' ] = 0.0
 					st.session_state[ 'regression_gb_elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'model' ] = None
+					st.session_state[ 'X_train' ] = None
+					st.session_state[ 'X_test' ] = None
+					st.session_state[ 'y_train' ] = None
+					st.session_state[ 'y_test' ] = None
+					st.session_state[ 'y_prediction' ] = None
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_regression_scores' ] = pd.DataFrame( )
@@ -15396,7 +15389,7 @@ elif mode == 'Regression Models':
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
-					st.session_state[ 'regression_vote_elapsed_seconds' ]=None
+					st.session_state[ 'regression_vote_elapsed_seconds' ] = None
 				
 				st.caption(
 					'Average predictions from multiple regressors fit on the full dataset.' )
@@ -15671,7 +15664,7 @@ elif mode == 'Regression Models':
 					st.session_state[ 'df_regression' ] = df_model.copy( )
 					st.session_state[ 'df_scores' ] = pd.DataFrame( )
 					st.session_state[ 'df_predictions' ] = pd.DataFrame( )
-					st.session_state[ 'regression_stack_elapsed_seconds' ]=None
+					st.session_state[ 'regression_stack_elapsed_seconds' ] = None
 					st.rerun( )
 				
 				if train_stack:
@@ -17395,7 +17388,7 @@ elif mode == 'Clustering Models':
 						st.session_state[ 'df_cluster_kmeans_centroids' ] = pd.DataFrame( )
 						st.session_state[ 'df_cluster_kmeans_details' ] = pd.DataFrame( )
 						st.session_state[ 'cluster_kmeans_plot_features' ] = [ ]
-						st.session_state[ 'cluster_kmeans_signature' ]=None
+						st.session_state[ 'cluster_kmeans_signature' ] = None
 						st.error( f'K-Means clustering failed: {ex}' )
 			
 			kmeans_reset_keys = [ 'cluster_kmeans_n_clusters', 'cluster_kmeans_init',
@@ -17593,7 +17586,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_dbscan_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_dbscan_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_dbscan_plot_features' ] = [ ]
-					st.session_state[ 'cluster_dbscan_signature' ]=None
+					st.session_state[ 'cluster_dbscan_signature' ] = None
 					st.error( f'DBSCAN clustering failed: {ex}' )
 			
 			dbscan_signature = st.session_state.get( 'cluster_dbscan_signature', None )
@@ -17820,7 +17813,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_agglomerative_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_agglomerative_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_agglomerative_plot_features' ] = [ ]
-					st.session_state[ 'cluster_agglomerative_signature' ]=None
+					st.session_state[ 'cluster_agglomerative_signature' ] = None
 					st.error( f'Agglomerative clustering failed: {ex}' )
 			
 			agglomerative_signature = st.session_state.get( 'cluster_agglomerative_signature',
@@ -18113,7 +18106,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_spectral_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_spectral_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_spectral_plot_features' ] = [ ]
-					st.session_state[ 'cluster_spectral_signature' ]=None
+					st.session_state[ 'cluster_spectral_signature' ] = None
 					st.error( f'Spectral clustering failed: {ex}' )
 			
 			spectral_signature = st.session_state.get( 'cluster_spectral_signature', None )
@@ -18382,7 +18375,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_optics_details' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_optics_ordering' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_optics_plot_features' ] = [ ]
-					st.session_state[ 'cluster_optics_signature' ]=None
+					st.session_state[ 'cluster_optics_signature' ] = None
 					st.error( f'OPTICS clustering failed: {ex}' )
 			
 			optics_signature = st.session_state.get( 'cluster_optics_signature', None )
@@ -18576,7 +18569,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_mean_shift_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_mean_shift_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_mean_shift_plot_features' ] = [ ]
-					st.session_state[ 'cluster_mean_shift_signature' ]=None
+					st.session_state[ 'cluster_mean_shift_signature' ] = None
 					st.error( f'Mean Shift clustering failed: {ex}' )
 			
 			mean_shift_signature = st.session_state.get( 'cluster_mean_shift_signature', None )
@@ -18769,7 +18762,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_affinity_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_affinity_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_affinity_plot_features' ] = [ ]
-					st.session_state[ 'cluster_affinity_signature' ]=None
+					st.session_state[ 'cluster_affinity_signature' ] = None
 					st.error( f'Affinity Propagation clustering failed: {ex}' )
 			
 			affinity_signature = st.session_state.get( 'cluster_affinity_signature', None )
@@ -18967,7 +18960,7 @@ elif mode == 'Clustering Models':
 					st.session_state[ 'df_cluster_birch_centroids' ] = pd.DataFrame( )
 					st.session_state[ 'df_cluster_birch_details' ] = pd.DataFrame( )
 					st.session_state[ 'cluster_birch_plot_features' ] = [ ]
-					st.session_state[ 'cluster_birch_signature' ]=None
+					st.session_state[ 'cluster_birch_signature' ] = None
 					st.error( f'Birch clustering failed: {ex}' )
 			
 			birch_signature = st.session_state.get( 'cluster_birch_signature', None )
@@ -22175,7 +22168,7 @@ elif mode == 'Data Upload':
 							f'"{uploaded_file.name}". "{first_table_name}" is now the active table.' )
 						st.rerun( )
 					except Exception as e:
-						st.session_state[ 'data_upload_signature' ]=None
+						st.session_state[ 'data_upload_signature' ] = None
 						st.error( f'Import failed — transaction rolled back.\n\n{e}' )
 
 		# ------------------------------------------------------------------
@@ -22886,7 +22879,7 @@ elif mode == 'SQL Console':
 			st.session_state[ 'sql_console_table_name' ] = ''
 			
 		if 'sql_console_last_saved_table' not in st.session_state:
-			st.session_state[ 'sql_console_last_saved_table' ]=None
+			st.session_state[ 'sql_console_last_saved_table' ] = None
 		
 		def reset_sql_console( ) -> None:
 			"""Reset SQL Console query and execution state.
@@ -23123,15 +23116,14 @@ elif mode == 'SQL Console':
 			# --------------------------------------------------------------
 			if undo_save:
 				try:
-					existing_tables = {
-						existing_table.lower( ): existing_table
+					existing_tables = { existing_table.lower( ): existing_table
 						for existing_table in list_tables( ) }
 					
 					tracked_table = existing_tables.get(
 						last_saved_table.lower( ), None )
 					
 					if tracked_table is None:
-						st.session_state[ 'sql_console_last_saved_table' ]=None
+						st.session_state[ 'sql_console_last_saved_table' ] = None
 						
 						st.warning(
 							f'Table "{last_saved_table}" no longer exists in the database.' )
@@ -23140,13 +23132,11 @@ elif mode == 'SQL Console':
 						drop_table( tracked_table )
 						
 						st.session_state[
-							'sql_console_last_saved_table' ]=None
+							'sql_console_last_saved_table' ] = None
 						
-						queue_database_success(
-							f'Table "{tracked_table}" was deleted. '
+						queue_database_success( f'Table "{tracked_table}" was deleted. '
 							f'The query and displayed results were preserved.' )
 					
 					st.rerun( )
-				
 				except Exception as e:
 					st.error( f'Unable to undo the last table save: {e}' )
