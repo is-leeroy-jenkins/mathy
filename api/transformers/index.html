@@ -15610,8 +15610,7 @@ alternate-sign behavior, dtype, and cached transformed output.</p>
 <span class="normal"><a href="#__codelineno-0-2256">2256</a></span>
 <span class="normal"><a href="#__codelineno-0-2257">2257</a></span>
 <span class="normal"><a href="#__codelineno-0-2258">2258</a></span>
-<span class="normal"><a href="#__codelineno-0-2259">2259</a></span>
-<span class="normal"><a href="#__codelineno-0-2260">2260</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2082" name="__codelineno-0-2082"></a><span class="k">class</span><span class="w"> </span><span class="nc">FeatureHasher</span><span class="p">(</span> <span class="n">Transformer</span> <span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-2259">2259</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2082" name="__codelineno-0-2082"></a><span class="k">class</span><span class="w"> </span><span class="nc">FeatureHasher</span><span class="p">(</span> <span class="n">Transformer</span> <span class="p">):</span>
 <a id="__codelineno-0-2083" name="__codelineno-0-2083"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;FeatureHasher.</span>
 <a id="__codelineno-0-2084" name="__codelineno-0-2084"></a>
 <a id="__codelineno-0-2085" name="__codelineno-0-2085"></a><span class="sd">	Purpose:</span>
@@ -15671,125 +15670,124 @@ alternate-sign behavior, dtype, and cached transformed output.</p>
 <a id="__codelineno-0-2139" name="__codelineno-0-2139"></a><span class="sd">		Returns:</span>
 <a id="__codelineno-0-2140" name="__codelineno-0-2140"></a><span class="sd">		    List[str]: Public member names exposed by the class/object.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-2141" name="__codelineno-0-2141"></a>		<span class="k">return</span> <span class="p">[</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;n_features&#39;</span><span class="p">,</span> <span class="s1">&#39;input_type&#39;</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">,</span> <span class="s1">&#39;alternate_sign&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-2142" name="__codelineno-0-2142"></a>			<span class="s1">&#39;transformed_data&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-2143" name="__codelineno-0-2143"></a>			<span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;transform&#39;</span><span class="p">,</span> <span class="s1">&#39;train_transform&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse_transform&#39;</span> <span class="p">]</span>
-<a id="__codelineno-0-2144" name="__codelineno-0-2144"></a>
-<a id="__codelineno-0-2145" name="__codelineno-0-2145"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
-<a id="__codelineno-0-2146" name="__codelineno-0-2146"></a>			<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureHasher</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-2147" name="__codelineno-0-2147"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Fit FeatureHasher.</span>
-<a id="__codelineno-0-2148" name="__codelineno-0-2148"></a>
-<a id="__codelineno-0-2149" name="__codelineno-0-2149"></a><span class="sd">		Purpose:</span>
-<a id="__codelineno-0-2150" name="__codelineno-0-2150"></a><span class="sd">		    Fits the underlying feature hasher to supplied input data and returns the class/object</span>
-<a id="__codelineno-0-2151" name="__codelineno-0-2151"></a><span class="sd">		    for chained preprocessing workflows.</span>
-<a id="__codelineno-0-2152" name="__codelineno-0-2152"></a>
-<a id="__codelineno-0-2153" name="__codelineno-0-2153"></a><span class="sd">		Args:</span>
-<a id="__codelineno-0-2154" name="__codelineno-0-2154"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2155" name="__codelineno-0-2155"></a><span class="sd">		                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2156" name="__codelineno-0-2156"></a><span class="sd">		                                                                  collection transformed</span>
-<a id="__codelineno-0-2157" name="__codelineno-0-2157"></a><span class="sd">		                                                                  by the class/object.</span>
-<a id="__codelineno-0-2158" name="__codelineno-0-2158"></a><span class="sd">		    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
-<a id="__codelineno-0-2159" name="__codelineno-0-2159"></a><span class="sd">		                              data.</span>
-<a id="__codelineno-0-2160" name="__codelineno-0-2160"></a>
-<a id="__codelineno-0-2161" name="__codelineno-0-2161"></a><span class="sd">		Returns:</span>
-<a id="__codelineno-0-2162" name="__codelineno-0-2162"></a><span class="sd">		    FeatureHasher | None: Fitted class/object instance.</span>
-<a id="__codelineno-0-2163" name="__codelineno-0-2163"></a>
-<a id="__codelineno-0-2164" name="__codelineno-0-2164"></a><span class="sd">		Raises:</span>
-<a id="__codelineno-0-2165" name="__codelineno-0-2165"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2166" name="__codelineno-0-2166"></a>		<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2167" name="__codelineno-0-2167"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2168" name="__codelineno-0-2168"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
-<a id="__codelineno-0-2169" name="__codelineno-0-2169"></a>			<span class="k">return</span> <span class="bp">self</span>
-<a id="__codelineno-0-2170" name="__codelineno-0-2170"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2171" name="__codelineno-0-2171"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2172" name="__codelineno-0-2172"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2173" name="__codelineno-0-2173"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2174" name="__codelineno-0-2174"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train( self, *args ) -&gt; FeatureHasher | None&#39;</span>
-<a id="__codelineno-0-2175" name="__codelineno-0-2175"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2176" name="__codelineno-0-2176"></a>			<span class="k">raise</span> <span class="n">exception</span>
-<a id="__codelineno-0-2177" name="__codelineno-0-2177"></a>
-<a id="__codelineno-0-2178" name="__codelineno-0-2178"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-2179" name="__codelineno-0-2179"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Transform with FeatureHasher.</span>
-<a id="__codelineno-0-2180" name="__codelineno-0-2180"></a>
-<a id="__codelineno-0-2181" name="__codelineno-0-2181"></a><span class="sd">		Purpose:</span>
-<a id="__codelineno-0-2182" name="__codelineno-0-2182"></a><span class="sd">		    Transforms supplied input data with the fitted feature hasher and caches the</span>
-<a id="__codelineno-0-2183" name="__codelineno-0-2183"></a><span class="sd">		    transformed output for downstream workflow steps.</span>
-<a id="__codelineno-0-2184" name="__codelineno-0-2184"></a>
-<a id="__codelineno-0-2185" name="__codelineno-0-2185"></a><span class="sd">		Args:</span>
-<a id="__codelineno-0-2186" name="__codelineno-0-2186"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2187" name="__codelineno-0-2187"></a><span class="sd">		                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2188" name="__codelineno-0-2188"></a><span class="sd">		                                                                  collection transformed</span>
-<a id="__codelineno-0-2189" name="__codelineno-0-2189"></a><span class="sd">		                                                                  by the class/object.</span>
-<a id="__codelineno-0-2190" name="__codelineno-0-2190"></a>
-<a id="__codelineno-0-2191" name="__codelineno-0-2191"></a><span class="sd">		Returns:</span>
-<a id="__codelineno-0-2192" name="__codelineno-0-2192"></a><span class="sd">		    np.ndarray: Transformed output produced by the fitted class/object.</span>
-<a id="__codelineno-0-2193" name="__codelineno-0-2193"></a>
-<a id="__codelineno-0-2194" name="__codelineno-0-2194"></a><span class="sd">		Raises:</span>
-<a id="__codelineno-0-2195" name="__codelineno-0-2195"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2196" name="__codelineno-0-2196"></a>		<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2197" name="__codelineno-0-2197"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2198" name="__codelineno-0-2198"></a>			<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2199" name="__codelineno-0-2199"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
-<a id="__codelineno-0-2200" name="__codelineno-0-2200"></a>			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
-<a id="__codelineno-0-2201" name="__codelineno-0-2201"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2202" name="__codelineno-0-2202"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2203" name="__codelineno-0-2203"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2204" name="__codelineno-0-2204"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2205" name="__codelineno-0-2205"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;transform( self, *args ) -&gt; np.ndarray&#39;</span>
-<a id="__codelineno-0-2206" name="__codelineno-0-2206"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2207" name="__codelineno-0-2207"></a>			<span class="k">raise</span> <span class="n">exception</span>
-<a id="__codelineno-0-2208" name="__codelineno-0-2208"></a>
-<a id="__codelineno-0-2209" name="__codelineno-0-2209"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">train_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
-<a id="__codelineno-0-2210" name="__codelineno-0-2210"></a>			<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-2211" name="__codelineno-0-2211"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Fit and transform with FeatureHasher.</span>
-<a id="__codelineno-0-2212" name="__codelineno-0-2212"></a>
-<a id="__codelineno-0-2213" name="__codelineno-0-2213"></a><span class="sd">		Purpose:</span>
-<a id="__codelineno-0-2214" name="__codelineno-0-2214"></a><span class="sd">		    Fits the underlying feature hasher and immediately transforms the supplied input</span>
-<a id="__codelineno-0-2215" name="__codelineno-0-2215"></a><span class="sd">		    data in one operation.</span>
-<a id="__codelineno-0-2216" name="__codelineno-0-2216"></a>
-<a id="__codelineno-0-2217" name="__codelineno-0-2217"></a><span class="sd">		Args:</span>
-<a id="__codelineno-0-2218" name="__codelineno-0-2218"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2219" name="__codelineno-0-2219"></a><span class="sd">		                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2220" name="__codelineno-0-2220"></a><span class="sd">		                                                                  collection transformed</span>
-<a id="__codelineno-0-2221" name="__codelineno-0-2221"></a><span class="sd">		                                                                  by the class/object.</span>
-<a id="__codelineno-0-2222" name="__codelineno-0-2222"></a><span class="sd">		    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
-<a id="__codelineno-0-2223" name="__codelineno-0-2223"></a><span class="sd">		                              data.</span>
-<a id="__codelineno-0-2224" name="__codelineno-0-2224"></a>
-<a id="__codelineno-0-2225" name="__codelineno-0-2225"></a><span class="sd">		Returns:</span>
-<a id="__codelineno-0-2226" name="__codelineno-0-2226"></a><span class="sd">		    np.ndarray: Transformed output produced after fitting the class/object.</span>
-<a id="__codelineno-0-2227" name="__codelineno-0-2227"></a>
-<a id="__codelineno-0-2228" name="__codelineno-0-2228"></a><span class="sd">		Raises:</span>
-<a id="__codelineno-0-2229" name="__codelineno-0-2229"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2230" name="__codelineno-0-2230"></a>		<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2231" name="__codelineno-0-2231"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2232" name="__codelineno-0-2232"></a>			<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
-<a id="__codelineno-0-2233" name="__codelineno-0-2233"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
-<a id="__codelineno-0-2234" name="__codelineno-0-2234"></a>			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
-<a id="__codelineno-0-2235" name="__codelineno-0-2235"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2236" name="__codelineno-0-2236"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2237" name="__codelineno-0-2237"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2238" name="__codelineno-0-2238"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2239" name="__codelineno-0-2239"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train_transform( self, *args ) -&gt; np.ndarray&#39;</span>
-<a id="__codelineno-0-2240" name="__codelineno-0-2240"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2241" name="__codelineno-0-2241"></a>			<span class="k">raise</span> <span class="n">exception</span>
-<a id="__codelineno-0-2242" name="__codelineno-0-2242"></a>
-<a id="__codelineno-0-2243" name="__codelineno-0-2243"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-2244" name="__codelineno-0-2244"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Invert FeatureHasher output.</span>
-<a id="__codelineno-0-2245" name="__codelineno-0-2245"></a>
-<a id="__codelineno-0-2246" name="__codelineno-0-2246"></a><span class="sd">		Purpose:</span>
-<a id="__codelineno-0-2247" name="__codelineno-0-2247"></a><span class="sd">		    Maps transformed output back toward the source representation when the wrapped</span>
-<a id="__codelineno-0-2248" name="__codelineno-0-2248"></a><span class="sd">		    feature hasher supports inverse transformation.</span>
-<a id="__codelineno-0-2249" name="__codelineno-0-2249"></a>
-<a id="__codelineno-0-2250" name="__codelineno-0-2250"></a><span class="sd">		Args:</span>
-<a id="__codelineno-0-2251" name="__codelineno-0-2251"></a><span class="sd">		    X (np.ndarray): Input matrix, sequence, or feature collection transformed by the</span>
-<a id="__codelineno-0-2252" name="__codelineno-0-2252"></a><span class="sd">		                    class/object.</span>
-<a id="__codelineno-0-2253" name="__codelineno-0-2253"></a>
-<a id="__codelineno-0-2254" name="__codelineno-0-2254"></a><span class="sd">		Returns:</span>
-<a id="__codelineno-0-2255" name="__codelineno-0-2255"></a><span class="sd">		    None: This function performs its work through side effects and does not return a</span>
-<a id="__codelineno-0-2256" name="__codelineno-0-2256"></a><span class="sd">		          value.</span>
-<a id="__codelineno-0-2257" name="__codelineno-0-2257"></a>
-<a id="__codelineno-0-2258" name="__codelineno-0-2258"></a><span class="sd">		Raises:</span>
-<a id="__codelineno-0-2259" name="__codelineno-0-2259"></a><span class="sd">		    NotImplementedError: Raised when the base interface method is called directly.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2260" name="__codelineno-0-2260"></a>		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span> <span class="s1">&#39;FeatureHasher does not support inverse_transform.&#39;</span> <span class="p">)</span>
+<a id="__codelineno-0-2142" name="__codelineno-0-2142"></a>			<span class="s1">&#39;transformed_data&#39;</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;transform&#39;</span><span class="p">,</span> <span class="s1">&#39;train_transform&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse_transform&#39;</span> <span class="p">]</span>
+<a id="__codelineno-0-2143" name="__codelineno-0-2143"></a>
+<a id="__codelineno-0-2144" name="__codelineno-0-2144"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
+<a id="__codelineno-0-2145" name="__codelineno-0-2145"></a>			<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureHasher</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-2146" name="__codelineno-0-2146"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Fit FeatureHasher.</span>
+<a id="__codelineno-0-2147" name="__codelineno-0-2147"></a>
+<a id="__codelineno-0-2148" name="__codelineno-0-2148"></a><span class="sd">		Purpose:</span>
+<a id="__codelineno-0-2149" name="__codelineno-0-2149"></a><span class="sd">		    Fits the underlying feature hasher to supplied input data and returns the class/object</span>
+<a id="__codelineno-0-2150" name="__codelineno-0-2150"></a><span class="sd">		    for chained preprocessing workflows.</span>
+<a id="__codelineno-0-2151" name="__codelineno-0-2151"></a>
+<a id="__codelineno-0-2152" name="__codelineno-0-2152"></a><span class="sd">		Args:</span>
+<a id="__codelineno-0-2153" name="__codelineno-0-2153"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2154" name="__codelineno-0-2154"></a><span class="sd">		                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2155" name="__codelineno-0-2155"></a><span class="sd">		                                                                  collection transformed</span>
+<a id="__codelineno-0-2156" name="__codelineno-0-2156"></a><span class="sd">		                                                                  by the class/object.</span>
+<a id="__codelineno-0-2157" name="__codelineno-0-2157"></a><span class="sd">		    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
+<a id="__codelineno-0-2158" name="__codelineno-0-2158"></a><span class="sd">		                              data.</span>
+<a id="__codelineno-0-2159" name="__codelineno-0-2159"></a>
+<a id="__codelineno-0-2160" name="__codelineno-0-2160"></a><span class="sd">		Returns:</span>
+<a id="__codelineno-0-2161" name="__codelineno-0-2161"></a><span class="sd">		    FeatureHasher | None: Fitted class/object instance.</span>
+<a id="__codelineno-0-2162" name="__codelineno-0-2162"></a>
+<a id="__codelineno-0-2163" name="__codelineno-0-2163"></a><span class="sd">		Raises:</span>
+<a id="__codelineno-0-2164" name="__codelineno-0-2164"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2165" name="__codelineno-0-2165"></a>		<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2166" name="__codelineno-0-2166"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2167" name="__codelineno-0-2167"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
+<a id="__codelineno-0-2168" name="__codelineno-0-2168"></a>			<span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-2169" name="__codelineno-0-2169"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2170" name="__codelineno-0-2170"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2171" name="__codelineno-0-2171"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2172" name="__codelineno-0-2172"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2173" name="__codelineno-0-2173"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train( self, *args ) -&gt; FeatureHasher | None&#39;</span>
+<a id="__codelineno-0-2174" name="__codelineno-0-2174"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2175" name="__codelineno-0-2175"></a>			<span class="k">raise</span> <span class="n">exception</span>
+<a id="__codelineno-0-2176" name="__codelineno-0-2176"></a>
+<a id="__codelineno-0-2177" name="__codelineno-0-2177"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<a id="__codelineno-0-2178" name="__codelineno-0-2178"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Transform with FeatureHasher.</span>
+<a id="__codelineno-0-2179" name="__codelineno-0-2179"></a>
+<a id="__codelineno-0-2180" name="__codelineno-0-2180"></a><span class="sd">		Purpose:</span>
+<a id="__codelineno-0-2181" name="__codelineno-0-2181"></a><span class="sd">		    Transforms supplied input data with the fitted feature hasher and caches the</span>
+<a id="__codelineno-0-2182" name="__codelineno-0-2182"></a><span class="sd">		    transformed output for downstream workflow steps.</span>
+<a id="__codelineno-0-2183" name="__codelineno-0-2183"></a>
+<a id="__codelineno-0-2184" name="__codelineno-0-2184"></a><span class="sd">		Args:</span>
+<a id="__codelineno-0-2185" name="__codelineno-0-2185"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2186" name="__codelineno-0-2186"></a><span class="sd">		                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2187" name="__codelineno-0-2187"></a><span class="sd">		                                                                  collection transformed</span>
+<a id="__codelineno-0-2188" name="__codelineno-0-2188"></a><span class="sd">		                                                                  by the class/object.</span>
+<a id="__codelineno-0-2189" name="__codelineno-0-2189"></a>
+<a id="__codelineno-0-2190" name="__codelineno-0-2190"></a><span class="sd">		Returns:</span>
+<a id="__codelineno-0-2191" name="__codelineno-0-2191"></a><span class="sd">		    np.ndarray: Transformed output produced by the fitted class/object.</span>
+<a id="__codelineno-0-2192" name="__codelineno-0-2192"></a>
+<a id="__codelineno-0-2193" name="__codelineno-0-2193"></a><span class="sd">		Raises:</span>
+<a id="__codelineno-0-2194" name="__codelineno-0-2194"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2195" name="__codelineno-0-2195"></a>		<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2196" name="__codelineno-0-2196"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2197" name="__codelineno-0-2197"></a>			<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2198" name="__codelineno-0-2198"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
+<a id="__codelineno-0-2199" name="__codelineno-0-2199"></a>			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
+<a id="__codelineno-0-2200" name="__codelineno-0-2200"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2201" name="__codelineno-0-2201"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2202" name="__codelineno-0-2202"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2203" name="__codelineno-0-2203"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2204" name="__codelineno-0-2204"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;transform( self, *args ) -&gt; np.ndarray&#39;</span>
+<a id="__codelineno-0-2205" name="__codelineno-0-2205"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2206" name="__codelineno-0-2206"></a>			<span class="k">raise</span> <span class="n">exception</span>
+<a id="__codelineno-0-2207" name="__codelineno-0-2207"></a>
+<a id="__codelineno-0-2208" name="__codelineno-0-2208"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">train_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
+<a id="__codelineno-0-2209" name="__codelineno-0-2209"></a>			<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<a id="__codelineno-0-2210" name="__codelineno-0-2210"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Fit and transform with FeatureHasher.</span>
+<a id="__codelineno-0-2211" name="__codelineno-0-2211"></a>
+<a id="__codelineno-0-2212" name="__codelineno-0-2212"></a><span class="sd">		Purpose:</span>
+<a id="__codelineno-0-2213" name="__codelineno-0-2213"></a><span class="sd">		    Fits the underlying feature hasher and immediately transforms the supplied input</span>
+<a id="__codelineno-0-2214" name="__codelineno-0-2214"></a><span class="sd">		    data in one operation.</span>
+<a id="__codelineno-0-2215" name="__codelineno-0-2215"></a>
+<a id="__codelineno-0-2216" name="__codelineno-0-2216"></a><span class="sd">		Args:</span>
+<a id="__codelineno-0-2217" name="__codelineno-0-2217"></a><span class="sd">		    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2218" name="__codelineno-0-2218"></a><span class="sd">		                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2219" name="__codelineno-0-2219"></a><span class="sd">		                                                                  collection transformed</span>
+<a id="__codelineno-0-2220" name="__codelineno-0-2220"></a><span class="sd">		                                                                  by the class/object.</span>
+<a id="__codelineno-0-2221" name="__codelineno-0-2221"></a><span class="sd">		    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
+<a id="__codelineno-0-2222" name="__codelineno-0-2222"></a><span class="sd">		                              data.</span>
+<a id="__codelineno-0-2223" name="__codelineno-0-2223"></a>
+<a id="__codelineno-0-2224" name="__codelineno-0-2224"></a><span class="sd">		Returns:</span>
+<a id="__codelineno-0-2225" name="__codelineno-0-2225"></a><span class="sd">		    np.ndarray: Transformed output produced after fitting the class/object.</span>
+<a id="__codelineno-0-2226" name="__codelineno-0-2226"></a>
+<a id="__codelineno-0-2227" name="__codelineno-0-2227"></a><span class="sd">		Raises:</span>
+<a id="__codelineno-0-2228" name="__codelineno-0-2228"></a><span class="sd">		    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2229" name="__codelineno-0-2229"></a>		<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2230" name="__codelineno-0-2230"></a>			<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2231" name="__codelineno-0-2231"></a>			<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
+<a id="__codelineno-0-2232" name="__codelineno-0-2232"></a>			<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
+<a id="__codelineno-0-2233" name="__codelineno-0-2233"></a>			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
+<a id="__codelineno-0-2234" name="__codelineno-0-2234"></a>		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2235" name="__codelineno-0-2235"></a>			<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2236" name="__codelineno-0-2236"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2237" name="__codelineno-0-2237"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2238" name="__codelineno-0-2238"></a>			<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train_transform( self, *args ) -&gt; np.ndarray&#39;</span>
+<a id="__codelineno-0-2239" name="__codelineno-0-2239"></a>			<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2240" name="__codelineno-0-2240"></a>			<span class="k">raise</span> <span class="n">exception</span>
+<a id="__codelineno-0-2241" name="__codelineno-0-2241"></a>
+<a id="__codelineno-0-2242" name="__codelineno-0-2242"></a>	<span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-2243" name="__codelineno-0-2243"></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Invert FeatureHasher output.</span>
+<a id="__codelineno-0-2244" name="__codelineno-0-2244"></a>
+<a id="__codelineno-0-2245" name="__codelineno-0-2245"></a><span class="sd">		Purpose:</span>
+<a id="__codelineno-0-2246" name="__codelineno-0-2246"></a><span class="sd">		    Maps transformed output back toward the source representation when the wrapped</span>
+<a id="__codelineno-0-2247" name="__codelineno-0-2247"></a><span class="sd">		    feature hasher supports inverse transformation.</span>
+<a id="__codelineno-0-2248" name="__codelineno-0-2248"></a>
+<a id="__codelineno-0-2249" name="__codelineno-0-2249"></a><span class="sd">		Args:</span>
+<a id="__codelineno-0-2250" name="__codelineno-0-2250"></a><span class="sd">		    X (np.ndarray): Input matrix, sequence, or feature collection transformed by the</span>
+<a id="__codelineno-0-2251" name="__codelineno-0-2251"></a><span class="sd">		                    class/object.</span>
+<a id="__codelineno-0-2252" name="__codelineno-0-2252"></a>
+<a id="__codelineno-0-2253" name="__codelineno-0-2253"></a><span class="sd">		Returns:</span>
+<a id="__codelineno-0-2254" name="__codelineno-0-2254"></a><span class="sd">		    None: This function performs its work through side effects and does not return a</span>
+<a id="__codelineno-0-2255" name="__codelineno-0-2255"></a><span class="sd">		          value.</span>
+<a id="__codelineno-0-2256" name="__codelineno-0-2256"></a>
+<a id="__codelineno-0-2257" name="__codelineno-0-2257"></a><span class="sd">		Raises:</span>
+<a id="__codelineno-0-2258" name="__codelineno-0-2258"></a><span class="sd">		    NotImplementedError: Raised when the base interface method is called directly.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2259" name="__codelineno-0-2259"></a>		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span> <span class="s1">&#39;FeatureHasher does not support inverse_transform.&#39;</span> <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -15934,7 +15932,8 @@ for chained preprocessing workflows.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>transformers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2145">2145</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2144">2144</a></span>
+<span class="normal"><a href="#__codelineno-0-2145">2145</a></span>
 <span class="normal"><a href="#__codelineno-0-2146">2146</a></span>
 <span class="normal"><a href="#__codelineno-0-2147">2147</a></span>
 <span class="normal"><a href="#__codelineno-0-2148">2148</a></span>
@@ -15964,39 +15963,38 @@ for chained preprocessing workflows.</p>
 <span class="normal"><a href="#__codelineno-0-2172">2172</a></span>
 <span class="normal"><a href="#__codelineno-0-2173">2173</a></span>
 <span class="normal"><a href="#__codelineno-0-2174">2174</a></span>
-<span class="normal"><a href="#__codelineno-0-2175">2175</a></span>
-<span class="normal"><a href="#__codelineno-0-2176">2176</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2145" name="__codelineno-0-2145"></a><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
-<a id="__codelineno-0-2146" name="__codelineno-0-2146"></a>		<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureHasher</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-2147" name="__codelineno-0-2147"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Fit FeatureHasher.</span>
-<a id="__codelineno-0-2148" name="__codelineno-0-2148"></a>
-<a id="__codelineno-0-2149" name="__codelineno-0-2149"></a><span class="sd">	Purpose:</span>
-<a id="__codelineno-0-2150" name="__codelineno-0-2150"></a><span class="sd">	    Fits the underlying feature hasher to supplied input data and returns the class/object</span>
-<a id="__codelineno-0-2151" name="__codelineno-0-2151"></a><span class="sd">	    for chained preprocessing workflows.</span>
-<a id="__codelineno-0-2152" name="__codelineno-0-2152"></a>
-<a id="__codelineno-0-2153" name="__codelineno-0-2153"></a><span class="sd">	Args:</span>
-<a id="__codelineno-0-2154" name="__codelineno-0-2154"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2155" name="__codelineno-0-2155"></a><span class="sd">	                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2156" name="__codelineno-0-2156"></a><span class="sd">	                                                                  collection transformed</span>
-<a id="__codelineno-0-2157" name="__codelineno-0-2157"></a><span class="sd">	                                                                  by the class/object.</span>
-<a id="__codelineno-0-2158" name="__codelineno-0-2158"></a><span class="sd">	    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
-<a id="__codelineno-0-2159" name="__codelineno-0-2159"></a><span class="sd">	                              data.</span>
-<a id="__codelineno-0-2160" name="__codelineno-0-2160"></a>
-<a id="__codelineno-0-2161" name="__codelineno-0-2161"></a><span class="sd">	Returns:</span>
-<a id="__codelineno-0-2162" name="__codelineno-0-2162"></a><span class="sd">	    FeatureHasher | None: Fitted class/object instance.</span>
-<a id="__codelineno-0-2163" name="__codelineno-0-2163"></a>
-<a id="__codelineno-0-2164" name="__codelineno-0-2164"></a><span class="sd">	Raises:</span>
-<a id="__codelineno-0-2165" name="__codelineno-0-2165"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2166" name="__codelineno-0-2166"></a>	<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2167" name="__codelineno-0-2167"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2168" name="__codelineno-0-2168"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
-<a id="__codelineno-0-2169" name="__codelineno-0-2169"></a>		<span class="k">return</span> <span class="bp">self</span>
-<a id="__codelineno-0-2170" name="__codelineno-0-2170"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2171" name="__codelineno-0-2171"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2172" name="__codelineno-0-2172"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2173" name="__codelineno-0-2173"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2174" name="__codelineno-0-2174"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train( self, *args ) -&gt; FeatureHasher | None&#39;</span>
-<a id="__codelineno-0-2175" name="__codelineno-0-2175"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2176" name="__codelineno-0-2176"></a>		<span class="k">raise</span> <span class="n">exception</span>
+<span class="normal"><a href="#__codelineno-0-2175">2175</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2144" name="__codelineno-0-2144"></a><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
+<a id="__codelineno-0-2145" name="__codelineno-0-2145"></a>		<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureHasher</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-2146" name="__codelineno-0-2146"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Fit FeatureHasher.</span>
+<a id="__codelineno-0-2147" name="__codelineno-0-2147"></a>
+<a id="__codelineno-0-2148" name="__codelineno-0-2148"></a><span class="sd">	Purpose:</span>
+<a id="__codelineno-0-2149" name="__codelineno-0-2149"></a><span class="sd">	    Fits the underlying feature hasher to supplied input data and returns the class/object</span>
+<a id="__codelineno-0-2150" name="__codelineno-0-2150"></a><span class="sd">	    for chained preprocessing workflows.</span>
+<a id="__codelineno-0-2151" name="__codelineno-0-2151"></a>
+<a id="__codelineno-0-2152" name="__codelineno-0-2152"></a><span class="sd">	Args:</span>
+<a id="__codelineno-0-2153" name="__codelineno-0-2153"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2154" name="__codelineno-0-2154"></a><span class="sd">	                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2155" name="__codelineno-0-2155"></a><span class="sd">	                                                                  collection transformed</span>
+<a id="__codelineno-0-2156" name="__codelineno-0-2156"></a><span class="sd">	                                                                  by the class/object.</span>
+<a id="__codelineno-0-2157" name="__codelineno-0-2157"></a><span class="sd">	    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
+<a id="__codelineno-0-2158" name="__codelineno-0-2158"></a><span class="sd">	                              data.</span>
+<a id="__codelineno-0-2159" name="__codelineno-0-2159"></a>
+<a id="__codelineno-0-2160" name="__codelineno-0-2160"></a><span class="sd">	Returns:</span>
+<a id="__codelineno-0-2161" name="__codelineno-0-2161"></a><span class="sd">	    FeatureHasher | None: Fitted class/object instance.</span>
+<a id="__codelineno-0-2162" name="__codelineno-0-2162"></a>
+<a id="__codelineno-0-2163" name="__codelineno-0-2163"></a><span class="sd">	Raises:</span>
+<a id="__codelineno-0-2164" name="__codelineno-0-2164"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2165" name="__codelineno-0-2165"></a>	<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2166" name="__codelineno-0-2166"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2167" name="__codelineno-0-2167"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
+<a id="__codelineno-0-2168" name="__codelineno-0-2168"></a>		<span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-2169" name="__codelineno-0-2169"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2170" name="__codelineno-0-2170"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2171" name="__codelineno-0-2171"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2172" name="__codelineno-0-2172"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2173" name="__codelineno-0-2173"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train( self, *args ) -&gt; FeatureHasher | None&#39;</span>
+<a id="__codelineno-0-2174" name="__codelineno-0-2174"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2175" name="__codelineno-0-2175"></a>		<span class="k">raise</span> <span class="n">exception</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -16113,7 +16111,8 @@ transformed output for downstream workflow steps.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>transformers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2178">2178</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2177">2177</a></span>
+<span class="normal"><a href="#__codelineno-0-2178">2178</a></span>
 <span class="normal"><a href="#__codelineno-0-2179">2179</a></span>
 <span class="normal"><a href="#__codelineno-0-2180">2180</a></span>
 <span class="normal"><a href="#__codelineno-0-2181">2181</a></span>
@@ -16141,37 +16140,36 @@ transformed output for downstream workflow steps.</p>
 <span class="normal"><a href="#__codelineno-0-2203">2203</a></span>
 <span class="normal"><a href="#__codelineno-0-2204">2204</a></span>
 <span class="normal"><a href="#__codelineno-0-2205">2205</a></span>
-<span class="normal"><a href="#__codelineno-0-2206">2206</a></span>
-<span class="normal"><a href="#__codelineno-0-2207">2207</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2178" name="__codelineno-0-2178"></a><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-2179" name="__codelineno-0-2179"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Transform with FeatureHasher.</span>
-<a id="__codelineno-0-2180" name="__codelineno-0-2180"></a>
-<a id="__codelineno-0-2181" name="__codelineno-0-2181"></a><span class="sd">	Purpose:</span>
-<a id="__codelineno-0-2182" name="__codelineno-0-2182"></a><span class="sd">	    Transforms supplied input data with the fitted feature hasher and caches the</span>
-<a id="__codelineno-0-2183" name="__codelineno-0-2183"></a><span class="sd">	    transformed output for downstream workflow steps.</span>
-<a id="__codelineno-0-2184" name="__codelineno-0-2184"></a>
-<a id="__codelineno-0-2185" name="__codelineno-0-2185"></a><span class="sd">	Args:</span>
-<a id="__codelineno-0-2186" name="__codelineno-0-2186"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2187" name="__codelineno-0-2187"></a><span class="sd">	                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2188" name="__codelineno-0-2188"></a><span class="sd">	                                                                  collection transformed</span>
-<a id="__codelineno-0-2189" name="__codelineno-0-2189"></a><span class="sd">	                                                                  by the class/object.</span>
-<a id="__codelineno-0-2190" name="__codelineno-0-2190"></a>
-<a id="__codelineno-0-2191" name="__codelineno-0-2191"></a><span class="sd">	Returns:</span>
-<a id="__codelineno-0-2192" name="__codelineno-0-2192"></a><span class="sd">	    np.ndarray: Transformed output produced by the fitted class/object.</span>
-<a id="__codelineno-0-2193" name="__codelineno-0-2193"></a>
-<a id="__codelineno-0-2194" name="__codelineno-0-2194"></a><span class="sd">	Raises:</span>
-<a id="__codelineno-0-2195" name="__codelineno-0-2195"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2196" name="__codelineno-0-2196"></a>	<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2197" name="__codelineno-0-2197"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2198" name="__codelineno-0-2198"></a>		<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2199" name="__codelineno-0-2199"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
-<a id="__codelineno-0-2200" name="__codelineno-0-2200"></a>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
-<a id="__codelineno-0-2201" name="__codelineno-0-2201"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2202" name="__codelineno-0-2202"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2203" name="__codelineno-0-2203"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2204" name="__codelineno-0-2204"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2205" name="__codelineno-0-2205"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;transform( self, *args ) -&gt; np.ndarray&#39;</span>
-<a id="__codelineno-0-2206" name="__codelineno-0-2206"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2207" name="__codelineno-0-2207"></a>		<span class="k">raise</span> <span class="n">exception</span>
+<span class="normal"><a href="#__codelineno-0-2206">2206</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2177" name="__codelineno-0-2177"></a><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<a id="__codelineno-0-2178" name="__codelineno-0-2178"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Transform with FeatureHasher.</span>
+<a id="__codelineno-0-2179" name="__codelineno-0-2179"></a>
+<a id="__codelineno-0-2180" name="__codelineno-0-2180"></a><span class="sd">	Purpose:</span>
+<a id="__codelineno-0-2181" name="__codelineno-0-2181"></a><span class="sd">	    Transforms supplied input data with the fitted feature hasher and caches the</span>
+<a id="__codelineno-0-2182" name="__codelineno-0-2182"></a><span class="sd">	    transformed output for downstream workflow steps.</span>
+<a id="__codelineno-0-2183" name="__codelineno-0-2183"></a>
+<a id="__codelineno-0-2184" name="__codelineno-0-2184"></a><span class="sd">	Args:</span>
+<a id="__codelineno-0-2185" name="__codelineno-0-2185"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2186" name="__codelineno-0-2186"></a><span class="sd">	                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2187" name="__codelineno-0-2187"></a><span class="sd">	                                                                  collection transformed</span>
+<a id="__codelineno-0-2188" name="__codelineno-0-2188"></a><span class="sd">	                                                                  by the class/object.</span>
+<a id="__codelineno-0-2189" name="__codelineno-0-2189"></a>
+<a id="__codelineno-0-2190" name="__codelineno-0-2190"></a><span class="sd">	Returns:</span>
+<a id="__codelineno-0-2191" name="__codelineno-0-2191"></a><span class="sd">	    np.ndarray: Transformed output produced by the fitted class/object.</span>
+<a id="__codelineno-0-2192" name="__codelineno-0-2192"></a>
+<a id="__codelineno-0-2193" name="__codelineno-0-2193"></a><span class="sd">	Raises:</span>
+<a id="__codelineno-0-2194" name="__codelineno-0-2194"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2195" name="__codelineno-0-2195"></a>	<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2196" name="__codelineno-0-2196"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2197" name="__codelineno-0-2197"></a>		<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2198" name="__codelineno-0-2198"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
+<a id="__codelineno-0-2199" name="__codelineno-0-2199"></a>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
+<a id="__codelineno-0-2200" name="__codelineno-0-2200"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2201" name="__codelineno-0-2201"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2202" name="__codelineno-0-2202"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2203" name="__codelineno-0-2203"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2204" name="__codelineno-0-2204"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;transform( self, *args ) -&gt; np.ndarray&#39;</span>
+<a id="__codelineno-0-2205" name="__codelineno-0-2205"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2206" name="__codelineno-0-2206"></a>		<span class="k">raise</span> <span class="n">exception</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -16306,7 +16304,8 @@ data in one operation.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>transformers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2209">2209</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2208">2208</a></span>
+<span class="normal"><a href="#__codelineno-0-2209">2209</a></span>
 <span class="normal"><a href="#__codelineno-0-2210">2210</a></span>
 <span class="normal"><a href="#__codelineno-0-2211">2211</a></span>
 <span class="normal"><a href="#__codelineno-0-2212">2212</a></span>
@@ -16337,40 +16336,39 @@ data in one operation.</p>
 <span class="normal"><a href="#__codelineno-0-2237">2237</a></span>
 <span class="normal"><a href="#__codelineno-0-2238">2238</a></span>
 <span class="normal"><a href="#__codelineno-0-2239">2239</a></span>
-<span class="normal"><a href="#__codelineno-0-2240">2240</a></span>
-<span class="normal"><a href="#__codelineno-0-2241">2241</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2209" name="__codelineno-0-2209"></a><span class="k">def</span><span class="w"> </span><span class="nf">train_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
-<a id="__codelineno-0-2210" name="__codelineno-0-2210"></a>		<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-2211" name="__codelineno-0-2211"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Fit and transform with FeatureHasher.</span>
-<a id="__codelineno-0-2212" name="__codelineno-0-2212"></a>
-<a id="__codelineno-0-2213" name="__codelineno-0-2213"></a><span class="sd">	Purpose:</span>
-<a id="__codelineno-0-2214" name="__codelineno-0-2214"></a><span class="sd">	    Fits the underlying feature hasher and immediately transforms the supplied input</span>
-<a id="__codelineno-0-2215" name="__codelineno-0-2215"></a><span class="sd">	    data in one operation.</span>
-<a id="__codelineno-0-2216" name="__codelineno-0-2216"></a>
-<a id="__codelineno-0-2217" name="__codelineno-0-2217"></a><span class="sd">	Args:</span>
-<a id="__codelineno-0-2218" name="__codelineno-0-2218"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
-<a id="__codelineno-0-2219" name="__codelineno-0-2219"></a><span class="sd">	                                                                  sequence, or feature</span>
-<a id="__codelineno-0-2220" name="__codelineno-0-2220"></a><span class="sd">	                                                                  collection transformed</span>
-<a id="__codelineno-0-2221" name="__codelineno-0-2221"></a><span class="sd">	                                                                  by the class/object.</span>
-<a id="__codelineno-0-2222" name="__codelineno-0-2222"></a><span class="sd">	    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
-<a id="__codelineno-0-2223" name="__codelineno-0-2223"></a><span class="sd">	                              data.</span>
-<a id="__codelineno-0-2224" name="__codelineno-0-2224"></a>
-<a id="__codelineno-0-2225" name="__codelineno-0-2225"></a><span class="sd">	Returns:</span>
-<a id="__codelineno-0-2226" name="__codelineno-0-2226"></a><span class="sd">	    np.ndarray: Transformed output produced after fitting the class/object.</span>
-<a id="__codelineno-0-2227" name="__codelineno-0-2227"></a>
-<a id="__codelineno-0-2228" name="__codelineno-0-2228"></a><span class="sd">	Raises:</span>
-<a id="__codelineno-0-2229" name="__codelineno-0-2229"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2230" name="__codelineno-0-2230"></a>	<span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-2231" name="__codelineno-0-2231"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
-<a id="__codelineno-0-2232" name="__codelineno-0-2232"></a>		<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
-<a id="__codelineno-0-2233" name="__codelineno-0-2233"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
-<a id="__codelineno-0-2234" name="__codelineno-0-2234"></a>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
-<a id="__codelineno-0-2235" name="__codelineno-0-2235"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-2236" name="__codelineno-0-2236"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
-<a id="__codelineno-0-2237" name="__codelineno-0-2237"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
-<a id="__codelineno-0-2238" name="__codelineno-0-2238"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
-<a id="__codelineno-0-2239" name="__codelineno-0-2239"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train_transform( self, *args ) -&gt; np.ndarray&#39;</span>
-<a id="__codelineno-0-2240" name="__codelineno-0-2240"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
-<a id="__codelineno-0-2241" name="__codelineno-0-2241"></a>		<span class="k">raise</span> <span class="n">exception</span>
+<span class="normal"><a href="#__codelineno-0-2240">2240</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2208" name="__codelineno-0-2208"></a><span class="k">def</span><span class="w"> </span><span class="nf">train_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">Dict</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="n">Tuple</span><span class="p">[</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span> <span class="p">]</span> <span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span> <span class="nb">str</span> <span class="p">],</span>
+<a id="__codelineno-0-2209" name="__codelineno-0-2209"></a>		<span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">]</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<a id="__codelineno-0-2210" name="__codelineno-0-2210"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Fit and transform with FeatureHasher.</span>
+<a id="__codelineno-0-2211" name="__codelineno-0-2211"></a>
+<a id="__codelineno-0-2212" name="__codelineno-0-2212"></a><span class="sd">	Purpose:</span>
+<a id="__codelineno-0-2213" name="__codelineno-0-2213"></a><span class="sd">	    Fits the underlying feature hasher and immediately transforms the supplied input</span>
+<a id="__codelineno-0-2214" name="__codelineno-0-2214"></a><span class="sd">	    data in one operation.</span>
+<a id="__codelineno-0-2215" name="__codelineno-0-2215"></a>
+<a id="__codelineno-0-2216" name="__codelineno-0-2216"></a><span class="sd">	Args:</span>
+<a id="__codelineno-0-2217" name="__codelineno-0-2217"></a><span class="sd">	    X (List[Dict[str, Any]] | List[Tuple[str, Any]] | List[str]): Input matrix,</span>
+<a id="__codelineno-0-2218" name="__codelineno-0-2218"></a><span class="sd">	                                                                  sequence, or feature</span>
+<a id="__codelineno-0-2219" name="__codelineno-0-2219"></a><span class="sd">	                                                                  collection transformed</span>
+<a id="__codelineno-0-2220" name="__codelineno-0-2220"></a><span class="sd">	                                                                  by the class/object.</span>
+<a id="__codelineno-0-2221" name="__codelineno-0-2221"></a><span class="sd">	    y (Optional[np.ndarray]): Target vector or label collection aligned to the input</span>
+<a id="__codelineno-0-2222" name="__codelineno-0-2222"></a><span class="sd">	                              data.</span>
+<a id="__codelineno-0-2223" name="__codelineno-0-2223"></a>
+<a id="__codelineno-0-2224" name="__codelineno-0-2224"></a><span class="sd">	Returns:</span>
+<a id="__codelineno-0-2225" name="__codelineno-0-2225"></a><span class="sd">	    np.ndarray: Transformed output produced after fitting the class/object.</span>
+<a id="__codelineno-0-2226" name="__codelineno-0-2226"></a>
+<a id="__codelineno-0-2227" name="__codelineno-0-2227"></a><span class="sd">	Raises:</span>
+<a id="__codelineno-0-2228" name="__codelineno-0-2228"></a><span class="sd">	    Error: Raised when validation or wrapped preprocessing execution fails.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2229" name="__codelineno-0-2229"></a>	<span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-2230" name="__codelineno-0-2230"></a>		<span class="n">throw_if</span><span class="p">(</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span>
+<a id="__codelineno-0-2231" name="__codelineno-0-2231"></a>		<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span>
+<a id="__codelineno-0-2232" name="__codelineno-0-2232"></a>		<span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">toarray</span><span class="p">(</span> <span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span> <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span> <span class="p">)</span> <span class="k">else</span> <span class="n">result</span>
+<a id="__codelineno-0-2233" name="__codelineno-0-2233"></a>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_data</span>
+<a id="__codelineno-0-2234" name="__codelineno-0-2234"></a>	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-2235" name="__codelineno-0-2235"></a>		<span class="n">exception</span> <span class="o">=</span> <span class="n">Error</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+<a id="__codelineno-0-2236" name="__codelineno-0-2236"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;mathy&#39;</span>
+<a id="__codelineno-0-2237" name="__codelineno-0-2237"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="s1">&#39;FeatureHasher&#39;</span>
+<a id="__codelineno-0-2238" name="__codelineno-0-2238"></a>		<span class="n">exception</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;train_transform( self, *args ) -&gt; np.ndarray&#39;</span>
+<a id="__codelineno-0-2239" name="__codelineno-0-2239"></a>		<span class="n">Logger</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">exception</span> <span class="p">)</span>
+<a id="__codelineno-0-2240" name="__codelineno-0-2240"></a>		<span class="k">raise</span> <span class="n">exception</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -16480,7 +16478,8 @@ feature hasher supports inverse transformation.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>transformers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2243">2243</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2242">2242</a></span>
+<span class="normal"><a href="#__codelineno-0-2243">2243</a></span>
 <span class="normal"><a href="#__codelineno-0-2244">2244</a></span>
 <span class="normal"><a href="#__codelineno-0-2245">2245</a></span>
 <span class="normal"><a href="#__codelineno-0-2246">2246</a></span>
@@ -16496,25 +16495,24 @@ feature hasher supports inverse transformation.</p>
 <span class="normal"><a href="#__codelineno-0-2256">2256</a></span>
 <span class="normal"><a href="#__codelineno-0-2257">2257</a></span>
 <span class="normal"><a href="#__codelineno-0-2258">2258</a></span>
-<span class="normal"><a href="#__codelineno-0-2259">2259</a></span>
-<span class="normal"><a href="#__codelineno-0-2260">2260</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2243" name="__codelineno-0-2243"></a><span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-2244" name="__codelineno-0-2244"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Invert FeatureHasher output.</span>
-<a id="__codelineno-0-2245" name="__codelineno-0-2245"></a>
-<a id="__codelineno-0-2246" name="__codelineno-0-2246"></a><span class="sd">	Purpose:</span>
-<a id="__codelineno-0-2247" name="__codelineno-0-2247"></a><span class="sd">	    Maps transformed output back toward the source representation when the wrapped</span>
-<a id="__codelineno-0-2248" name="__codelineno-0-2248"></a><span class="sd">	    feature hasher supports inverse transformation.</span>
-<a id="__codelineno-0-2249" name="__codelineno-0-2249"></a>
-<a id="__codelineno-0-2250" name="__codelineno-0-2250"></a><span class="sd">	Args:</span>
-<a id="__codelineno-0-2251" name="__codelineno-0-2251"></a><span class="sd">	    X (np.ndarray): Input matrix, sequence, or feature collection transformed by the</span>
-<a id="__codelineno-0-2252" name="__codelineno-0-2252"></a><span class="sd">	                    class/object.</span>
-<a id="__codelineno-0-2253" name="__codelineno-0-2253"></a>
-<a id="__codelineno-0-2254" name="__codelineno-0-2254"></a><span class="sd">	Returns:</span>
-<a id="__codelineno-0-2255" name="__codelineno-0-2255"></a><span class="sd">	    None: This function performs its work through side effects and does not return a</span>
-<a id="__codelineno-0-2256" name="__codelineno-0-2256"></a><span class="sd">	          value.</span>
-<a id="__codelineno-0-2257" name="__codelineno-0-2257"></a>
-<a id="__codelineno-0-2258" name="__codelineno-0-2258"></a><span class="sd">	Raises:</span>
-<a id="__codelineno-0-2259" name="__codelineno-0-2259"></a><span class="sd">	    NotImplementedError: Raised when the base interface method is called directly.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2260" name="__codelineno-0-2260"></a>	<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span> <span class="s1">&#39;FeatureHasher does not support inverse_transform.&#39;</span> <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-2259">2259</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2242" name="__codelineno-0-2242"></a><span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-2243" name="__codelineno-0-2243"></a><span class="w">	</span><span class="sd">&quot;&quot;&quot;Invert FeatureHasher output.</span>
+<a id="__codelineno-0-2244" name="__codelineno-0-2244"></a>
+<a id="__codelineno-0-2245" name="__codelineno-0-2245"></a><span class="sd">	Purpose:</span>
+<a id="__codelineno-0-2246" name="__codelineno-0-2246"></a><span class="sd">	    Maps transformed output back toward the source representation when the wrapped</span>
+<a id="__codelineno-0-2247" name="__codelineno-0-2247"></a><span class="sd">	    feature hasher supports inverse transformation.</span>
+<a id="__codelineno-0-2248" name="__codelineno-0-2248"></a>
+<a id="__codelineno-0-2249" name="__codelineno-0-2249"></a><span class="sd">	Args:</span>
+<a id="__codelineno-0-2250" name="__codelineno-0-2250"></a><span class="sd">	    X (np.ndarray): Input matrix, sequence, or feature collection transformed by the</span>
+<a id="__codelineno-0-2251" name="__codelineno-0-2251"></a><span class="sd">	                    class/object.</span>
+<a id="__codelineno-0-2252" name="__codelineno-0-2252"></a>
+<a id="__codelineno-0-2253" name="__codelineno-0-2253"></a><span class="sd">	Returns:</span>
+<a id="__codelineno-0-2254" name="__codelineno-0-2254"></a><span class="sd">	    None: This function performs its work through side effects and does not return a</span>
+<a id="__codelineno-0-2255" name="__codelineno-0-2255"></a><span class="sd">	          value.</span>
+<a id="__codelineno-0-2256" name="__codelineno-0-2256"></a>
+<a id="__codelineno-0-2257" name="__codelineno-0-2257"></a><span class="sd">	Raises:</span>
+<a id="__codelineno-0-2258" name="__codelineno-0-2258"></a><span class="sd">	    NotImplementedError: Raised when the base interface method is called directly.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2259" name="__codelineno-0-2259"></a>	<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span> <span class="s1">&#39;FeatureHasher does not support inverse_transform.&#39;</span> <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
