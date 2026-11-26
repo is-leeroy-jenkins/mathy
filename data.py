@@ -263,13 +263,8 @@ def decision_tree_stump( X: np.ndarray, y: np.ndarray, num_thresholds: int = 10 
 		right_idx = X[ :, field ] > depth
 		left_label = np.bincount( y[ left_idx ] ).argmax( )
 		right_label = np.bincount( y[ right_idx ] ).argmax( )
-		return \
-			{
-					'feature': field,
-					'threshold': depth,
-					'left_label': left_label,
-					'right_label': right_label
-			}
+		return { 'feature': field, 'threshold': depth, 'left_label': left_label,
+			'right_label': right_label }
 	except Exception as e:
 		exception = Error( e )
 		exception.module = 'mathy'
@@ -335,23 +330,21 @@ def k_means( X: np.ndarray, k: int, iters=10 ) -> Tuple[ np.ndarray, np.ndarray 
 	           updates fail."""
 	try:
 		throw_if( 'X', X )
+		throw_if( 'k', k )
 		centroids = X[ np.random.choice( X.shape[ 0 ], k, replace=False ) ]
 		labels = np.zeros( X.shape[ 0 ], dtype=int )
 		for _ in range( iters ):
 			distances = euclidian_distance( X, centroids )
 			labels = np.argmin( distances, axis=1 )
 			new_centroids = np.array(
-				[
-						X[ labels == i ].mean( axis=0 ) if np.any( labels == i ) else centroids[ i ]
-						for i in range( k )
-				]
-			)
+				[ X[ labels == i ].mean( axis=0 ) if np.any( labels == i ) else centroids[ i ]
+					for i
+					in range( k ) ] )
 			if np.allclose( centroids, new_centroids ):
 				centroids = new_centroids
 				break
 			
 			centroids = new_centroids
-		
 		return labels, centroids
 	except Exception as e:
 		exception = Error( e )
@@ -523,8 +516,6 @@ class DataSource( ):
 		Raises:
 		    ArgumentError: Raised when the requested target column is not present in `df`.
 		    ValueError: Raised when required constructor arguments are missing."""
-		throw_if( 'df', df )
-		throw_if( 'target', target )
 		self.data = df.copy( )
 		self.size = size
 		self.seed = rando
