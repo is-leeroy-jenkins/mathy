@@ -19,7 +19,7 @@ requirements:
     - pandas
     - statsmodels
     - scipy
-    - scikit-learn
+    - scikit-learn>=1.7
     - xgboost
     - pydantic
     - openpyxl
