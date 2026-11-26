@@ -45,7 +45,6 @@ from __future__ import annotations
 
 import base64
 from mathy.boogr import Error, Logger
-from mathy.predictive import evaluate_predictive_model
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -1021,48 +1020,6 @@ def is_unmodified_model_input( df_source: pd.DataFrame, df_input: pd.DataFrame, 
 	if any( column not in df_source.columns or column not in df_input.columns for column in columns ):
 		return False
 	return df_source[ columns ].equals( df_input[ columns ] )
-
-def render_predictive_evaluation( df_source: pd.DataFrame, mode: str ) -> None:
-	"""Render independent predictive evaluation from unprocessed source data.
-
-	Purpose:
-	    Keeps fitted predictive transformations separate from exploratory feature engineering.
-
-	Args:
-	    df_source (pd.DataFrame): Original analysis dataset.
-	    mode (str): Classification or regression evaluation mode.
-
-	Returns:
-	    None: Displays held-out and cross-validation metrics.
-	"""
-	throw_if( 'df_source', df_source )
-	throw_if( 'mode', mode )
-	with st.expander( 'Independent Predictive Evaluation', expanded=False ):
-		st.caption( 'Uses original data, not exploratory feature-engineering results. '
-			'Imputation, encoding and scaling are fitted within each training partition.' )
-		prefix = f'predictive_{mode}'
-		left, right = st.columns( [ 0.5, 0.5 ], border=True )
-		with left:
-			features = st.multiselect( 'Predictors', df_source.columns.tolist( ),
-				key=f'{prefix}_features' )
-			options = [ column for column in df_source.columns if column not in features ]
-			target = st.selectbox( 'Target', options, key=f'{prefix}_target' )
-			models = [ 'Logistic Regression', 'Random Forest', 'Stacking' ] if mode == 'classification' else [ 'Ordinary Least Squares', 'Random Forest', 'Stacking' ]
-			name = st.selectbox( 'Estimator', models, key=f'{prefix}_estimator' )
-		with right:
-			size = st.slider( 'Test Set Size (%)', 10, 40, 20, key=f'{prefix}_size' ) / 100.0
-			random = st.number_input( 'Random State', min_value=0, value=42,
-				max_value=4294967295, key=f'{prefix}_random' )
-			folds = st.number_input( 'Cross-validation Folds', min_value=2, max_value=10,
-				value=5, key=f'{prefix}_folds' )
-		if st.button( 'Evaluate', icon='🚂', key=f'{prefix}_evaluate', disabled=not features or target is None ):
-			try:
-				df_results = evaluate_predictive_model( df_source, features, target, mode,
-					name, size, random, folds )
-				st.dataframe( df_results, hide_index=True )
-			except ( ValueError, TypeError ) as ex:
-				st.error( str( ex ) )
-
 
 def commit_cca_columns( df_frame: pd.DataFrame, X_cols: list[ str ], y_cols: list[ str ], result: tuple ) -> pd.DataFrame:
 	"""Preserve separate predictor and target roles for canonical scores.
@@ -5569,8 +5526,6 @@ elif mode == 'Classification Models':
 		st.subheader( cfg.MODE[ 'Classification Models' ] )
 		st.caption( 'Predictive Models for Categorical, Discrete-Values' )
 		st.divider( )
-		if has_loaded_dataset( df_dataset ):
-			render_predictive_evaluation( df_dataset, 'classification' )
 		
 		if df_dataset is None or df_dataset.empty:
 			st.warning( '⚠️ No dataset loaded.' )
@@ -10461,8 +10416,6 @@ elif mode == 'Regression Models':
 		st.subheader( cfg.MODE[ 'Regression Models' ] )
 		st.caption( 'Predictive Models for Continuous Values' )
 		st.divider( )
-		if has_loaded_dataset( df_dataset ):
-			render_predictive_evaluation( df_dataset, 'regression' )
 		
 		if not has_loaded_dataset( df_dataset ):
 			st.warning( '⚠️ No dataset loaded.' )

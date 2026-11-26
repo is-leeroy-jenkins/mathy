@@ -1,4 +1,4 @@
-"""Streamlit application startup and predictive navigation regression coverage."""
+"""Streamlit application startup and model navigation regression coverage."""
 import unittest
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
@@ -15,4 +15,3 @@ class ApplicationRuntime( unittest.TestCase ):
 		for mode in [ 'Classification Models', 'Regression Models' ]:
 			app.radio( key='ml_mode_radio' ).set_value( mode ).run( )
 			self.assertFalse( app.exception, str( app.exception ) )
-			self.assertTrue( any( item.label == 'Independent Predictive Evaluation' for item in app.expander ) )
