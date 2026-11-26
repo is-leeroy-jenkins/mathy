@@ -44,13 +44,12 @@ from .classifications import *
 from .regressions import *
 from .clusters import *
 from .encoders import *
-from mathy.transformers import *
+from .transformers import *
 from .imputers import *
 from .forecasting import  *
 from .features import *
 from .outliers import *
-from mathy.scalers import *
+from .scalers import *
 from .data import *
-from .encoders import *
 
 __version__ = "0.1.1"

@@ -50,7 +50,7 @@ import sklearn.feature_extraction as fe
 import sklearn.feature_extraction.text as sk
 import sklearn.preprocessing as pp
 import sklearn.compose as sc
-from boogr import Error, Logger
+from .boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required argument.

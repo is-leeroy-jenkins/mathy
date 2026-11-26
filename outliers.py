@@ -63,7 +63,7 @@ import sklearn.svm as sv
 import sklearn.neighbors as nn
 import sklearn.covariance as cv
 from sklearn.metrics import classification_report
-from boogr import Error, Logger
+from .boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required clustering argument.

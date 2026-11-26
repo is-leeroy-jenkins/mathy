@@ -71,7 +71,7 @@ from sklearn.metrics import (recall_score, precision_score, confusion_matrix, cl
                              hinge_loss, log_loss, mean_squared_error, root_mean_squared_error,
                              mean_absolute_error, median_absolute_error)
 from sklearn.preprocessing import Binarizer
-from boogr import Error, Logger
+from .boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required clustering argument.

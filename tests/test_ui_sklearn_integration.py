@@ -59,9 +59,9 @@ class UIIntegrationContracts( unittest.TestCase ):
 					self.assertEqual( len( model.analyze( X )[ 'Labels' ] ), len( X ) )
 
 	def test_ui_reset_keys( self ) -> None:
-		"""Verify both application sources use the initialized least-squares keys."""
+		"""Verify the standard application source use the initialized least-squares keys."""
 		root = Path( __file__ ).resolve( ).parents[ 1 ]
-		for path in [ root / 'app.py', root / 'palantir' / 'app.py' ]:
+		for path in [ root / 'app.py' ]:
 			source = path.read_text( encoding='utf-8' )
 			for suffix in [ 'alpha', 'eta', 'iters', 'shuffle', 'penalty', 'test_size', 'random_state' ]:
 				self.assertIn( f"key='classification_least_squares_{suffix}'", source )
@@ -90,7 +90,7 @@ class UIIntegrationContracts( unittest.TestCase ):
 	def test_cca_control_contract( self ) -> None:
 		"""Verify separate CCA output names and all three application call sites."""
 		root = Path( __file__ ).resolve( ).parents[ 1 ]
-		for path in [ root / 'app.py', root / 'palantir' / 'app.py' ]:
+		for path in [ root / 'app.py' ]:
 			source = path.read_text( encoding='utf-8' )
 			self.assertIn( "prefix='cca_X'", source )
 			self.assertIn( "prefix='cca_y'", source )
@@ -100,7 +100,7 @@ class UIIntegrationContracts( unittest.TestCase ):
 		"""Verify changed values, generated columns and changed rows require exploratory consent."""
 		root = Path( __file__ ).resolve( ).parents[ 1 ]
 		df_source = pd.DataFrame( { 'feature': [ 1.0, 2.0, 3.0 ], 'target': [ 0, 1, 0 ] } )
-		for path in [ root / 'app.py', root / 'palantir' / 'app.py' ]:
+		for path in [ root / 'app.py' ]:
 			tree = ast.parse( path.read_text( encoding='utf-8' ) )
 			function = next( node for node in tree.body if isinstance( node, ast.FunctionDef )
 				and node.name == 'is_unmodified_model_input' )

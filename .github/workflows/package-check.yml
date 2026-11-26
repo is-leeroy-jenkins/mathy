@@ -55,6 +55,9 @@ jobs:
           python-version: '3.11'
       - name: Install package and estimator version
         run: python -m pip install . "scikit-learn==${{ matrix.sklearn }}"
+      - name: Verify installed package imports
+        working-directory: ${{ runner.temp }}
+        run: python -c "import mathy; from mathy import classifications, regressions, features, data; from mathy.boogr import Error, Logger"
       - name: Execute regression suite
         env:
           MPLBACKEND: Agg
