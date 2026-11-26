@@ -3156,8 +3156,8 @@ class NearestNeighbor( Classifier ):
 		try:
 			_valid_algorithms = { 'auto', 'ball_tree', 'kd_tree', 'brute' }
 			_valid_metrics = { 'minkowski', 'euclidean', 'manhattan', 'chebyshev', 'hamming',
-			                   'canberra', 'braycurtis', 'cityblock', 'cosine', 'l1', 'l2',
-			                   'nan_euclidean', 'mahalanobis', 'seuclidean' }
+				'canberra', 'braycurtis', 'cityblock', 'cosine', 'l1', 'l2', 'nan_euclidean',
+				'mahalanobis', 'seuclidean' }
 			if self.algorithm not in _valid_algorithms:
 				raise ValueError( f'Unsupported algorithm: {self.algorithm}' )
 			
@@ -3261,7 +3261,7 @@ class NearestNeighbor( Classifier ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'NearestNeighbor'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
