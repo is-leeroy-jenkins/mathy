@@ -3,7 +3,7 @@ name: Package validation
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, fix/predictive-preprocessing-validation]
 
 jobs:
   package:
