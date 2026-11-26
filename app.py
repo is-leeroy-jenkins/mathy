@@ -100,7 +100,7 @@ from mathy.transformers import (Binarizer, LabelBinarizer, MultiLabelBinarizer, 
                           ColumnTransformer, TfidfVectorizer, CountVectorizer, HashVectorizer,
                           DictVectorizer, FeatureHasher)
 
-from clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
+from mathy.clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
                       AffinityPropagation, Birch)
 
 from mathy.features import (VarianceThreshold, CCA, PCA, SelectBest, SelectPercent, SBS, RFE)
@@ -17760,7 +17760,7 @@ elif mode == 'Clustering Models':
 					model_parameters = { 'Model': 'Agglomerative', 'n_clusters': (
 						None if distance_threshold is not None else int( agglomerative_clusters )),
 						'metric': agglomerative_metric, 'linkage': agglomerative_linkage,
-						'compute_full_tree': agglomerative_compute_full_tree,
+						'compute_full_tree': True if distance_threshold is not None else agglomerative_compute_full_tree,
 						'distance_threshold': distance_threshold,
 						'compute_distances': bool( agglomerative_compute_distances ) }
 					
@@ -17771,7 +17771,7 @@ elif mode == 'Clustering Models':
 					model = Agglomerative( clusters=int( agglomerative_clusters ),
 						affinity=agglomerative_metric, linkage=agglomerative_linkage,
 						metric=agglomerative_metric, memory=None, connectivity=None,
-						compute_full_tree=agglomerative_compute_full_tree,
+						compute_full_tree=model_parameters[ 'compute_full_tree' ],
 						distance_threshold=distance_threshold,
 						compute_distances=bool( agglomerative_compute_distances ), n_clusters=(
 							None if distance_threshold is not None else int(
@@ -17800,22 +17800,17 @@ elif mode == 'Clustering Models':
 						df_metrics = df_metrics.copy( )
 						df_metrics[ 'Processing Time (sec)' ] = round( elapsed_seconds, 4 )
 					
-					detail_rows = [ ]
-					for property_name in [ 'features', 'leaves', 'connected_components',
-						'n_clusters', 'metric', 'linkage', 'compute_full_tree',
-						'distance_threshold', 'compute_distances' ]:
-						if hasattr( model, property_name ):
-							try:
-								property_value = getattr( model, property_name )
-								
-								if (property_value is not None and not isinstance( property_value,
-										(np.ndarray, pd.DataFrame) )):
-									detail_rows.append(
-										{ 'Property': property_name, 'Value': property_value } )
-							except Exception:
-								pass
-					
-					df_details = (pd.DataFrame( detail_rows ) if detail_rows else pd.DataFrame( ))
+					detail_rows = [ { 'Property': 'features', 'Value': model.features },
+						{ 'Property': 'leaves', 'Value': model.leaves },
+						{ 'Property': 'connected_components', 'Value': model.connected_components },
+						{ 'Property': 'n_clusters', 'Value': model.model.n_clusters },
+						{ 'Property': 'fitted_clusters', 'Value': model.model.n_clusters_ },
+						{ 'Property': 'metric', 'Value': model.model.metric },
+						{ 'Property': 'linkage', 'Value': model.model.linkage },
+						{ 'Property': 'compute_full_tree', 'Value': model.model.compute_full_tree },
+						{ 'Property': 'distance_threshold', 'Value': model.model.distance_threshold },
+						{ 'Property': 'compute_distances', 'Value': model.model.compute_distances } ]
+					df_details = pd.DataFrame( detail_rows )
 					df_centroids = pd.DataFrame( )
 					st.session_state[ 'model' ] = model
 					st.session_state[ 'df_cluster_agglomerative_results' ] = df_results.copy( )
