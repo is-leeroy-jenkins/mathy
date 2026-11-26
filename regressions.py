@@ -43,7 +43,7 @@
 ******************************************************************************************
 """
 from __future__ import annotations
-from boogr import Error, Logger
+from .boogr import Error, Logger
 from typing import Dict
 from typing import Optional, List, Tuple
 import matplotlib.pyplot as plt

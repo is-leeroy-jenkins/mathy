@@ -63,11 +63,12 @@ import re
 import sqlite3
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression as SKLogisticRegression
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from sklearn.utils.multiclass import type_of_target
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import (confusion_matrix, roc_curve, auc, r2_score, accuracy_score,
                              precision_score, recall_score, f1_score)
@@ -99,7 +100,7 @@ from mathy.transformers import (Binarizer, LabelBinarizer, MultiLabelBinarizer, 
                           ColumnTransformer, TfidfVectorizer, CountVectorizer, HashVectorizer,
                           DictVectorizer, FeatureHasher)
 
-from clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
+from mathy.clusters import (KMeans, DBSCAN, Agglomerative, Spectral, OPTICS, MeanShift,
                       AffinityPropagation, Birch)
 
 from mathy.features import (VarianceThreshold, CCA, PCA, SelectBest, SelectPercent, SBS, RFE)
@@ -998,6 +999,56 @@ def processed_to_working( ) -> None:
 	df_reset = st.session_state[ 'df_working' ].copy( )
 	st.session_state[ 'df_processed' ] = df_reset.copy( )
 	commit_frame( df_reset )
+
+def is_unmodified_model_input( df_source: pd.DataFrame, df_input: pd.DataFrame, columns: list[ str ] ) -> bool:
+	"""Determine whether model inputs match the selected source data.
+
+	Purpose:
+	    Detects changed values, generated columns, and removed or reordered rows before
+	    reporting a split of the processed dataset as a held-out evaluation.
+
+	Args:
+	    df_source (pd.DataFrame): Working dataset before feature engineering.
+	    df_input (pd.DataFrame): Prepared dataset supplied to the model.
+	    columns (list[str]): Selected predictor and target columns.
+
+	Returns:
+	    bool: True when selected columns and row values match the working dataset.
+	"""
+	if not df_source.columns.is_unique or not df_input.columns.is_unique:
+		return False
+	if any( column not in df_source.columns or column not in df_input.columns for column in columns ):
+		return False
+	return df_source[ columns ].equals( df_input[ columns ] )
+
+def commit_cca_columns( df_frame: pd.DataFrame, X_cols: list[ str ], y_cols: list[ str ], result: tuple ) -> pd.DataFrame:
+	"""Preserve separate predictor and target roles for canonical scores.
+
+	Purpose:
+	    Replaces CCA input columns with separately named canonical-score columns and
+	    updates the selected feature and target contracts without introducing overlap.
+
+	Args:
+	    df_frame (pd.DataFrame): Original indexed input frame.
+	    X_cols (list[str]): Predictor columns consumed by CCA.
+	    y_cols (list[str]): Target columns consumed by CCA.
+	    result (tuple): Predictor and target canonical-score matrices.
+
+	Returns:
+	    pd.DataFrame: Frame containing the separate canonical-score columns.
+	"""
+	df_X = normalize_result_frame( result=result[ 0 ], index=df_frame.index,
+		prefix='cca_X', columns=None )
+	df_y = normalize_result_frame( result=result[ 1 ], index=df_frame.index,
+		prefix='cca_y', columns=None )
+	remaining = df_frame.drop( columns=X_cols + y_cols )
+	if set( remaining.columns ).intersection( list( df_X.columns ) + list( df_y.columns ) ):
+		raise ValueError( 'CCA output names conflict with existing columns.' )
+	features = [ col for col in st.session_state.get( 'features', [ ] ) if col in remaining.columns ]
+	targets = [ col for col in st.session_state.get( 'targets', [ ] ) if col in remaining.columns ]
+	st.session_state[ 'features' ] = [ col for col in features if col not in targets ] + list( df_X.columns )
+	st.session_state[ 'targets' ] = targets + list( df_y.columns )
+	return pd.concat( [ remaining, df_X, df_y ], axis=1 )
 
 def normalize_result_frame( result: object, index: pd.Index, prefix: str,
 	columns: list[ str ] ) -> pd.DataFrame:
@@ -5297,10 +5348,11 @@ elif mode == 'Anomaly Detection':
 				df_anamolies.loc[ df_muliti.index, 'iforest' ] = preds == -1
 			
 			if use_lof:
-				from sklearn.neighbors import LocalOutlierFactor
+				from mathy.outliers import OutlierFactor
 				
-				lof = LocalOutlierFactor( n_neighbors=lof_k )
-				preds = lof.fit_predict( df_muliti.values )
+				lof = OutlierFactor( n_neighbors=lof_k, contamination='auto', novelty=False )
+				lof.train( df_muliti.values )
+				preds = lof.prediction
 				df_anamolies.loc[ df_muliti.index, 'lof' ] = preds == -1
 		
 		# -------------------------------------------------------------------------
@@ -7038,6 +7090,12 @@ elif mode == 'Classification Models':
 							if require_classification_columns( X_cols,
 									'CCA predictors' ) and require_classification_columns( y_cols,
 								'CCA targets' ):
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								result = selector.train_transform(
@@ -7045,13 +7103,9 @@ elif mode == 'Classification Models':
 										X_cols ).to_numpy( ),
 									get_numeric_classification_subset( df_input,
 										y_cols ).to_numpy( ) )
-								df_result = normalize_result_frame( result=result,
-									index=df_input.index, prefix='cca', columns=None )
-								df_output = pd.concat(
-									[ df_input.drop( columns=X_cols + y_cols, errors='ignore' ),
-										df_result ], axis=1 )
-								commit_classification_processed_frame( df_input, df_output,
-									X_cols + y_cols, False )
+								df_output = commit_cca_columns( df_input, X_cols, y_cols, result )
+								st.session_state[ 'df_processed' ] = df_output.copy( )
+								commit_frame( df_output )
 								st.success( 'CCA Applied.' )
 								st.rerun( )
 					
@@ -7246,7 +7300,7 @@ elif mode == 'Classification Models':
 							X_cols = get_valid_classification_columns( X_cols, df_input )
 							if require_classification_columns( X_cols, 'SBS' ):
 								if target_col and target_col in df_input.columns:
-									selector = SBS( classifier=None,
+									selector = SBS( classifier=KNeighborsClassifier( ),
 										k_features=int( min( k_features, len( X_cols ) ) ),
 										test_size=float( test_size ),
 										random_state=int( random_state ) )
@@ -7299,7 +7353,7 @@ elif mode == 'Classification Models':
 							if require_classification_columns( X_cols, 'RFE' ):
 								if target_col and target_col in df_input.columns:
 									selector = RFE(
-										k_features=int( min( k_features, len( X_cols ) ) ),
+										estimator=DecisionTreeClassifier( random_state=42 ), k_features=int( min( k_features, len( X_cols ) ) ),
 										verbose=int( verbose ) )
 									X_input = get_numeric_classification_subset( df_input,
 										X_cols ).to_numpy( )
@@ -7354,6 +7408,18 @@ elif mode == 'Classification Models':
 		if len( active_targets ) != 1:
 			st.warning( '⚠️ Classification models requires exactly one processed target column.' )
 			st.stop( )
+		if set( active_features ).intersection( active_targets ):
+			st.warning( '⚠️ Classification predictors and targets must be disjoint.' )
+			st.stop( )
+		if not is_unmodified_model_input( df_working, df_processed, active_features + active_targets ):
+			st.warning( 'Feature engineering was applied before the train/test split. '
+				'Performance scores may be optimistic and are not independent validation.' )
+			if not st.checkbox( 'Allow exploratory model evaluation', value=False,
+				key='classification_allow_exploratory_evaluation',
+				help='Enable only for exploratory analysis. A leakage-safe evaluation must fit '
+					'preprocessing exclusively on training data.' ):
+				st.stop( )
+
 		
 		target_name = active_targets[ 0 ]
 		df_model = df_processed[ active_features + [ target_name ] ].copy( )
@@ -7625,40 +7691,40 @@ elif mode == 'Classification Models':
 					st.markdown( '###### 🎚️ Hyper Parameters' )
 					least_squares_alpha = st.number_input( 'Alpha', min_value=0.000001,
 						value=float( st.session_state[ 'classification_least_squares_alpha' ] ),
-						step=0.000100, format='%.6f', key='classification_leastsquares_alpha' )
+						step=0.000100, format='%.6f', key='classification_least_squares_alpha' )
 					
 					least_squares_eta = st.number_input( 'Eta', min_value=0.000001,
 						value=float( st.session_state[ 'classification_least_squares_eta' ] ),
-						step=0.010000, format='%.6f', key='classification_leastsquares_eta' )
+						step=0.010000, format='%.6f', key='classification_least_squares_eta' )
 					
 					least_squares_iters = st.number_input( 'Iterations', min_value=1,
 						value=int( st.session_state[ 'classification_least_squares_iters' ] ),
-						step=1, key='classification_leastsquares_iters' )
+						step=1, key='classification_least_squares_iters' )
 				
 				with ls_c2:
 					st.markdown( '###### 🚦 Regularization / Split' )
 					least_squares_shuffle = st.checkbox( 'Shuffle',
 						value=bool( st.session_state[ 'classification_least_squares_shuffle' ] ),
-						key='classification_leastsquares_shuffle' )
+						key='classification_least_squares_shuffle' )
 					
 					least_squares_penalty = st.selectbox( 'Penalty',
 						options=[ None, 'l2', 'l1', 'elasticnet' ],
 						index=[ None, 'l2', 'l1', 'elasticnet' ].index(
 							st.session_state[ 'classification_least_squares_penalty' ] ),
 						format_func=lambda value: 'None' if value is None else str( value ),
-						key='classification_leastsquares_penalty' )
+						key='classification_least_squares_penalty' )
 					
 					least_squares_test_size = st.slider( 'Test Set Size (%)', min_value=10,
 						max_value=30, step=1,
 						value=int( st.session_state[ 'classification_least_squares_test_size' ] ),
-						key='classification_leastsquares_test_size' ) / 100.0
+						key='classification_least_squares_test_size' ) / 100.0
 				
 				with ls_c3:
 					st.markdown( '###### 🏃 Run Configuration' )
 					least_squares_random_state = st.number_input( 'Random State', min_value=0,
 						value=int(
 							st.session_state[ 'classification_least_squares_random_state' ] ),
-						step=1, key='classification_leastsquares_random_state' )
+						step=1, key='classification_least_squares_random_state' )
 					
 					st.caption(
 						f'Rows: {len( df_model ):,} | Features: {len( active_features ):,} | '
@@ -7750,7 +7816,7 @@ elif mode == 'Classification Models':
 					help=cfg.LOGISTIC_REGRESSION )
 				
 				logistic_defaults = { 'classification_logistic_c': 1.000000,
-					'classification_logistic_penalty': 'l2', 'classification_logistic_iters': 1000,
+					'classification_logistic_penalty': 'l2', 'classification_logistic_l1_ratio': 0.5, 'classification_logistic_iters': 1000,
 					'classification_logistic_multiclass': 'multinomial',
 					'classification_logistic_solver': 'lbfgs',
 					'classification_logistic_test_size': 20,
@@ -7760,6 +7826,22 @@ elif mode == 'Classification Models':
 					if key not in st.session_state:
 						st.session_state[ key ] = value
 				
+				def reset_logistic_state( ) -> None:
+					"""Restore logistic regression controls and clear fitted results."""
+					for key, value in logistic_defaults.items( ):
+						st.session_state[ key ] = value
+					st.session_state[ 'elapsed_seconds' ] = 0.0
+					st.session_state[ 'model' ]=None
+					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'X_train' ]=None
+					st.session_state[ 'X_test' ]=None
+					st.session_state[ 'y_train' ]=None
+					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'df_model' ]=None
+					st.session_state[ 'df_scores' ]=None
+					st.session_state[ 'df_predictions' ]=None
+				
+
 				log_c1, log_c2, log_c3 = st.columns( [ 0.34, 0.33, 0.33 ], border=True )
 				with log_c1:
 					st.markdown( '###### 🎚️ Hyper Parameters' )
@@ -7773,6 +7855,10 @@ elif mode == 'Classification Models':
 							st.session_state[ 'classification_logistic_penalty' ] ),
 						format_func=lambda v: 'None' if v is None else str( v ),
 						key='classification_logistic_penalty' )
+					
+					logistic_l1_ratio = st.number_input( 'L1 Ratio', min_value=0.0, max_value=1.0,
+						step=0.05, key='classification_logistic_l1_ratio',
+						disabled=logistic_penalty != 'elasticnet' )
 					
 					logistic_iters = st.number_input( 'Iterations', min_value=1,
 						value=int( st.session_state[ 'classification_logistic_iters' ] ), step=1,
@@ -7817,23 +7903,9 @@ elif mode == 'Classification Models':
 						key='classification_logistic_train', use_container_width=True )
 				
 				with log_btn_2:
-					reset_logistic = st.button( '🔁 Reset Logistic Regression',
-						key='classification_logistic_reset', use_container_width=True )
-				
-				if reset_logistic:
-					for key, value in logistic_defaults.items( ):
-						st.session_state[ key ] = value
-					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'df_model' ]=None
-					st.session_state[ 'df_scores' ]=None
-					st.session_state[ 'df_predictions' ]=None
-					st.rerun( )
+					st.button( '🔁 Reset Logistic Regression',
+						key='classification_logistic_reset', use_container_width=True,
+						on_click=reset_logistic_state )
 				
 				if train_logistic:
 					try:
@@ -7841,7 +7913,7 @@ elif mode == 'Classification Models':
 						model = classification_model.LogisticRegression( C=float( logistic_c ),
 							penalty=logistic_penalty, iters=int( logistic_iters ),
 							multiclass=str( logistic_multiclass ), solver=str( logistic_solver ),
-							random=int( logistic_random_state ) )
+							random=int( logistic_random_state ), l1_ratio=logistic_l1_ratio )
 						
 						X_train, X_test, y_train, y_test = model.split_data( X, y,
 							size=float( logistic_test_size ), random=int( logistic_random_state ) )
@@ -9302,7 +9374,8 @@ elif mode == 'Classification Models':
 				with ab_c2:
 					st.markdown( '###### ♟️ Algorithm / Split' )
 					ab_algorithm = st.selectbox( 'Algorithm', options=[ 'SAMME' ], index=0,
-						key='classification_ab_algorithm' )
+						key='classification_ab_algorithm', disabled=True,
+						help='SAMME is the fixed algorithm supported by this estimator.' )
 					
 					ab_test_size = st.slider( 'Test Set Size (%)', min_value=10, max_value=30,
 						value=int( st.session_state[ 'classification_ab_test_size' ] ), step=1,
@@ -9663,7 +9736,7 @@ elif mode == 'Classification Models':
 						estimators = [ ]
 						
 						if vote_include_logistic:
-							estimators.append( ('logistic', LogisticRegression( max_iter=1000,
+							estimators.append( ('logistic', SKLogisticRegression( max_iter=1000,
 								random_state=int( vote_random_state ) )) )
 						
 						if vote_include_tree:
@@ -9856,7 +9929,7 @@ elif mode == 'Classification Models':
 						
 						estimators = [ ]
 						if stack_include_logistic:
-							estimators.append( ('logistic', LogisticRegression( max_iter=1000,
+							estimators.append( ('logistic', SKLogisticRegression( max_iter=1000,
 								random_state=int( stack_random_state ) )) )
 						
 						if stack_include_tree:
@@ -9878,7 +9951,7 @@ elif mode == 'Classification Models':
 							st.stop( )
 						
 						if stack_final == 'logistic':
-							final_estimator = LogisticRegression( max_iter=1000,
+							final_estimator = SKLogisticRegression( max_iter=1000,
 								random_state=int( stack_random_state ) )
 						else:
 							final_estimator = DecisionTreeClassifier(
@@ -11567,6 +11640,12 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and y_cols:
 								df_processed = df_working.copy( )
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								
@@ -11574,14 +11653,7 @@ elif mode == 'Regression Models':
 									df_processed[ X_cols ].to_numpy( ),
 									df_processed[ y_cols ].to_numpy( ) )
 								
-								df_result = normalize_result_frame( result=result,
-									index=df_processed.index, prefix='cca', columns=None )
-								
-								df_processed = pd.concat(
-									[ df_processed.drop( columns=X_cols + y_cols,
-										errors='ignore' ),
-										df_result ], axis=1 )
-								
+								df_processed = commit_cca_columns( df_processed, X_cols, y_cols, result )
 								st.session_state[ 'df_processed' ] = df_processed.copy( )
 								commit_frame( df_processed )
 								st.success( 'CCA Applied.' )
@@ -11759,7 +11831,7 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = SBS( classifier=None, k_features=int( k_features ),
+								selector = SBS( classifier=KNeighborsRegressor( ), scoring=r2_score, k_features=int( k_features ),
 									test_size=float( test_size ), random_state=int( random_state
 									) )
 								
@@ -11807,7 +11879,7 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = RFE( k_features=int( k_features ),
+								selector = RFE( estimator=DecisionTreeRegressor( random_state=42 ), k_features=int( k_features ),
 									verbose=int( verbose ) )
 								X_input = df_processed[ X_cols ].apply( pd.to_numeric,
 									errors='coerce' ).fillna( 0.0 ).to_numpy( )
@@ -11882,6 +11954,15 @@ elif mode == 'Regression Models':
 		if target_name in active_features:
 			st.warning( '⚠️ The regression target cannot also be used as a feature.' )
 			st.stop( )
+		if not is_unmodified_model_input( df_working, df_processed, active_features + active_targets ):
+			st.warning( 'Feature engineering was applied before the train/test split. '
+				'Performance scores may be optimistic and are not independent validation.' )
+			if not st.checkbox( 'Allow exploratory model evaluation', value=False,
+				key='regression_allow_exploratory_evaluation',
+				help='Enable only for exploratory analysis. A leakage-safe evaluation must fit '
+					'preprocessing exclusively on training data.' ):
+				st.stop( )
+
 		
 		required_columns = active_features + [ target_name ]
 		missing_columns = [ column for column in required_columns if
@@ -16940,6 +17021,12 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and y_cols:
 								df_processed = df_working.copy( )
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								
@@ -16947,14 +17034,8 @@ elif mode == 'Clustering Models':
 									df_processed[ X_cols ].to_numpy( ),
 									df_processed[ y_cols ].to_numpy( ) )
 								
-								df_result = normalize_result_frame( result=result,
-									index=df_processed.index, prefix='cca', columns=None )
-								
-								df_processed = pd.concat(
-									[ df_processed.drop( columns=X_cols + y_cols,
-										errors='ignore' ),
-										df_result ], axis=1 )
-								
+								df_processed = commit_cca_columns( df_processed, X_cols, y_cols, result )
+								st.session_state[ 'df_processed' ] = df_processed.copy( )
 								commit_frame( df_processed )
 								st.success( 'CCA Applied.' )
 					
@@ -17111,7 +17192,13 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = SBS( classifier=None, k_features=int( k_features ),
+								target_type = type_of_target( df_processed[ target_col ].to_numpy( ) )
+								if target_type not in { 'binary', 'multiclass', 'continuous' }:
+									st.warning( 'Select a binary, multiclass, or continuous target for SBS.' )
+									st.stop( )
+								classifier = KNeighborsRegressor( ) if target_type == 'continuous' else KNeighborsClassifier( )
+								scoring = r2_score if target_type == 'continuous' else accuracy_score
+								selector = SBS( classifier=classifier, scoring=scoring, k_features=int( k_features ),
 									test_size=float( test_size ), random_state=int( random_state
 									) )
 								
@@ -17155,7 +17242,12 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = RFE( k_features=int( k_features ),
+								target_type = type_of_target( df_processed[ target_col ].to_numpy( ) )
+								if target_type not in { 'binary', 'multiclass', 'continuous' }:
+									st.warning( 'Select a binary, multiclass, or continuous target for RFE.' )
+									st.stop( )
+								estimator = DecisionTreeRegressor( random_state=42 ) if target_type == 'continuous' else DecisionTreeClassifier( random_state=42 )
+								selector = RFE( estimator=estimator, k_features=int( k_features ),
 									verbose=int( verbose ) )
 								X_input = df_processed[ X_cols ].apply( pd.to_numeric,
 									errors='coerce' ).fillna( 0.0 ).to_numpy( )
@@ -17742,7 +17834,7 @@ elif mode == 'Clustering Models':
 					model_parameters = { 'Model': 'Agglomerative', 'n_clusters': (
 						None if distance_threshold is not None else int( agglomerative_clusters )),
 						'metric': agglomerative_metric, 'linkage': agglomerative_linkage,
-						'compute_full_tree': agglomerative_compute_full_tree,
+						'compute_full_tree': True if distance_threshold is not None else agglomerative_compute_full_tree,
 						'distance_threshold': distance_threshold,
 						'compute_distances': bool( agglomerative_compute_distances ) }
 					
@@ -17753,7 +17845,7 @@ elif mode == 'Clustering Models':
 					model = Agglomerative( clusters=int( agglomerative_clusters ),
 						affinity=agglomerative_metric, linkage=agglomerative_linkage,
 						metric=agglomerative_metric, memory=None, connectivity=None,
-						compute_full_tree=agglomerative_compute_full_tree,
+						compute_full_tree=model_parameters[ 'compute_full_tree' ],
 						distance_threshold=distance_threshold,
 						compute_distances=bool( agglomerative_compute_distances ), n_clusters=(
 							None if distance_threshold is not None else int(
@@ -17782,22 +17874,17 @@ elif mode == 'Clustering Models':
 						df_metrics = df_metrics.copy( )
 						df_metrics[ 'Processing Time (sec)' ] = round( elapsed_seconds, 4 )
 					
-					detail_rows = [ ]
-					for property_name in [ 'features', 'leaves', 'connected_components',
-						'n_clusters', 'metric', 'linkage', 'compute_full_tree',
-						'distance_threshold', 'compute_distances' ]:
-						if hasattr( model, property_name ):
-							try:
-								property_value = getattr( model, property_name )
-								
-								if (property_value is not None and not isinstance( property_value,
-										(np.ndarray, pd.DataFrame) )):
-									detail_rows.append(
-										{ 'Property': property_name, 'Value': property_value } )
-							except Exception:
-								pass
-					
-					df_details = (pd.DataFrame( detail_rows ) if detail_rows else pd.DataFrame( ))
+					detail_rows = [ { 'Property': 'features', 'Value': model.features },
+						{ 'Property': 'leaves', 'Value': model.leaves },
+						{ 'Property': 'connected_components', 'Value': model.connected_components },
+						{ 'Property': 'n_clusters', 'Value': model.model.n_clusters },
+						{ 'Property': 'fitted_clusters', 'Value': model.model.n_clusters_ },
+						{ 'Property': 'metric', 'Value': model.model.metric },
+						{ 'Property': 'linkage', 'Value': model.model.linkage },
+						{ 'Property': 'compute_full_tree', 'Value': model.model.compute_full_tree },
+						{ 'Property': 'distance_threshold', 'Value': model.model.distance_threshold },
+						{ 'Property': 'compute_distances', 'Value': model.model.compute_distances } ]
+					df_details = pd.DataFrame( detail_rows )
 					df_centroids = pd.DataFrame( )
 					st.session_state[ 'model' ] = model
 					st.session_state[ 'df_cluster_agglomerative_results' ] = df_results.copy( )

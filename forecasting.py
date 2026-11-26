@@ -44,7 +44,7 @@
 ******************************************************************************************
 """
 from __future__ import annotations
-from boogr import Error, Logger
+from .boogr import Error, Logger
 from typing import Optional, Dict, Generator, Tuple
 import numpy as np
 import statsmodels.tsa.statespace.sarimax as st

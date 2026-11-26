@@ -46,7 +46,7 @@ from __future__ import annotations
 from typing import Optional, List, Any
 import numpy as np
 import sklearn.preprocessing as pp
-from boogr import Error, Logger
+from .boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required clustering argument.
