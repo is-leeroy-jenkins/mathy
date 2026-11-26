@@ -11,7 +11,7 @@ requires-python = ">=3.11"
 license = {file = "LICENSE.txt"}
 authors = [{name = "Terry D. Eppler"}]
 dependencies = [
-    "numpy", "pandas", "scipy", "scikit-learn>=1.4", "matplotlib",
+    "numpy", "pandas", "scipy", "scikit-learn>=1.7", "matplotlib",
     "seaborn", "statsmodels", "pydantic", "openpyxl",
     "plotly", "streamlit", "streamlit-extras",
 ]
