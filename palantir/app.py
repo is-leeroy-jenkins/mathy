@@ -70,11 +70,12 @@ import re
 import sqlite3
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression as SKLogisticRegression
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from sklearn.utils.multiclass import type_of_target
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import (confusion_matrix, roc_curve, auc, r2_score, accuracy_score,
                              precision_score, recall_score, f1_score)
@@ -7244,7 +7245,7 @@ elif mode == 'Classification Models':
 							X_cols = get_valid_classification_columns( X_cols, df_input )
 							if require_classification_columns( X_cols, 'SBS' ):
 								if target_col and target_col in df_input.columns:
-									selector = SBS( classifier=None,
+									selector = SBS( classifier=KNeighborsClassifier( ),
 										k_features=int( min( k_features, len( X_cols ) ) ),
 										test_size=float( test_size ),
 										random_state=int( random_state ) )
@@ -7297,7 +7298,7 @@ elif mode == 'Classification Models':
 							if require_classification_columns( X_cols, 'RFE' ):
 								if target_col and target_col in df_input.columns:
 									selector = RFE(
-										k_features=int( min( k_features, len( X_cols ) ) ),
+										estimator=DecisionTreeClassifier( random_state=42 ), k_features=int( min( k_features, len( X_cols ) ) ),
 										verbose=int( verbose ) )
 									X_input = get_numeric_classification_subset( df_input,
 										X_cols ).to_numpy( )
@@ -7623,40 +7624,40 @@ elif mode == 'Classification Models':
 					st.markdown( '###### 🎚️ Hyper Parameters' )
 					least_squares_alpha = st.number_input( 'Alpha', min_value=0.000001,
 						value=float( st.session_state[ 'classification_least_squares_alpha' ] ),
-						step=0.000100, format='%.6f', key='classification_leastsquares_alpha' )
+						step=0.000100, format='%.6f', key='classification_least_squares_alpha' )
 					
 					least_squares_eta = st.number_input( 'Eta', min_value=0.000001,
 						value=float( st.session_state[ 'classification_least_squares_eta' ] ),
-						step=0.010000, format='%.6f', key='classification_leastsquares_eta' )
+						step=0.010000, format='%.6f', key='classification_least_squares_eta' )
 					
 					least_squares_iters = st.number_input( 'Iterations', min_value=1,
 						value=int( st.session_state[ 'classification_least_squares_iters' ] ),
-						step=1, key='classification_leastsquares_iters' )
+						step=1, key='classification_least_squares_iters' )
 				
 				with ls_c2:
 					st.markdown( '###### 🚦 Regularization / Split' )
 					least_squares_shuffle = st.checkbox( 'Shuffle',
 						value=bool( st.session_state[ 'classification_least_squares_shuffle' ] ),
-						key='classification_leastsquares_shuffle' )
+						key='classification_least_squares_shuffle' )
 					
 					least_squares_penalty = st.selectbox( 'Penalty',
 						options=[ None, 'l2', 'l1', 'elasticnet' ],
 						index=[ None, 'l2', 'l1', 'elasticnet' ].index(
 							st.session_state[ 'classification_least_squares_penalty' ] ),
 						format_func=lambda value: 'None' if value is None else str( value ),
-						key='classification_leastsquares_penalty' )
+						key='classification_least_squares_penalty' )
 					
 					least_squares_test_size = st.slider( 'Test Set Size (%)', min_value=10,
 						max_value=30, step=1,
 						value=int( st.session_state[ 'classification_least_squares_test_size' ] ),
-						key='classification_leastsquares_test_size' ) / 100.0
+						key='classification_least_squares_test_size' ) / 100.0
 				
 				with ls_c3:
 					st.markdown( '###### 🏃 Run Configuration' )
 					least_squares_random_state = st.number_input( 'Random State', min_value=0,
 						value=int(
 							st.session_state[ 'classification_least_squares_random_state' ] ),
-						step=1, key='classification_leastsquares_random_state' )
+						step=1, key='classification_least_squares_random_state' )
 					
 					st.caption(
 						f'Rows: {len( df_model ):,} | Features: {len( active_features ):,} | '
@@ -9661,7 +9662,7 @@ elif mode == 'Classification Models':
 						estimators = [ ]
 						
 						if vote_include_logistic:
-							estimators.append( ('logistic', LogisticRegression( max_iter=1000,
+							estimators.append( ('logistic', SKLogisticRegression( max_iter=1000,
 								random_state=int( vote_random_state ) )) )
 						
 						if vote_include_tree:
@@ -9854,7 +9855,7 @@ elif mode == 'Classification Models':
 						
 						estimators = [ ]
 						if stack_include_logistic:
-							estimators.append( ('logistic', LogisticRegression( max_iter=1000,
+							estimators.append( ('logistic', SKLogisticRegression( max_iter=1000,
 								random_state=int( stack_random_state ) )) )
 						
 						if stack_include_tree:
@@ -9876,7 +9877,7 @@ elif mode == 'Classification Models':
 							st.stop( )
 						
 						if stack_final == 'logistic':
-							final_estimator = LogisticRegression( max_iter=1000,
+							final_estimator = SKLogisticRegression( max_iter=1000,
 								random_state=int( stack_random_state ) )
 						else:
 							final_estimator = DecisionTreeClassifier(
@@ -11757,7 +11758,7 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = SBS( classifier=None, k_features=int( k_features ),
+								selector = SBS( classifier=KNeighborsRegressor( ), scoring=r2_score, k_features=int( k_features ),
 									test_size=float( test_size ), random_state=int( random_state
 									) )
 								
@@ -11805,7 +11806,7 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = RFE( k_features=int( k_features ),
+								selector = RFE( estimator=DecisionTreeRegressor( random_state=42 ), k_features=int( k_features ),
 									verbose=int( verbose ) )
 								X_input = df_processed[ X_cols ].apply( pd.to_numeric,
 									errors='coerce' ).fillna( 0.0 ).to_numpy( )
@@ -17109,7 +17110,13 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = SBS( classifier=None, k_features=int( k_features ),
+								target_type = type_of_target( df_processed[ target_col ].to_numpy( ) )
+								if target_type not in { 'binary', 'multiclass', 'continuous' }:
+									st.warning( 'Select a binary, multiclass, or continuous target for SBS.' )
+									st.stop( )
+								classifier = KNeighborsRegressor( ) if target_type == 'continuous' else KNeighborsClassifier( )
+								scoring = r2_score if target_type == 'continuous' else accuracy_score
+								selector = SBS( classifier=classifier, scoring=scoring, k_features=int( k_features ),
 									test_size=float( test_size ), random_state=int( random_state
 									) )
 								
@@ -17153,7 +17160,12 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and target_col:
 								df_processed = df_working.copy( )
-								selector = RFE( k_features=int( k_features ),
+								target_type = type_of_target( df_processed[ target_col ].to_numpy( ) )
+								if target_type not in { 'binary', 'multiclass', 'continuous' }:
+									st.warning( 'Select a binary, multiclass, or continuous target for RFE.' )
+									st.stop( )
+								estimator = DecisionTreeRegressor( random_state=42 ) if target_type == 'continuous' else DecisionTreeClassifier( random_state=42 )
+								selector = RFE( estimator=estimator, k_features=int( k_features ),
 									verbose=int( verbose ) )
 								X_input = df_processed[ X_cols ].apply( pd.to_numeric,
 									errors='coerce' ).fillna( 0.0 ).to_numpy( )

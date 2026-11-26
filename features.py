@@ -52,10 +52,11 @@ from sklearn.decomposition import PCA as PrincipalComponentAnalysis
 from sklearn.cross_decomposition import CCA as CanonicalCorrelationAnalysis
 import sklearn.feature_selection as sf
 from sklearn.metrics import accuracy_score
-from sklearn.base import clone
+from sklearn.base import BaseEstimator, clone
+from sklearn.tree import DecisionTreeClassifier
 from itertools import combinations
 from sklearn.model_selection import train_test_split as split
-from .classifications import Classifier, NearestNeighbor
+
 from .boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
@@ -1664,7 +1665,7 @@ class SBS( Selector ):
 	"""Sequential Back-Selector, feature-selection class.
 	
 	Purpose:
-	    Implements sequential backward selection with a cloned classifier and scoring
+	    Implements sequential backward selection with a cloned estimator and scoring
 	    function. The class iteratively removes features, tracks candidate subsets,
 	    records subset scores, and preserves the selected feature indices for projection and
 	    evaluation.
@@ -1673,7 +1674,7 @@ class SBS( Selector ):
 	    scoring (Optional[callable]): Callable used to score classifier predictions during sequential
 	        selection.
 	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated during scoring.
-	    classifier (Optional[Classifier]): Classifier instance cloned or fitted by the feature selector.
+	    classifier (Optional[BaseEstimator]): Classifier instance cloned or fitted by the feature selector.
 	    random_state (Optional[int]): Random seed used for reproducible train/test splitting.
 	    test_size (Optional[float]): Testing-set proportion used during feature-selection evaluation.
 	    k_features (Optional[int]): Target number of features retained by sequential backward selection.
@@ -1685,7 +1686,7 @@ class SBS( Selector ):
 	    k_score_ (Optional[float]): Best score associated with the selected feature subset."""
 	scoring: Optional[ Callable ]
 	prediction: Optional[ np.ndarray ]
-	classifier: Optional[ Classifier ]
+	classifier: Optional[ BaseEstimator ]
 	random_state: Optional[ int ]
 	test_size: Optional[ float ]
 	k_features: Optional[ int ]
@@ -1695,7 +1696,7 @@ class SBS( Selector ):
 	scores_: Optional[ List[ float ] ]
 	k_score_: Optional[ float ]
 	
-	def __init__( self, classifier: Classifier, k_features: int, scoring: Callable=accuracy_score,
+	def __init__( self, classifier: BaseEstimator, k_features: int, scoring: Callable=accuracy_score,
 			test_size: float=0.25, random_state: int=1 ) -> None:
 		"""Initialize SBS.
 		
@@ -1705,7 +1706,7 @@ class SBS( Selector ):
 		    scores.
 		
 		Args:
-		    classifier (Classifier): Classifier used for feature-selection evaluation.
+		    classifier (BaseEstimator): Native estimator used for feature-selection evaluation.
 		    k_features (int): Target number of features retained by sequential backward
 		                      selection.
 		    scoring (callable): Callable used to evaluate candidate feature subsets.
@@ -2015,7 +2016,7 @@ class RFE( Selector ):
 	                              cross-decomposition estimator.
 	    prediction (Optional[np.ndarray]): Most recent classifier predictions generated
 	                                       during scoring.
-	    classifier (Optional[NearestNeighbor]): Classifier instance cloned or fitted by the
+	    classifier (Optional[BaseEstimator]): Classifier instance cloned or fitted by the
 	                                            feature selector.
 	    transformed_data (Optional[np.ndarray]): Most recent feature matrix produced by
 	                                             projection or transformation.
@@ -2029,7 +2030,7 @@ class RFE( Selector ):
 	    testing_score (Optional[float]): Estimator score calculated on the testing split."""
 	model: Optional[ sf.RFE ]
 	prediction: Optional[ np.ndarray ]
-	classifier: Optional[ NearestNeighbor ]
+	classifier: Optional[ BaseEstimator ]
 	transformed_data: Optional[ np.ndarray ]
 	n_features_to_select: Optional[ int ]
 	verbose: Optional[ int ]
@@ -2037,11 +2038,11 @@ class RFE( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, k_features: int = None, verbose: int = 0 ) -> None:
+	def __init__( self, k_features: int = None, verbose: int = 0, estimator: Optional[ BaseEstimator ]=None ) -> None:
 		"""Initialize RFE.
 		
 		Purpose:
-		    Initializes recursive feature elimination with a nearest-neighbor classifier,
+		    Initializes recursive feature elimination with a feature-importance-compatible estimator,
 		    retained feature count, verbosity configuration, wrapped sklearn RFE estimator,
 		    transformed-data storage, and score fields.
 		
@@ -2049,12 +2050,14 @@ class RFE( Selector ):
 		    k_features (int): Target number of features retained by sequential backward
 		                      selection.
 		    verbose (int): Verbosity level passed to recursive feature elimination.
+		    estimator (Optional[BaseEstimator]): Native estimator exposing fitted coefficients or
+		        feature importances; defaults to DecisionTreeClassifier with random_state=42.
 		
 		Returns:
 		    None: This method initializes the object and does not return a value."""
 		super( ).__init__( )
 		self.n_features_to_select = k_features
-		self.classifier = NearestNeighbor( )
+		self.classifier = estimator if estimator is not None else DecisionTreeClassifier( random_state=42 )
 		self.verbose = verbose
 		self.model = sf.RFE( estimator=self.classifier,
 			n_features_to_select=self.n_features_to_select,
