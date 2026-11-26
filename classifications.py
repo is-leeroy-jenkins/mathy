@@ -62,6 +62,9 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 from seaborn import colors
 from sklearn.base import ClassifierMixin
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn import __version__ as sklearn_version
+from packaging.version import Version
 from sklearn.metrics import (recall_score, precision_score, confusion_matrix, classification_report,
                              auc, roc_curve, average_precision_score, balanced_accuracy_score,
                              ConfusionMatrixDisplay, accuracy_score, top_k_accuracy_score, f1_score,
@@ -1311,7 +1314,8 @@ class LogisticRegression( Classifier ):
 	    the logistic function, hence the name.
 	
 	Attributes:
-	    model (skc.LogisticRegression): Underlying or statsmodels estimator.
+	    model (skc.LogisticRegression | OneVsRestClassifier): Underlying logistic estimator.
+	    l1_ratio (float): Elastic-net mixing ratio between zero and one.
 	    binarizer (Optional[Binarizer]): Binarizer used to convert continuous outputs into
 	                                     class labels.
 	    prediction (Optional[np.ndarray]): Most recent predictions or cluster labels
@@ -1342,14 +1346,15 @@ class LogisticRegression( Classifier ):
 	                                                      classification report.
 	    confusion_matrix_values (Optional[np.ndarray]): Most recently calculated
 	                                                    confusion-matrix values."""
-	model: skc.LogisticRegression
+	model: skc.LogisticRegression | OneVsRestClassifier
+	l1_ratio: float
 	binarizer: Optional[ Binarizer ]
 	prediction: Optional[ np.ndarray ]
 	decision: Optional[ np.ndarray ]
 	probability: Optional[ np.ndarray ]
 	transformed_data: Optional[ np.ndarray ]
 	random_state: Optional[ int ]
-	penalty: str
+	penalty: Optional[ str ]
 	multi_class: str
 	C: float
 	max_iter: int
@@ -1364,8 +1369,8 @@ class LogisticRegression( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
-	def __init__( self, C: float=1.0, penalty: str='l2', iters: int=1000,
-		multiclass: str='multinomial', solver: str='lbfgs', random: int=42 ) -> None:
+	def __init__( self, C: float=1.0, penalty: Optional[ str ]='l2', iters: int=1000,
+		multiclass: str='multinomial', solver: str='lbfgs', random: int=42, l1_ratio: float=0.5 ) -> None:
 		"""Initialize LogisticRegression.
 		
 		Purpose:
@@ -1375,7 +1380,8 @@ class LogisticRegression( Classifier ):
 		
 		Args:
 		    C (float): Inverse regularization strength assigned to the estimator.
-		    penalty (str): Regularization penalty assigned to the estimator.
+		    penalty (Optional[str]): Regularization penalty; None or 'none' disables it.
+		    l1_ratio (float): Elastic-net mixing ratio, used only for elastic net.
 		    iters (int): Maximum iteration count assigned to the estimator.
 		    multiclass (str): Multiclass handling strategy assigned to the estimator.
 		    solver (str): Optimization solver assigned to the estimator.
@@ -1387,12 +1393,25 @@ class LogisticRegression( Classifier ):
 		self.C = C
 		self.random_state = random
 		self.penalty = penalty
+		self.l1_ratio = l1_ratio
 		self.max_iter = iters
 		self.multi_class = multiclass
 		self.solver = solver
 		self.validate_configuration( )
-		self.model = skc.LogisticRegression( C=self.C, max_iter=self.max_iter,
-			solver=self.solver, random_state=self.random_state )
+		if Version( sklearn_version ) < Version( '1.8' ):
+			effective_penalty = None if self.penalty == 'none' else self.penalty
+			ratio = self.l1_ratio if self.penalty == 'elasticnet' else None
+			estimator = skc.LogisticRegression( C=self.C, max_iter=self.max_iter,
+				solver=self.solver, random_state=self.random_state, penalty=effective_penalty,
+				l1_ratio=ratio )
+		else:
+			ratio = { 'l1': 1.0, 'l2': 0.0, 'elasticnet': self.l1_ratio,
+				'none': 0.0, None: 0.0 }[ self.penalty ]
+			effective_c = np.inf if self.penalty in { 'none', None } else self.C
+			estimator = skc.LogisticRegression( C=effective_c, max_iter=self.max_iter,
+				solver=self.solver, random_state=self.random_state, l1_ratio=ratio )
+		self.model = OneVsRestClassifier( estimator ) if self.multi_class == 'ovr' or (
+			self.multi_class == 'auto' and self.solver == 'liblinear' ) else estimator
 	
 	def __dir__( self ) -> List[ str ]:
 		"""List public members.
@@ -1403,7 +1422,7 @@ class LogisticRegression( Classifier ):
 		
 		Returns:
 		    List[str]: Public member names exposed by the class/object."""
-		return [ 'prediction', 'penalty', 'solver', 'multi_class', 'random_state', 'max_iter',
+		return [ 'prediction', 'penalty', 'l1_ratio', 'solver', 'multi_class', 'random_state', 'max_iter',
 			'predict_probability', 'decision_function', 'train', 'project', 'score', 'analyze',
 			'confusion_matrix', 'roc_curve', 'weights', 'iterations', 'labels', 'accuracy',
 			'precision', 'balanced_accuracy', 'f1_score', 'recall', 'testing_score',
@@ -1439,6 +1458,14 @@ class LogisticRegression( Classifier ):
 			
 			if self.penalty == 'elasticnet' and self.solver != 'saga':
 				raise ValueError( 'penalty="elasticnet" requires solver "saga".' )
+			if self.multi_class not in { 'auto', 'ovr', 'multinomial' }:
+				raise ValueError( f'Unsupported multiclass strategy: {self.multi_class}' )
+			if self.solver == 'liblinear' and self.multi_class == 'multinomial':
+				raise ValueError( 'liblinear requires ovr or auto multiclass strategy.' )
+			if self.solver == 'liblinear' and self.penalty in { 'none', None }:
+				raise ValueError( 'liblinear requires L1 or L2 regularization.' )
+			if self.penalty == 'elasticnet' and not 0.0 <= self.l1_ratio <= 1.0:
+				raise ValueError( 'Elastic-net l1_ratio must be between zero and one.' )
 		except Exception as e:
 			exception = Error( e )
 			exception.module = 'mathy'
@@ -1461,8 +1488,8 @@ class LogisticRegression( Classifier ):
 		Raises:
 		    Exception: Raised when validation fails or required fitted metadata is unavailable.
 		    AttributeError: Raised when the `weights` operation cannot complete."""
-		if not hasattr( self.model, 'coef_' ):
-			raise AttributeError( 'The model data has not been trained!' )
+		if isinstance( self.model, OneVsRestClassifier ):
+			return np.vstack( [ estimator.coef_ for estimator in self.model.estimators_ ] )
 		return self.model.coef_
 	
 	@property
@@ -1496,8 +1523,8 @@ class LogisticRegression( Classifier ):
 		Raises:
 		    Exception: Raised when validation fails or required fitted metadata is unavailable.
 		    AttributeError: Raised when the `iterations` operation cannot complete."""
-		if not hasattr( self.model, 'n_iter_' ):
-			raise AttributeError( 'The model has not been trained!' )
+		if isinstance( self.model, OneVsRestClassifier ):
+			return np.concatenate( [ estimator.n_iter_ for estimator in self.model.estimators_ ] )
 		return self.model.n_iter_
 	
 	def split_data( self, X: np.ndarray, y: np.ndarray, size: float=0.2,
