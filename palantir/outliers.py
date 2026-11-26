@@ -624,16 +624,16 @@ class OutlierFactor( Outlier ):
 	    anomaly_scores (Optional[np.ndarray]): Most recent local outlier scores or decision
 	                                           scores.
 	    neighbors (Optional[int]): Number of neighbors used for local density estimation.
-	    contamination (Optional[float]): Expected proportion of outliers in the data.
+	    contamination (float | str): Expected outlier proportion or 'auto'.
 	    novelty (Optional[bool]): Flag indicating whether novelty detection is enabled."""
 	model: nn.LocalOutlierFactor
 	prediction: Optional[ np.ndarray ]
 	anomaly_scores: Optional[ np.ndarray ]
 	neighbors: Optional[ int ]
-	contamination: Optional[ float ]
+	contamination: float | str
 	novelty: Optional[ bool ]
 	
-	def __init__( self, n_neighbors: int=20, contamination: float=0.1, novelty: bool=True ) -> None:
+	def __init__( self, n_neighbors: int=20, contamination: float | str=0.1, novelty: bool=True ) -> None:
 		"""Initialize LocalOutlierFactor.
 		
 		Purpose:
@@ -643,7 +643,7 @@ class OutlierFactor( Outlier ):
 		
 		Args:
 		    n_neighbors (int): Number of neighbors used for local density estimation.
-		    contamination (float): Expected proportion of outliers in the input data.
+		    contamination (float | str): Expected outlier proportion or 'auto'.
 		    novelty (bool): Flag indicating whether novelty detection is enabled for unseen
 		                    samples.
 		
