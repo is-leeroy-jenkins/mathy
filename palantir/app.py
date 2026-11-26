@@ -1005,6 +1005,35 @@ def processed_to_working( ) -> None:
 	st.session_state[ 'df_processed' ] = df_reset.copy( )
 	commit_frame( df_reset )
 
+def commit_cca_columns( df_frame: pd.DataFrame, X_cols: list[ str ], y_cols: list[ str ], result: tuple ) -> pd.DataFrame:
+	"""Preserve separate predictor and target roles for canonical scores.
+
+	Purpose:
+	    Replaces CCA input columns with separately named canonical-score columns and
+	    updates the selected feature and target contracts without introducing overlap.
+
+	Args:
+	    df_frame (pd.DataFrame): Original indexed input frame.
+	    X_cols (list[str]): Predictor columns consumed by CCA.
+	    y_cols (list[str]): Target columns consumed by CCA.
+	    result (tuple): Predictor and target canonical-score matrices.
+
+	Returns:
+	    pd.DataFrame: Frame containing the separate canonical-score columns.
+	"""
+	df_X = normalize_result_frame( result=result[ 0 ], index=df_frame.index,
+		prefix='cca_X', columns=None )
+	df_y = normalize_result_frame( result=result[ 1 ], index=df_frame.index,
+		prefix='cca_y', columns=None )
+	remaining = df_frame.drop( columns=X_cols + y_cols )
+	if set( remaining.columns ).intersection( list( df_X.columns ) + list( df_y.columns ) ):
+		raise ValueError( 'CCA output names conflict with existing columns.' )
+	features = [ col for col in st.session_state.get( 'features', [ ] ) if col in remaining.columns ]
+	targets = [ col for col in st.session_state.get( 'targets', [ ] ) if col in remaining.columns ]
+	st.session_state[ 'features' ] = [ col for col in features if col not in targets ] + list( df_X.columns )
+	st.session_state[ 'targets' ] = targets + list( df_y.columns )
+	return pd.concat( [ remaining, df_X, df_y ], axis=1 )
+
 def normalize_result_frame( result: object, index: pd.Index, prefix: str,
 	columns: list[ str ] ) -> pd.DataFrame:
 	"""Normalize transformation output into a dataframe.
@@ -5296,10 +5325,11 @@ elif mode == 'Anomaly Detection':
 				df_anamolies.loc[ df_muliti.index, 'iforest' ] = preds == -1
 			
 			if use_lof:
-				from sklearn.neighbors import LocalOutlierFactor
+				from mathy.outliers import OutlierFactor
 				
-				lof = LocalOutlierFactor( n_neighbors=lof_k )
-				preds = lof.fit_predict( df_muliti.values )
+				lof = OutlierFactor( n_neighbors=lof_k, contamination='auto', novelty=False )
+				lof.train( df_muliti.values )
+				preds = lof.prediction
 				df_anamolies.loc[ df_muliti.index, 'lof' ] = preds == -1
 		
 		# -------------------------------------------------------------------------
@@ -7037,6 +7067,12 @@ elif mode == 'Classification Models':
 							if require_classification_columns( X_cols,
 									'CCA predictors' ) and require_classification_columns( y_cols,
 								'CCA targets' ):
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								result = selector.train_transform(
@@ -7044,13 +7080,9 @@ elif mode == 'Classification Models':
 										X_cols ).to_numpy( ),
 									get_numeric_classification_subset( df_input,
 										y_cols ).to_numpy( ) )
-								df_result = normalize_result_frame( result=result,
-									index=df_input.index, prefix='cca', columns=None )
-								df_output = pd.concat(
-									[ df_input.drop( columns=X_cols + y_cols, errors='ignore' ),
-										df_result ], axis=1 )
-								commit_classification_processed_frame( df_input, df_output,
-									X_cols + y_cols, False )
+								df_output = commit_cca_columns( df_input, X_cols, y_cols, result )
+								st.session_state[ 'df_processed' ] = df_output.copy( )
+								commit_frame( df_output )
 								st.success( 'CCA Applied.' )
 								st.rerun( )
 					
@@ -9307,7 +9339,8 @@ elif mode == 'Classification Models':
 				with ab_c2:
 					st.markdown( '###### ♟️ Algorithm / Split' )
 					ab_algorithm = st.selectbox( 'Algorithm', options=[ 'SAMME' ], index=0,
-						key='classification_ab_algorithm' )
+						key='classification_ab_algorithm', disabled=True,
+						help='SAMME is the fixed algorithm supported by this estimator.' )
 					
 					ab_test_size = st.slider( 'Test Set Size (%)', min_value=10, max_value=30,
 						value=int( st.session_state[ 'classification_ab_test_size' ] ), step=1,
@@ -11572,6 +11605,12 @@ elif mode == 'Regression Models':
 								use_container_width=True ):
 							if X_cols and y_cols:
 								df_processed = df_working.copy( )
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								
@@ -11579,14 +11618,7 @@ elif mode == 'Regression Models':
 									df_processed[ X_cols ].to_numpy( ),
 									df_processed[ y_cols ].to_numpy( ) )
 								
-								df_result = normalize_result_frame( result=result,
-									index=df_processed.index, prefix='cca', columns=None )
-								
-								df_processed = pd.concat(
-									[ df_processed.drop( columns=X_cols + y_cols,
-										errors='ignore' ),
-										df_result ], axis=1 )
-								
+								df_processed = commit_cca_columns( df_processed, X_cols, y_cols, result )
 								st.session_state[ 'df_processed' ] = df_processed.copy( )
 								commit_frame( df_processed )
 								st.success( 'CCA Applied.' )
@@ -16945,6 +16977,12 @@ elif mode == 'Clustering Models':
 								use_container_width=True ):
 							if X_cols and y_cols:
 								df_processed = df_working.copy( )
+								if set( X_cols ).intersection( y_cols ):
+									st.warning( 'CCA predictor and target columns must be disjoint.' )
+									st.stop( )
+								if n_components > min( len( X_cols ), len( y_cols ) ):
+									st.warning( 'CCA components cannot exceed either input column count.' )
+									st.stop( )
 								selector = CCA( num=int( n_components ), scale=bool( scale ),
 									size=int( max_iter ) )
 								
@@ -16952,14 +16990,8 @@ elif mode == 'Clustering Models':
 									df_processed[ X_cols ].to_numpy( ),
 									df_processed[ y_cols ].to_numpy( ) )
 								
-								df_result = normalize_result_frame( result=result,
-									index=df_processed.index, prefix='cca', columns=None )
-								
-								df_processed = pd.concat(
-									[ df_processed.drop( columns=X_cols + y_cols,
-										errors='ignore' ),
-										df_result ], axis=1 )
-								
+								df_processed = commit_cca_columns( df_processed, X_cols, y_cols, result )
+								st.session_state[ 'df_processed' ] = df_processed.copy( )
 								commit_frame( df_processed )
 								st.success( 'CCA Applied.' )
 					
