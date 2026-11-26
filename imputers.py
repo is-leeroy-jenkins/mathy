@@ -182,7 +182,7 @@ class Imputer( ):
 		raise NotImplementedError( )
 
 class MeanImputer( Imputer ):
-	"""Wrap mean-based SimpleImputer.
+	"""Encapsulates scikit's mean-based SimpleImputer.
 	
 	Purpose:
 	    Replaces missing values using the arithmetic mean of each fitted feature column. The
@@ -235,7 +235,7 @@ class MeanImputer( Imputer ):
 			'train_transform', 'inverse_transform' ]
 	
 	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> MeanImputer | None:
-		"""Fit MeanImputer.
+		"""Fit's the data.
 		
 		Purpose:
 		    Fits the underlying  SimpleImputer to the supplied feature matrix and returns
@@ -293,10 +293,10 @@ class MeanImputer( Imputer ):
 			raise exception
 	
 	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
-		"""Fit and transform with MeanImputer.
+		"""Fit and transform the data.
 		
 		Purpose:
-		    Fits the underlying  SimpleImputer to the supplied feature matrix, imputes
+		    Fits the underlying imputer to the supplied feature matrix, imputes
 		    the same matrix immediately, and stores the imputed result on the class/object.
 		
 		Args:
@@ -322,7 +322,7 @@ class MeanImputer( Imputer ):
 			raise exception
 	
 class NearestImputer( Imputer ):
-	""" Nearest Neighbor Imputer.
+	"""Encapsulates scikit's Nearest Neighbor Imputer.
 	
 	Purpose:
 	    Replaces missing values using values from nearest neighboring samples. The class/object
@@ -369,7 +369,7 @@ class NearestImputer( Imputer ):
 			'train_transform' ]
 	
 	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> NearestImputer | None:
-		"""Fit NearestImputer.
+		"""Fits the data.
 		
 		Purpose:
 		    Fits the underlying  KNNImputer to the supplied feature matrix and returns
@@ -398,7 +398,7 @@ class NearestImputer( Imputer ):
 			raise exception
 	
 	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
-		"""Transform with NearestImputer.
+		"""Transforms the data.
 		
 		Purpose:
 		    Replaces missing values in the supplied feature matrix using nearest-neighbor
@@ -426,7 +426,7 @@ class NearestImputer( Imputer ):
 			raise exception
 	
 	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
-		"""Fit and transform with NearestImputer.
+		"""Fit and transforms the data.
 		
 		Purpose:
 		    Fits the underlying KNNImputer to the supplied feature matrix, imputes the
@@ -455,7 +455,7 @@ class NearestImputer( Imputer ):
 			raise exception
 
 class IterativeImputer( Imputer ):
-	"""Wrap IterativeImputer.
+	"""Multivariate imputer that estimates each feature from all the others.
 	
 	Purpose:
 	    Replaces missing values by modeling each feature with missing observations as a
@@ -467,14 +467,13 @@ class IterativeImputer( Imputer ):
 	    imputer (im.IterativeImputer): Underlying iterative imputer.
 	    max_iter (Optional[int]): Maximum number of imputation rounds.
 	    random_state (Optional[int]): Random seed used by the imputer.
-	    transformed_data (Optional[np.ndarray]): Most recent imputed matrix produced by the
-	                                             class/object."""
+	    transformed_data (Optional[np.ndarray]): Most recent imputed matrix produced."""
 	imputer: im.IterativeImputer
 	max_iter: Optional[ int ]
 	random_state: Optional[ int ]
 	transformed_data: Optional[ np.ndarray ]
 	
-	def __init__( self, max_iter: int = 10, random_state: int = 0 ) -> None:
+	def __init__( self, max_iter: int=10, random_state: int=0 ) -> None:
 		"""Initialize IterativeImputer.
 		
 		Purpose:
@@ -544,8 +543,9 @@ class IterativeImputer( Imputer ):
 		    imputation model and stores the imputed matrix on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix transformed by the fitted imputer.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where “n_samples” is the
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): Ignored target array accepted for API compatibility.
 		
 		Returns:
 		    np.ndarray: Imputed feature matrix produced by the fitted iterative imputer.
@@ -594,7 +594,7 @@ class IterativeImputer( Imputer ):
 			raise exception
 
 class SimpleImputer( Imputer ):
-	"""Wrap strategy-based SimpleImputer.
+	"""Encapsulates a strategy-based Imputer.
 	
 	Purpose:
 	    Replaces missing values using SimpleImputer strategies such as mean, median,
@@ -604,12 +604,10 @@ class SimpleImputer( Imputer ):
 	
 	Attributes:
 	    imputer (im.SimpleImputer): Underlying simple imputer.
-	    transformed_data (Optional[np.ndarray]): Most recent imputed matrix produced by the
-	                                             class/object.
-	    strategy (Optional[str]): Imputation strategy used by the imputer.
+	    transformed_data (Optional[np.ndarray]): Most recent imputed matrix produced.
+	    strategy (Optional[str]): Imputation strategy: mean, median, most_frequent, constant.
 	    fill_value (Optional[object]): Replacement value used for constant imputation.
-	    add_indicator (bool): Flag indicating whether missing-value indicator columns are
-	                          appended.
+	    add_indicator (bool): Flag indicating whether missing-values are appended.
 	    keep_empty_features (bool): Flag indicating whether entirely missing fitted features
 	                                are preserved."""
 	imputer: im.SimpleImputer
@@ -660,15 +658,16 @@ class SimpleImputer( Imputer ):
 			'keep_empty_features', 'train', 'transform', 'train_transform', 'inverse_transform' ]
 	
 	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> SimpleImputer | None:
-		"""Fit SimpleImputer.
+		"""Fits the data.
 		
 		Purpose:
 		    Fits the underlying SimpleImputer to the supplied feature matrix and returns
 		    the current class/object for consistent preprocessing chains.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used to learn simple imputation statistics.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where “n_samples” is the
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): ignored target array accepted for API compatibility.
 		
 		Returns:
 		    SimpleImputer | None: Fitted simple-imputer class/object.
@@ -695,8 +694,9 @@ class SimpleImputer( Imputer ):
 		    statistics or constants and stores the imputed matrix on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix transformed by the fitted imputer.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where “n_samples” is the
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): ignored target array accepted for API compatibility.
 		
 		Returns:
 		    np.ndarray: Imputed feature matrix produced by the fitted simple imputer.
@@ -723,8 +723,9 @@ class SimpleImputer( Imputer ):
 		    the same matrix immediately, and stores the imputed result on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used for fitting and imputation.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape [n_samples, n_features]. Input data, where “n_samples” is the
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): shape [n_samples] of Target values. Ignored.
 		
 		Returns:
 		    np.ndarray: Imputed feature matrix produced after fitting the simple imputer.
@@ -743,33 +744,3 @@ class SimpleImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def inverse_transform( self, X: np.ndarray ) -> np.ndarray:
-		"""Invert SimpleImputer output.
-		
-		Purpose:
-		    Reconstructs a feature matrix toward its pre-imputed form using inverse
-		    transformation when missing-value indicator columns were included during fitting.
-		
-		Args:
-		    X (np.ndarray): Transformed feature matrix to invert.
-		
-		Returns:
-		    np.ndarray: Reconstructed feature matrix produced by the imputer.
-		
-		Raises:
-		    Error: Raised when validation fails, indicator columns are unavailable, or inverse
-		           transformation fails.
-		    ValueError: Raised when the `inverse_transform` operation cannot complete."""
-		try:
-			throw_if( 'X', X )
-			if not self.add_indicator:
-				raise ValueError( 'inverse_transform requires add_indicator=True in the '
-					'underlying sklearn.impute.SimpleImputer.' )
-			return self.imputer.inverse_transform( X )
-		except Exception as e:
-			exception = Error( e )
-			exception.module = 'mathy'
-			exception.cause = 'SimpleImputer'
-			exception.method = 'inverse_transform( self, X: np.ndarray ) -> np.ndarray'
-			Logger( ).write( exception )
-			raise exception
