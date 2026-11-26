@@ -327,9 +327,7 @@ class VarianceThreshold( Selector ):
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Tuple containing training
-		                                                           features, testing features,
-		                                                           training targets, and testing
-		                                                           targets.
+		        features, testing features, training targets, and testing targets.
 		
 		Raises:
 		    Error: Raised when validation, fitting, transformation, projection, or scoring fails
@@ -343,12 +341,11 @@ class VarianceThreshold( Selector ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'VarianceThreshold'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
-	def train( self, X: np.ndarray,
-			y: Optional[ np.ndarray ] = None ) -> sf.VarianceThreshold | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> sf.VarianceThreshold | None:
 		"""Fit VarianceThreshold.
 		
 		Purpose:
@@ -626,7 +623,7 @@ class CCA( Selector ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'CCA'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -913,7 +910,7 @@ class PCA( Selector ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'PCA'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -1109,7 +1106,7 @@ class SelectBest( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, score_func: object = sf.chi2, num: int = 10 ) -> None:
+	def __init__( self, score_func: object=sf.chi2, num: int=10 ) -> None:
 		"""Initialize SelectBest.
 		
 		Purpose:
@@ -1176,7 +1173,7 @@ class SelectBest( Selector ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'SelectBest'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -1399,7 +1396,7 @@ class SelectPercent( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, score_func: object = sf.chi2, pct: int = 10 ) -> None:
+	def __init__( self, score_func: object=sf.chi2, pct: int=10 ) -> None:
 		"""Initialize SelectPercent.
 		
 		Purpose:
@@ -1769,14 +1766,13 @@ class SBS( Selector ):
 		try:
 			throw_if( 'X', X )
 			throw_if( 'y', y )
-			X_train, X_test, y_train, y_test = split( X, y, test_size=size,
-				random_state=random )
+			X_train, X_test, y_train, y_test = split( X, y, test_size=size, random_state=random )
 			return (X_train, X_test, y_train, y_test)
 		except Exception as e:
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'SBS'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -2038,7 +2034,7 @@ class RFE( Selector ):
 	training_score: Optional[ float ]
 	testing_score: Optional[ float ]
 	
-	def __init__( self, k_features: int = None, verbose: int = 0, estimator: Optional[ BaseEstimator ]=None ) -> None:
+	def __init__( self, k_features: int=None, verbose: int=0, estimator: Optional[ BaseEstimator ]=None ) -> None:
 		"""Initialize RFE.
 		
 		Purpose:
@@ -2144,8 +2140,7 @@ class RFE( Selector ):
 		try:
 			throw_if( 'X', X )
 			throw_if( 'y', y )
-			X_train, X_test, y_train, y_test = split( X, y, test_size=size,
-				random_state=random )
+			X_train, X_test, y_train, y_test = split( X, y, test_size=size, random_state=random )
 			return (X_train, X_test, y_train, y_test)
 		except Exception as e:
 			exception = Error( e )
@@ -2236,8 +2231,7 @@ class RFE( Selector ):
 		try:
 			throw_if( 'X', X )
 			_support = self.model.get_support( )
-			df_scores = pd.DataFrame(
-				{ 'Feature': np.arange( 0, X.shape[ 1 ] ), 'Ranking': self.model.ranking_,
+			df_scores = pd.DataFrame( { 'Feature': np.arange( 0, X.shape[ 1 ] ), 'Ranking': self.model.ranking_,
 					'Selected': _support, } )
 			return df_scores
 		except Exception as e:

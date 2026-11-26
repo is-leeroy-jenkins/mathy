@@ -46,7 +46,8 @@ def create_predictive_pipeline( df_features: pd.DataFrame, estimator: object ) -
 		( 'estimator', estimator ) ] )
 
 
-def evaluate_predictive_model( df_source: pd.DataFrame, features: list[ str ], target: str, mode: str, name: str, size: float=0.2, random: int=42, folds: int=5 ) -> pd.DataFrame:
+def evaluate_predictive_model( df_source: pd.DataFrame, features: list[ str ], target: str,
+	mode: str, name: str, size: float=0.2, random: int=42, folds: int=5 ) -> pd.DataFrame:
 	"""Evaluate a supervised model with independent holdout and cross-validation.
 
 	Purpose:
@@ -125,7 +126,7 @@ def evaluate_predictive_model( df_source: pd.DataFrame, features: list[ str ], t
 		# The outer cross-validation also clones the complete ensemble.
 		for train_index, validation_index in cv.split( X_train, y_train ):
 			if classification and y_train.iloc[ train_index ].value_counts( ).min( ) < 2:
-				raise ValueError( 'Stacking requires at least two observations per class in every outer training fold.' )
+				raise ValueError( 'Stacking requires at least two observations per class.' )
 			if not classification and len( train_index ) < 2:
 				raise ValueError( 'Stacking requires at least two observations in every outer training fold.' )
 		estimators = [ ( 'linear', create_predictive_pipeline( X_train, linear ) ),
