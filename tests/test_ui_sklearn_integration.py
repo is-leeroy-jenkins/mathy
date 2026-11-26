@@ -1,6 +1,8 @@
 """Regression tests for UI-to-estimator integration contracts."""
 
+import ast
 import unittest
+import pandas as pd
 from pathlib import Path
 from unittest.mock import patch
 import numpy as np
@@ -93,3 +95,23 @@ class UIIntegrationContracts( unittest.TestCase ):
 			self.assertIn( "prefix='cca_X'", source )
 			self.assertIn( "prefix='cca_y'", source )
 			self.assertEqual( source.count( ' = commit_cca_columns( ' ), 3 )
+
+	def test_model_input_guard( self ) -> None:
+		"""Verify changed values, generated columns and changed rows require exploratory consent."""
+		root = Path( __file__ ).resolve( ).parents[ 1 ]
+		df_source = pd.DataFrame( { 'feature': [ 1.0, 2.0, 3.0 ], 'target': [ 0, 1, 0 ] } )
+		for path in [ root / 'app.py', root / 'palantir' / 'app.py' ]:
+			tree = ast.parse( path.read_text( encoding='utf-8' ) )
+			function = next( node for node in tree.body if isinstance( node, ast.FunctionDef )
+				and node.name == 'is_unmodified_model_input' )
+			namespace = { 'pd': pd }
+			exec( compile( ast.Module( body=[ function ], type_ignores=[ ] ),
+				str( path ), 'exec' ), namespace )
+			guard = namespace[ 'is_unmodified_model_input' ]
+			columns = [ 'feature', 'target' ]
+			self.assertTrue( guard( df_source, df_source.copy( ), columns ) )
+			self.assertFalse( guard( df_source, df_source.assign( feature=[ 2.0, 3.0, 4.0 ] ), columns ) )
+			self.assertFalse( guard( df_source, df_source.iloc[ :2 ], columns ) )
+			self.assertFalse( guard( df_source, df_source.iloc[ ::-1 ], columns ) )
+			self.assertFalse( guard( df_source, df_source.rename( columns={ 'feature': 'encoded' } ),
+				[ 'encoded', 'target' ] ) )
