@@ -7751,7 +7751,7 @@ elif mode == 'Classification Models':
 					help=cfg.LOGISTIC_REGRESSION )
 				
 				logistic_defaults = { 'classification_logistic_c': 1.000000,
-					'classification_logistic_penalty': 'l2', 'classification_logistic_iters': 1000,
+					'classification_logistic_penalty': 'l2', 'classification_logistic_l1_ratio': 0.5, 'classification_logistic_iters': 1000,
 					'classification_logistic_multiclass': 'multinomial',
 					'classification_logistic_solver': 'lbfgs',
 					'classification_logistic_test_size': 20,
@@ -7761,6 +7761,22 @@ elif mode == 'Classification Models':
 					if key not in st.session_state:
 						st.session_state[ key ] = value
 				
+				def reset_logistic_state( ) -> None:
+					"""Restore logistic regression controls and clear fitted results."""
+					for key, value in logistic_defaults.items( ):
+						st.session_state[ key ] = value
+					st.session_state[ 'elapsed_seconds' ] = 0.0
+					st.session_state[ 'model' ]=None
+					st.session_state[ 'y_prediction' ]=None
+					st.session_state[ 'X_train' ]=None
+					st.session_state[ 'X_test' ]=None
+					st.session_state[ 'y_train' ]=None
+					st.session_state[ 'y_test' ]=None
+					st.session_state[ 'df_model' ]=None
+					st.session_state[ 'df_scores' ]=None
+					st.session_state[ 'df_predictions' ]=None
+				
+
 				log_c1, log_c2, log_c3 = st.columns( [ 0.34, 0.33, 0.33 ], border=True )
 				with log_c1:
 					st.markdown( '###### 🎚️ Hyper Parameters' )
@@ -7774,6 +7790,10 @@ elif mode == 'Classification Models':
 							st.session_state[ 'classification_logistic_penalty' ] ),
 						format_func=lambda v: 'None' if v is None else str( v ),
 						key='classification_logistic_penalty' )
+					
+					logistic_l1_ratio = st.number_input( 'L1 Ratio', min_value=0.0, max_value=1.0,
+						step=0.05, key='classification_logistic_l1_ratio',
+						disabled=logistic_penalty != 'elasticnet' )
 					
 					logistic_iters = st.number_input( 'Iterations', min_value=1,
 						value=int( st.session_state[ 'classification_logistic_iters' ] ), step=1,
@@ -7818,23 +7838,9 @@ elif mode == 'Classification Models':
 						key='classification_logistic_train', use_container_width=True )
 				
 				with log_btn_2:
-					reset_logistic = st.button( '🔁 Reset Logistic Regression',
-						key='classification_logistic_reset', use_container_width=True )
-				
-				if reset_logistic:
-					for key, value in logistic_defaults.items( ):
-						st.session_state[ key ] = value
-					st.session_state[ 'elapsed_seconds' ] = 0.0
-					st.session_state[ 'model' ]=None
-					st.session_state[ 'y_prediction' ]=None
-					st.session_state[ 'X_train' ]=None
-					st.session_state[ 'X_test' ]=None
-					st.session_state[ 'y_train' ]=None
-					st.session_state[ 'y_test' ]=None
-					st.session_state[ 'df_model' ]=None
-					st.session_state[ 'df_scores' ]=None
-					st.session_state[ 'df_predictions' ]=None
-					st.rerun( )
+					st.button( '🔁 Reset Logistic Regression',
+						key='classification_logistic_reset', use_container_width=True,
+						on_click=reset_logistic_state )
 				
 				if train_logistic:
 					try:
@@ -7842,7 +7848,7 @@ elif mode == 'Classification Models':
 						model = classification_model.LogisticRegression( C=float( logistic_c ),
 							penalty=logistic_penalty, iters=int( logistic_iters ),
 							multiclass=str( logistic_multiclass ), solver=str( logistic_solver ),
-							random=int( logistic_random_state ) )
+							random=int( logistic_random_state ), l1_ratio=logistic_l1_ratio )
 						
 						X_train, X_test, y_train, y_test = model.split_data( X, y,
 							size=float( logistic_test_size ), random=int( logistic_random_state ) )
