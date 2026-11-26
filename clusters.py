@@ -2815,7 +2815,8 @@ class Birch( Cluster ):
 		           clustering logic fails."""
 		try:
 			throw_if( 'X', X )
-			labels = self.model.fit_predict( X )
+			self.X = X
+			labels = self.model.predict( self.X )
 			self.prediction = labels
 			scores = { }
 			unique_labels = np.unique( labels )
@@ -2843,7 +2844,7 @@ class Birch( Cluster ):
 			exception = Error( e )
 			exception.module = 'clusters'
 			exception.cause = 'Birch'
-			exception.method = 'score( self, *args ) -> pd.DataFrame | None'
+			exception.method = 'score( self, X: np.ndarray, y: Optional[ np.ndarray ] ) -> pd.DataFrame | None'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -2870,13 +2871,8 @@ class Birch( Cluster ):
 		           clustering logic fails."""
 		try:
 			throw_if( 'X', X )
-			if self.prediction is None or len( self.prediction ) != len( X ):
-				labels = self.model.fit_predict( X )
-				self.prediction = labels
-			else:
-				labels = self.prediction
-			
 			df_score = self.score( X, y )
+			labels = self.prediction
 			return { 'Labels': labels, 'Threshold': self.threshold,
 				'Branching-Factor': self.branching_factor, 'N-Clusters': self.n_clusters,
 				'Compute-Labels': self.compute_labels, 'Subcluster-Centers': self.subcluster_centers,
@@ -2886,7 +2882,7 @@ class Birch( Cluster ):
 			exception = Error( e )
 			exception.module = 'clusters'
 			exception.cause = 'Birch'
-			exception.method = 'analyze( self, *args ) -> Dict[str, Any] | None'
+			exception.method = 'analyze( self, X: np.ndarray, y: Optional[ np.ndarray ] ) -> Dict[str, Any] | None'
 			Logger( ).write( exception )
 			raise exception
 
