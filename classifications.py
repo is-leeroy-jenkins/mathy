@@ -2788,7 +2788,7 @@ class GradientDescent( Classifier ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'GradientDescent'
-			exception.method = 'split_data( self, *args ) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray)'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
