@@ -44,12 +44,11 @@
 ******************************************************************************************
 """
 from __future__ import annotations
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from typing import Optional, Dict, Any, List
-from .boogr import Error, Logger
+from boogr import Error, Logger
 import sklearn.cluster as skc
 from sklearn.metrics import (silhouette_score, completeness_score, homogeneity_score,
                              mutual_info_score, v_measure_score)

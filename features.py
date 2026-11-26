@@ -56,8 +56,7 @@ from sklearn.base import BaseEstimator, clone
 from sklearn.tree import DecisionTreeClassifier
 from itertools import combinations
 from sklearn.model_selection import train_test_split as split
-
-from .boogr import Error, Logger
+from boogr import Error, Logger
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required clustering argument.

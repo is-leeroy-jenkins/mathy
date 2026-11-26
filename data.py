@@ -48,14 +48,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from pandas.core.interchange.dataframe_protocol import DataFrame
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split as split
-from .scalers import Scaler, NormalScaler, StandardScaler, MinMaxScaler
+from scalers import Scaler, NormalScaler, StandardScaler, MinMaxScaler
 import scipy.stats as stats
 from typing import Dict, Optional, List, Any
-from .boogr import Error, Logger
-from .encoders import Encoder, LabelEncoder, TargetEncoder, OrdinalEncoder, OneHotEncoder
+from boogr import Error, Logger
+from.encoders import Encoder, LabelEncoder, TargetEncoder, OrdinalEncoder, OneHotEncoder
 
 def throw_if( name: str, value: object ) -> None:
 	"""Validate a required clustering argument.

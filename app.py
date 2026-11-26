@@ -54,7 +54,7 @@ from scipy import stats
 from typing import List, Dict, Optional, Tuple, Any
 
 # Mathy
-import mathy.config as cfg
+import config as cfg
 
 # sklearn / statsmodels
 import numpy as np

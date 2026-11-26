@@ -47,7 +47,7 @@ from __future__ import annotations
 from typing import Optional, List
 import numpy as np
 import sklearn.impute as im
-from .boogr import Error, Logger
+from boogr import Error, Logger
 from sklearn.experimental import enable_iterative_imputer
 
 def throw_if( name: str, value: object ) -> None:
