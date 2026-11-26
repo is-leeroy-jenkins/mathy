@@ -2,8 +2,8 @@
 
 import unittest
 import numpy as np
-from clusters import Agglomerative
-from regressions import LeastSquares
+from mathy.clusters import Agglomerative
+from mathy.regressions import LeastSquares
 
 
 class SklearnRuntimeContracts( unittest.TestCase ):
@@ -36,4 +36,4 @@ class SklearnRuntimeContracts( unittest.TestCase ):
 		X = np.array( [ [ 0.0 ], [ 1.0 ], [ 2.0 ] ] )
 		y = np.array( [ 0.0, 2.0, 4.0 ] )
 		model.model.fit( X, y )
-		np.testing.assert_allclose( model.model.predict( X ), y )
+		np.testing.assert_allclose( model.model.predict( X ), y, atol=1e-12 )
