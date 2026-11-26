@@ -134,8 +134,7 @@ class Cluster( ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
 		
 		Returns:
 		    object | None: Fitted object instance.
@@ -153,8 +152,8 @@ class Cluster( ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -173,8 +172,8 @@ class Cluster( ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -194,8 +193,8 @@ class Cluster( ):
 		    feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		        clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		        
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		        clustering metrics.
 		
@@ -211,7 +210,7 @@ class KMeans( Cluster ):
 	"""Represent the `KMeans` workflow.
 	
 	Purpose:
-	    Wraps KMeans for centroid-based partitioning of numeric feature matrices.
+	    Encapsulates scikit's KMeans for centroid-based partitioning of numeric feature matrices.
 	    The object stores cluster assignments, centroids, inertia, iteration metadata, and
 	    feature counts while exposing a consistent training, projection, scoring, and
 	    analysis interface.
@@ -427,8 +426,8 @@ class KMeans( Cluster ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		        clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		        
 		
 		Returns:
 		    KMeans | None: Fitted object instance.
@@ -458,8 +457,7 @@ class KMeans( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		        clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -491,8 +489,8 @@ class KMeans( Cluster ):
 		    estimator-specific distances, embeddings, or transformed cluster-space values.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		        clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		        
 		
 		Returns:
 		    np.ndarray | None: Transformed cluster-space representation produced by the
@@ -516,7 +514,7 @@ class KMeans( Cluster ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def score( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> pd.DataFrame | None:
+	def score( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> pd.DataFrame | None:
 		"""Score.
 		
 		Purpose:
@@ -525,10 +523,8 @@ class KMeans( Cluster ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
-		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
-		                              clustering metrics.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		    y (Optional[np.ndarray]): Ingored target labels.
 		
 		Returns:
 		    pd.DataFrame | None: Dataframe containing clustering metrics.
@@ -584,8 +580,8 @@ class KMeans( Cluster ):
 		    feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -611,10 +607,10 @@ class KMeans( Cluster ):
 			raise exception
 
 class DBSCAN( Cluster ):
-	"""Wraps DBSCAN for density-based clustering with noise detection.
+	"""Encapsulates scikit's DBSCAN for density-based clustering with noise detection.
 	
 	Purpose:
-	    Wraps DBSCAN for density-based clustering with noise detection. The object
+	    Encapsulates scikit's DBSCAN for density-based clustering with noise detection. The object
 	    stores fitted labels, core-sample indices, core components, and feature metadata
 	    while exposing the shared clustering workflow interface.
 	
@@ -804,8 +800,8 @@ class DBSCAN( Cluster ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    DBSCAN | None: Fitted object instance.
@@ -835,8 +831,8 @@ class DBSCAN( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -857,110 +853,11 @@ class DBSCAN( Cluster ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def score( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> pd.DataFrame | None:
-		"""Score.
-		
-		Purpose:
-		    Computes intrinsic and optional reference-label clustering metrics for the DBSCAN
-		    output, including silhouette, completeness, homogeneity, mutual information, and
-		    V-measure when supported by the available labels.
-		
-		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
-		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
-		                              clustering metrics.
-		
-		Returns:
-		    pd.DataFrame | None: Dataframe containing clustering metrics.
-		
-		Raises:
-		    Error: Raised when validation, estimator execution, metric calculation, or wrapped
-		           clustering logic fails."""
-		try:
-			throw_if( 'X', X )
-			labels = self.model.fit_predict( X )
-			self.prediction = labels
-			scores = { }
-			unique_labels = np.unique( labels )
-			cluster_labels = unique_labels[ unique_labels != -1 ]
-			scores[ 'Clusters' ] = len( cluster_labels )
-			scores[ 'Noise' ] = int( np.sum( labels == -1 ) )
-			if len( cluster_labels ) >= 2:
-				mask = labels != -1
-				if np.sum( mask ) >= 2 and len( np.unique( labels[ mask ] ) ) >= 2:
-					self.silouette = silhouette_score( X[ mask ], labels[ mask ] )
-					scores[ 'Silouette' ] = self.silouette
-				else:
-					self.silouette = np.nan
-					scores[ 'Silouette' ] = self.silouette
-			else:
-				self.silouette = np.nan
-				scores[ 'Silouette' ] = self.silouette
-			
-			if y is not None:
-				self.homogeneity = homogeneity_score( y, labels )
-				self.mutual_info = mutual_info_score( y, labels )
-				self.completeness = completeness_score( y, labels )
-				self.v_measure = v_measure_score( y, labels )
-				scores[ 'Homogeneity' ] = self.homogeneity
-				scores[ 'Mutual-Info' ] = self.mutual_info
-				scores[ 'Completeness' ] = self.completeness
-				scores[ 'V-Measure' ] = self.v_measure
-			
-			return pd.DataFrame( [ scores ] )
-		except Exception as e:
-			exception = Error( e )
-			exception.module = 'clusters'
-			exception.cause = 'DBSCAN'
-			exception.method = 'score( self, *args ) -> pd.DataFrame | None'
-			Logger( ).write( exception )
-			raise exception
-	
-	def analyze( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> Dict[ str, Any ] | None:
-		"""Analyze.
-		
-		Purpose:
-		    Builds a structured analysis payload for the DBSCAN clustering result by combining
-		    fitted labels, estimator metadata, and metric output generated from the supplied
-		    feature matrix.
-		
-		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric clustering
-		        features.
-		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
-		        clustering metrics.
-		
-		Returns:
-		    Dict[str, Any] | None: Dictionary containing labels, estimator metadata, and metric
-		        output.
-		
-		Raises:
-		    Error: Raised when validation, estimator execution, metric calculation, or wrapped
-		           clustering logic fails."""
-		try:
-			throw_if( 'X', X )
-			df_score = self.score( X, y )
-			core_samples = self.core_samples if hasattr(
-				self.model, 'core_sample_indices_' ) else np.array( [ ] )
-			components = self.components if hasattr( self.model,
-				'components_' ) else np.empty( (0, X.shape[ 1 ]) )
-			
-			return { 'labels': self.prediction, 'core_samples': core_samples,
-				'components': components, 'features': self.features, 'score': df_score }
-		except Exception as e:
-			exception = Error( e )
-			exception.module = 'clusters'
-			exception.cause = 'DBSCAN'
-			exception.method = 'analyze( self, *args ) -> Dict[str, Any] | None'
-			Logger( ).write( exception )
-			raise exception
-
 class Agglomerative( Cluster ):
-	"""Wraps AgglomerativeClustering for hierarchical bottom-up clustering.
+	"""Encapsulates scikit's Agglomerative Clustering for hierarchical bottom-up clustering.
 	
 	Purpose:
-	    Wraps AgglomerativeClustering for hierarchical bottom-up clustering. The
+	    Encapsulates scikit's AgglomerativeClustering for hierarchical bottom-up clustering. The
 	    object preserves linkage configuration, tree construction options, fitted labels,
 	    linkage children, distances, leaf counts, component counts, and feature metadata.
 	
@@ -1021,19 +918,14 @@ class Agglomerative( Cluster ):
 		
 		Args:
 		    clusters (int): Requested number of clusters or initial cluster-count configuration.
-		    affinity (object): Affinity configuration or similarity measure used by the
-		                       estimator.
+		    affinity (object): Affinity configuration or similarity measure used.
 		    linkage (str): Linkage criterion used by agglomerative clustering.
 		    metric (object | None): Distance metric used by the clustering estimator.
 		    memory (object): Optional joblib memory configuration used by sklearn.
-		    connectivity (object): Connectivity matrix or callable used by agglomerative
-		                           clustering.
-		    compute_full_tree (object): Tree-construction policy used by agglomerative
-		                                clustering.
-		    distance_threshold (float | None): Distance threshold used to stop hierarchical
-		                                       clustering.
-		    compute_distances (bool): Flag indicating whether agglomerative distances are
-		                              computed and stored.
+		    connectivity (object): Connectivity matrix or callable used.
+		    compute_full_tree (object): Tree-construction policy used.
+		    distance_threshold (float | None): Distance threshold used to stop hierarchical clustering.
+		    compute_distances (bool): Flag indicating whether agglomerative distances are computed.
 		    n_clusters (int | None): Optional override for the requested number of clusters.
 		
 		Returns:
@@ -1211,7 +1103,7 @@ class Agglomerative( Cluster ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train( self, X: np.ndarray ) -> Agglomerative | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> Agglomerative | None:
 		"""Train.
 		
 		Purpose:
@@ -1220,9 +1112,9 @@ class Agglomerative( Cluster ):
 		    for chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
-		
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		    y (np.ndarray): Ignored
+		    
 		Returns:
 		    Agglomerative | None: Fitted object instance.
 		
@@ -1232,7 +1124,7 @@ class Agglomerative( Cluster ):
 		try:
 			throw_if( 'X', X )
 			self.model = self.create_model( )
-			self.model.fit( X )
+			self.model.fit( X, y )
 			self.prediction = self.model.labels_
 			return self
 		except Exception as e:
@@ -1252,8 +1144,8 @@ class Agglomerative( Cluster ):
 		    and predict in a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -1275,7 +1167,7 @@ class Agglomerative( Cluster ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def score( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> pd.DataFrame | None:
+	def score( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> pd.DataFrame | None:
 		"""Score.
 		
 		Purpose:
@@ -1284,8 +1176,8 @@ class Agglomerative( Cluster ):
 		    information, and V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -1346,8 +1238,8 @@ class Agglomerative( Cluster ):
 		    supplied feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -1379,7 +1271,7 @@ class Spectral( Cluster ):
 	"""Represent the `Spectral` workflow.
 	
 	Purpose:
-	    Wraps SpectralClustering for graph-based clustering of nonlinear structures.
+	    Encapsulates scikit's SpectralClustering for graph-based clustering of nonlinear structures.
 	    The object stores affinity configuration, eigen-solver options, label assignments,
 	    and feature metadata while exposing the shared clustering workflow interface.
 	
@@ -1574,8 +1466,8 @@ class Spectral( Cluster ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    Spectral | None: Fitted object instance.
@@ -1605,8 +1497,8 @@ class Spectral( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -1636,8 +1528,8 @@ class Spectral( Cluster ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -1689,8 +1581,8 @@ class Spectral( Cluster ):
 		    feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -1729,7 +1621,7 @@ class MeanShift( Cluster ):
 	"""Represent the `MeanShift` workflow.
 	
 	Purpose:
-	    Wraps MeanShift for centroid discovery through mode seeking in feature
+	    Encapsulates scikit's MeanShift for centroid discovery through mode seeking in feature
 	    space. The object stores fitted labels, cluster centers, iteration counts,
 	    prediction output, and feature metadata.
 	
@@ -1918,8 +1810,8 @@ class MeanShift( Cluster ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    MeanShift | None: Fitted object instance.
@@ -1949,8 +1841,8 @@ class MeanShift( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -1979,8 +1871,8 @@ class MeanShift( Cluster ):
 		    estimator and caches the prediction output on the object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Predicted cluster labels for the supplied samples.
@@ -2012,8 +1904,8 @@ class MeanShift( Cluster ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2066,8 +1958,8 @@ class MeanShift( Cluster ):
 		    supplied feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2104,7 +1996,7 @@ class AffinityPropagation( Cluster ):
 	"""Represent the `AffinityPropagation` workflow.
 	
 	Purpose:
-	    Wraps AffinityPropagation for exemplar-based clustering from pairwise
+	    Encapsulates scikit's AffinityPropagation for exemplar-based clustering from pairwise
 	    similarities. The object stores cluster labels, exemplar indices, cluster centers,
 	    affinity matrix metadata, iteration counts, and feature metadata.
 	
@@ -2314,8 +2206,8 @@ class AffinityPropagation( Cluster ):
 		    for chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    AffinityPropagation | None: Fitted object instance.
@@ -2345,8 +2237,8 @@ class AffinityPropagation( Cluster ):
 		    fit and predict in a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -2375,8 +2267,8 @@ class AffinityPropagation( Cluster ):
 		    AffinityPropagation estimator and caches the prediction output on the object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Predicted cluster labels for the supplied samples.
@@ -2408,8 +2300,8 @@ class AffinityPropagation( Cluster ):
 		    information, and V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2463,8 +2355,8 @@ class AffinityPropagation( Cluster ):
 		    supplied feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2501,7 +2393,7 @@ class Birch( Cluster ):
 	"""Represent the `Birch` workflow.
 	
 	Purpose:
-	    Wraps Birch for scalable clustering through clustering-feature subtrees. The
+	    Encapsulates scikit's Birch for scalable clustering through clustering-feature subtrees. The
 	    object stores labels, subcluster centers, global centroids, subcluster labels, and
 	    feature metadata while supporting projection, prediction, transformation, scoring,
 	    and analysis.
@@ -2676,8 +2568,8 @@ class Birch( Cluster ):
 		    clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    Birch | None: Fitted object instance.
@@ -2708,8 +2600,8 @@ class Birch( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -2738,8 +2630,8 @@ class Birch( Cluster ):
 		    estimator and caches the prediction output on the object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Predicted cluster labels for the supplied samples.
@@ -2770,8 +2662,8 @@ class Birch( Cluster ):
 		    estimator-specific distances, embeddings, or transformed cluster-space values.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    np.ndarray | None: Transformed cluster-space representation produced by the
@@ -2805,8 +2697,8 @@ class Birch( Cluster ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2860,8 +2752,8 @@ class Birch( Cluster ):
 		    feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -2893,7 +2785,7 @@ class OPTICS( Cluster ):
 	"""Represent the `OPTICS` workflow.
 	
 	Purpose:
-	    Wraps OPTICS for density-based clustering across varying neighborhood radii.
+	    Encapsulates scikit's OPTICS for density-based clustering across varying neighborhood radii.
 	    The object stores labels, ordering, reachability distances, core distances,
 	    predecessors, and feature metadata for inspection and scoring.
 	
@@ -3144,8 +3036,8 @@ class OPTICS( Cluster ):
 		    chained clustering workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		
 		Returns:
 		    OPTICS | None: Fitted object instance.
@@ -3175,8 +3067,7 @@ class OPTICS( Cluster ):
 		    a single operation when fitted-state metadata is unavailable.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray | None: Cluster labels or projection output generated for the supplied
@@ -3206,8 +3097,8 @@ class OPTICS( Cluster ):
 		    V-measure when supported by the available labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		
@@ -3262,8 +3153,8 @@ class OPTICS( Cluster ):
 		    feature matrix.
 		
 		Args:
-		    X (np.ndarray): Feature matrix with rows as samples and columns as numeric
-		                    clustering features.
+		    X (np.ndarray): Feature matrix of training data with shape (n_samples, n_features).
+		                    
 		    y (Optional[np.ndarray]): Optional reference labels aligned to `X` for external
 		                              clustering metrics.
 		

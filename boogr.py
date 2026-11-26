@@ -55,10 +55,10 @@ from typing import List, Tuple, Optional
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
-from . import config as cfg
+import config as cfg
 import sqlite3
 
-def get_config_bool( name: str, default: bool = False ) -> bool:
+def get_config_bool( name: str, default: bool=False ) -> bool:
 	"""Read a Boolean value from the configuration module.
 
 	Purpose:

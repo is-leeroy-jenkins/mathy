@@ -899,7 +899,7 @@ class LagBoostingSeries( TimeSeries ):
 	explained_variance_score: Optional[ float ]
 	median_absolute_error: Optional[ float ]
 	max_error: Optional[ float ]
-	
+
 	def __init__( self, lag: int=12, loss: str='squared_error', quantile: Optional[ float ]=None,
 		rate: float=0.1, iters: int=100, leaf_nodes: Optional[ int ]=31,
 		depth: Optional[ int ]=None, leaf: int=20, regularization: float=0.0,
