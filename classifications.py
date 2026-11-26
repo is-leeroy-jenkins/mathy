@@ -183,8 +183,8 @@ class Classifier( ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None: Value produced by the
@@ -203,8 +203,8 @@ class Classifier( ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    object | None: Value produced by the operation.
@@ -222,8 +222,8 @@ class Classifier( ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Value produced by the operation.
@@ -241,8 +241,8 @@ class Classifier( ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame | None: Value produced by the operation.
@@ -260,8 +260,8 @@ class Classifier( ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame | None: Value produced by the operation.
@@ -279,8 +279,8 @@ class Classifier( ):
 		    including accuracy, precision, recall, F1, and related diagnostic measures.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from predicted and actual
@@ -331,7 +331,7 @@ class Classifier( ):
 		    analysis before classification modeling.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -366,8 +366,8 @@ class Classifier( ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -620,7 +620,7 @@ class Perceptron( Classifier ):
 		    estimator for ranking, thresholding, and diagnostic workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Decision-score array for the supplied feature matrix.
@@ -1513,15 +1513,13 @@ class LogisticRegression( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
 		Returns:
-		    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: Training features, testing
-		                                                           features, training labels,
-		                                                           and testing labels.
+		    Tuple: Training features, testing features, training labels,and testing labels.
 		
 		Raises:
 		    Error: Raised when validation, estimator execution, metric calculation, or plotting
@@ -1536,7 +1534,7 @@ class LogisticRegression( Classifier ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'LogisticRegression'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -1548,7 +1546,7 @@ class LogisticRegression( Classifier ):
 		    estimator for ranking, thresholding, and diagnostic workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Decision-score array for the supplied feature matrix.
@@ -1576,7 +1574,7 @@ class LogisticRegression( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -1596,7 +1594,7 @@ class LogisticRegression( Classifier ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train( self, X: np.ndarray, y: np.ndarray ) -> LogisticRegression | None:
+	def train( self, X: np.ndarray, y: np.ndarray ) -> LogisticRegression:
 		"""Train the classifier.
 		
 		Purpose:
@@ -1604,8 +1602,8 @@ class LogisticRegression( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    LogisticRegression | None: Fitted classifier class/object instance.
@@ -1635,8 +1633,8 @@ class LogisticRegression( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -1664,8 +1662,8 @@ class LogisticRegression( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -1692,8 +1690,8 @@ class LogisticRegression( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -1724,8 +1722,8 @@ class LogisticRegression( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -1759,8 +1757,8 @@ class LogisticRegression( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -1807,8 +1805,8 @@ class LogisticRegression( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -1845,7 +1843,7 @@ class LogisticRegression( Classifier ):
 			raise exception
 
 class Ridge( Classifier ):
-	"""Ridge classifier class/object.
+	"""Encapsulates scikit's Ridge classifier class/object.
 	
 	Purpose:
 	    Ridge regression is a modified form of linear regression that uses L2 regularization to
@@ -1997,8 +1995,8 @@ class Ridge( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target-label of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -2032,8 +2030,8 @@ class Ridge( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Ridge | None: Fitted classifier class/object instance.
@@ -2054,7 +2052,7 @@ class Ridge( Classifier ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def project( self, X: np.ndarray, y: np.ndarray = None ) -> np.ndarray:
+	def project( self, X: np.ndarray, y: np.ndarray=None ) -> np.ndarray:
 		"""Generate classifier predictions.
 		
 		Purpose:
@@ -2062,8 +2060,8 @@ class Ridge( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -2091,8 +2089,8 @@ class Ridge( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -2119,8 +2117,8 @@ class Ridge( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -2148,7 +2146,7 @@ class Ridge( Classifier ):
 		    estimator for ranking, thresholding, and diagnostic workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Decision-score array for the supplied feature matrix.
@@ -2176,8 +2174,8 @@ class Ridge( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -2377,8 +2375,8 @@ class Lasso( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -2399,7 +2397,7 @@ class Lasso( Classifier ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'Lasso'
-			exception.method = 'split_data( self, *args ) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray)'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
@@ -2411,8 +2409,8 @@ class Lasso( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Lasso | None: Fitted classifier class/object instance.
@@ -2441,8 +2439,8 @@ class Lasso( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -2472,8 +2470,8 @@ class Lasso( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -2500,8 +2498,8 @@ class Lasso( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -2529,8 +2527,8 @@ class Lasso( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -2568,7 +2566,7 @@ class Lasso( Classifier ):
 			raise exception
 
 class GradientDescent( Classifier ):
-	"""GradientDescent classifier class/object.
+	"""Encapsulates scikit's Gradient Descent classifier class/object.
 	
 	Purpose:
 	    Gradient descent in classification is an iterative optimization algorithm used to find the
@@ -2628,10 +2626,10 @@ class GradientDescent( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix: Optional[ np.ndarray ]
 	
-	def __init__( self, loss: str = 'hinge', iters: int=100, reg: str = 'l2', alpha: float=0.00001,
-			ave: bool=True, rate: str = 'optimal', penalty: str | None = None, shuffle: bool=True,
-			eta: float=0.0, learning: str | None = None, power: float=0.5, epsilon: float=0.1,
-			rando: int | None = 42 ) -> None:
+	def __init__( self, loss: str='hinge', iters: int=100, reg: str='l2', alpha: float=0.00001,
+			ave: bool=True, rate: str='optimal', penalty: str | None=None, shuffle: bool=True,
+			eta: float=0.0, learning: str | None=None, power: float=0.5, epsilon: float=0.1,
+			rando: int | None=42 ) -> None:
 		"""Initialize the stochastic-gradient classifier.
 		
 		Purpose:
@@ -2770,8 +2768,8 @@ class GradientDescent( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -2804,8 +2802,8 @@ class GradientDescent( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    GradientDescent | None: Fitted classifier class/object instance.
@@ -2834,8 +2832,8 @@ class GradientDescent( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -2863,8 +2861,8 @@ class GradientDescent( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -2891,8 +2889,8 @@ class GradientDescent( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -2920,7 +2918,7 @@ class GradientDescent( Classifier ):
 		    estimator for ranking, thresholding, and diagnostic workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Decision-score array for the supplied feature matrix.
@@ -2948,7 +2946,7 @@ class GradientDescent( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -2982,8 +2980,8 @@ class GradientDescent( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -3020,7 +3018,7 @@ class GradientDescent( Classifier ):
 			raise exception
 
 class NearestNeighbor( Classifier ):
-	"""NearestNeighbor classifier class/object.
+	"""Encapsulates scikit's Nearest Neighbor classifier class/object.
 	
 	Purpose:
 	    A nearest neighbor classifier (k-NN) is a simple, supervised machine learning method that
@@ -3070,8 +3068,8 @@ class NearestNeighbor( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
-	def __init__( self, num: int=5, algorithm: str = 'auto',
-			power: int=2, metric: str = 'minkowski', leafs: int=30 ) -> None:
+	def __init__( self, num: int=5, algorithm: str='auto', power: int=2, 
+		metric: str='minkowski', leafs: int=30 ) -> None:
 		"""Initialize NearestNeighbor.
 		
 		Purpose:
@@ -3216,8 +3214,8 @@ class NearestNeighbor( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -3250,8 +3248,8 @@ class NearestNeighbor( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    NearestNeighbor | None: Fitted classifier class/object instance.
@@ -3281,8 +3279,8 @@ class NearestNeighbor( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Ignored target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -3310,7 +3308,7 @@ class NearestNeighbor( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -3338,8 +3336,8 @@ class NearestNeighbor( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -3366,8 +3364,8 @@ class NearestNeighbor( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -3398,8 +3396,8 @@ class NearestNeighbor( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -3433,8 +3431,8 @@ class NearestNeighbor( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -3481,8 +3479,8 @@ class NearestNeighbor( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -3519,7 +3517,7 @@ class NearestNeighbor( Classifier ):
 			raise exception
 
 class DecisionTree( Classifier ):
-	"""DecisionTree classifier class/object.
+	"""Encapsulates scikit's Decision Tree classifier class/object.
 	
 	Purpose:
 	    A Decision Tree Classifier is a supervised machine learning algorithm used to predict
@@ -3576,10 +3574,10 @@ class DecisionTree( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
-	def __init__( self, criterion: str = 'gini', splitter: str = 'best',
+	def __init__( self, criterion: str='gini', splitter: str='best',
 			depth: Optional[ int ] = None, min_split: int=2,
 			min_leaf: int=1, random: int=42 ) -> None:
-		"""Initialize DecisionTree.
+		"""Initialize Decision Tree.
 		
 		Purpose:
 		    Initializes the DecisionTree class/object by assigning configuration values, constructing
@@ -3754,8 +3752,7 @@ class DecisionTree( Classifier ):
 		return self.model.n_outputs_
 	
 	def split_data( self, X: np.ndarray, y: np.ndarray,
-			size: float=0.2, random: int=42 ) -> Tuple[
-		np.ndarray, np.ndarray, np.ndarray, np.ndarray ]:
+			size: float=0.2, random: int=42 ) -> Tuple:
 		"""Split feature and target data.
 		
 		Purpose:
@@ -3763,8 +3760,8 @@ class DecisionTree( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -3796,8 +3793,8 @@ class DecisionTree( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    DecisionTree | None: Fitted classifier class/object instance.
@@ -3827,8 +3824,8 @@ class DecisionTree( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -3856,7 +3853,7 @@ class DecisionTree( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -3884,8 +3881,8 @@ class DecisionTree( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -3912,8 +3909,8 @@ class DecisionTree( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -3944,8 +3941,10 @@ class DecisionTree( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -3979,8 +3978,8 @@ class DecisionTree( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -4028,8 +4027,8 @@ class DecisionTree( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -4285,8 +4284,8 @@ class RandomForest( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -4319,8 +4318,8 @@ class RandomForest( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    RandomForest | None: Fitted classifier class/object instance.
@@ -4350,7 +4349,7 @@ class RandomForest( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
 		
 		Returns:
@@ -4379,7 +4378,7 @@ class RandomForest( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -4407,8 +4406,8 @@ class RandomForest( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -4435,8 +4434,8 @@ class RandomForest( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -4467,8 +4466,8 @@ class RandomForest( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -4502,8 +4501,8 @@ class RandomForest( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -4551,8 +4550,8 @@ class RandomForest( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -4643,7 +4642,7 @@ class GradientBoost( Classifier ):
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
 	def __init__( self, estimators: int=100, rate: float=0.1, depth: int=3,
-			criterion: str = 'friedman_mse', random: int=42 ) -> None:
+			criterion: str='friedman_mse', random: int=42 ) -> None:
 		"""Initialize GradientBoost.
 		
 		Purpose:
@@ -4821,8 +4820,8 @@ class GradientBoost( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -4855,8 +4854,8 @@ class GradientBoost( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    GradientBoost | None: Fitted classifier class/object instance.
@@ -4886,7 +4885,7 @@ class GradientBoost( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
 		
 		Returns:
@@ -4915,7 +4914,7 @@ class GradientBoost( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -4943,8 +4942,8 @@ class GradientBoost( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -4971,8 +4970,8 @@ class GradientBoost( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -5003,8 +5002,8 @@ class GradientBoost( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -5038,8 +5037,8 @@ class GradientBoost( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -5086,8 +5085,8 @@ class GradientBoost( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -5178,7 +5177,7 @@ class AdaptiveBoost( Classifier ):
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
 	def __init__( self, base: object=None, estimators: int=50, rate: float=1.0,
-		algorithm: str = 'SAMME', random: int=42 ) -> None:
+		algorithm: str='SAMME', random: int=42 ) -> None:
 		"""Initialize AdaptiveBoost.
 		
 		Purpose:
@@ -5368,8 +5367,8 @@ class AdaptiveBoost( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -5401,8 +5400,8 @@ class AdaptiveBoost( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    AdaptiveBoost | None: Fitted classifier class/object instance.
@@ -5432,7 +5431,7 @@ class AdaptiveBoost( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
 		
 		Returns:
@@ -5461,7 +5460,7 @@ class AdaptiveBoost( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -5489,8 +5488,8 @@ class AdaptiveBoost( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -5517,8 +5516,8 @@ class AdaptiveBoost( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -5549,8 +5548,8 @@ class AdaptiveBoost( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -5584,8 +5583,8 @@ class AdaptiveBoost( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -5633,8 +5632,8 @@ class AdaptiveBoost( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -5671,7 +5670,7 @@ class AdaptiveBoost( Classifier ):
 			raise exception
 
 class BaggingModel( Classifier ):
-	"""BaggingModel classifier class/object.
+	"""Encapsulate's scikit's Bagging classifier class/object.
 	
 	Purpose:
 	    A Bagging classifier is an ensemble meta-estimator that fits base classifiers each on
@@ -5858,8 +5857,8 @@ class BaggingModel( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -5892,8 +5891,8 @@ class BaggingModel( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    BaggingModel | None: Fitted classifier class/object instance.
@@ -5923,7 +5922,7 @@ class BaggingModel( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
 		
 		Returns:
@@ -5952,7 +5951,7 @@ class BaggingModel( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -5980,8 +5979,8 @@ class BaggingModel( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -6008,8 +6007,8 @@ class BaggingModel( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -6040,8 +6039,8 @@ class BaggingModel( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -6075,8 +6074,8 @@ class BaggingModel( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -6123,8 +6122,8 @@ class BaggingModel( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -6208,7 +6207,7 @@ class VotingModel( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix: Optional[ np.ndarray ]
 	
-	def __init__( self, estimators: List[ Tuple[ str, object ] ], vote: str = 'hard' ) -> None:
+	def __init__( self, estimators: List[ Tuple[ str, object ] ], vote: str='hard' ) -> None:
 		"""Initialize VotingModel.
 		
 		Purpose:
@@ -6304,8 +6303,8 @@ class VotingModel( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -6338,8 +6337,8 @@ class VotingModel( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    VotingModel | None: Fitted classifier class/object instance.
@@ -6368,8 +6367,8 @@ class VotingModel( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -6397,7 +6396,7 @@ class VotingModel( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -6429,8 +6428,8 @@ class VotingModel( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -6457,8 +6456,8 @@ class VotingModel( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -6486,8 +6485,8 @@ class VotingModel( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -6677,8 +6676,7 @@ class StackingModel( Classifier ):
 		return self.model.final_estimator_
 	
 	def split_data( self, X: np.ndarray, y: np.ndarray,
-			size: float=0.2, random: int=42 ) -> (np.ndarray, np.ndarray, np.ndarray,
-	                                                  np.ndarray):
+			size: float=0.2, random: int=42 ) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray):
 		"""Split feature and target data.
 		
 		Purpose:
@@ -6686,8 +6684,8 @@ class StackingModel( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -6720,8 +6718,8 @@ class StackingModel( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    StackingModel | None: Fitted classifier class/object instance.
@@ -6750,8 +6748,8 @@ class StackingModel( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -6779,7 +6777,7 @@ class StackingModel( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -6807,8 +6805,8 @@ class StackingModel( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -6835,8 +6833,8 @@ class StackingModel( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -6864,8 +6862,8 @@ class StackingModel( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -7146,8 +7144,8 @@ class SupportVector( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -7180,8 +7178,8 @@ class SupportVector( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    SupportVector | None: Fitted classifier class/object instance.
@@ -7211,7 +7209,7 @@ class SupportVector( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		    y (Optional[np.ndarray]): Target-label array aligned to the feature matrix.
 		
 		Returns:
@@ -7240,7 +7238,7 @@ class SupportVector( Classifier ):
 		    estimator for ranking, thresholding, and diagnostic workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Decision-score array for the supplied feature matrix.
@@ -7268,7 +7266,7 @@ class SupportVector( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -7296,8 +7294,8 @@ class SupportVector( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -7324,8 +7322,8 @@ class SupportVector( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification diagnostics dataframe produced from supplied features
@@ -7356,8 +7354,8 @@ class SupportVector( Classifier ):
 		    target labels.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Confusion-matrix values for predicted and actual labels.
@@ -7391,8 +7389,8 @@ class SupportVector( Classifier ):
 		    classifier probabilities or decision scores.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    Tuple[np.ndarray, np.ndarray, float]: False-positive-rate array, true-positive-rate
@@ -7440,8 +7438,8 @@ class SupportVector( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -7531,7 +7529,7 @@ class MultiLayerPerceptron( Classifier ):
 	confusion_matrix: Optional[ np.ndarray ]
 	
 	def __init__( self, hidden=(100,), activation='logistic', solver='lbfgs', alpha=0.0001,
-			learning: str = 'constant', rando: int=42 ) -> None:
+			learning: str='constant', rando: int=42 ) -> None:
 		"""Initialize MultiLayerPerceptron.
 		
 		Purpose:
@@ -7655,8 +7653,8 @@ class MultiLayerPerceptron( Classifier ):
 		    for classifier fitting, scoring, and evaluation.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		    size (float): Testing-set proportion used for train/test partitioning.
 		    random (int): Random seed used for reproducible partitioning or estimator behavior.
 		
@@ -7688,8 +7686,8 @@ class MultiLayerPerceptron( Classifier ):
 		    returns the current class/object for chained modeling workflows.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    MultiLayerPerceptron | None: Fitted classifier class/object instance.
@@ -7718,8 +7716,8 @@ class MultiLayerPerceptron( Classifier ):
 		    labels on the class/object for later diagnostics.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    np.ndarray: Predicted class labels for the supplied feature matrix.
@@ -7747,7 +7745,7 @@ class MultiLayerPerceptron( Classifier ):
 		    probability matrix for later metric and curve calculations.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
 		
 		Returns:
 		    np.ndarray: Class-probability matrix for the supplied feature matrix.
@@ -7775,8 +7773,8 @@ class MultiLayerPerceptron( Classifier ):
 		    score-related state, and returns a tabular metrics summary.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    pd.DataFrame: Classification metrics dataframe produced from supplied features and
@@ -7803,8 +7801,8 @@ class MultiLayerPerceptron( Classifier ):
 		    predictions, metrics, reports, and confusion-matrix values when available.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
@@ -7832,8 +7830,8 @@ class MultiLayerPerceptron( Classifier ):
 		    exploratory classifier review.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used by the classifier workflow.
-		    y (np.ndarray): Target-label array aligned to the feature matrix.
+		    X (np.ndarray): Training data of shape (n_samples, n_features).
+		    y (np.ndarray): Target labels of shape (n_samples).
 		
 		Returns:
 		    None: This function performs its work through side effects and does not return a
