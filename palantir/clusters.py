@@ -2529,6 +2529,7 @@ class Birch( Cluster ):
 	
 	Attributes:
 	    model (skc.Birch): Underlying clustering estimator.
+	    X (Optional[np.ndarray]): Feature matrix supplied for the latest evaluation.
 	    threshold (Optional[float]): Decision, variance, or distance threshold applied by
 	                                 the workflow.
 	    branching_factor (Optional[int]): Maximum number of child subclusters in each BIRCH
@@ -2547,6 +2548,7 @@ class Birch( Cluster ):
 	    silouette (Optional[float]): Most recently calculated silhouette score.
 	    v_measure (Optional[float]): Most recently calculated V-measure score."""
 	model: skc.Birch
+	X: Optional[ np.ndarray ]
 	threshold: Optional[ float ]
 	branching_factor: Optional[ int ]
 	n_clusters: object
@@ -2583,6 +2585,7 @@ class Birch( Cluster ):
 		self.compute_labels = compute_labels
 		self.model = skc.Birch( threshold=self.threshold, branching_factor=self.branching_factor,
 			n_clusters=self.n_clusters, compute_labels=self.compute_labels )
+		self.X = None
 		self.prediction = None
 		self.probability = None
 		self.silouette = 0.0
@@ -2844,7 +2847,7 @@ class Birch( Cluster ):
 			scores[ 'Clusters' ] = len( unique_labels )
 			scores[ 'Subclusters' ] = len( self.subcluster_centers )
 			if len( unique_labels ) >= 2 and len( unique_labels ) < len( labels ):
-				self.silouette = silhouette_score( X, labels )
+				self.silouette = silhouette_score( self.X, labels )
 				scores[ 'Silouette' ] = self.silouette
 			else:
 				self.silouette = np.nan
