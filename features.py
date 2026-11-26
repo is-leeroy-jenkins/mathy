@@ -2002,7 +2002,7 @@ class SBS( Selector ):
 			raise exception
 
 class RFE( Selector ):
-	"""RFE feature-selection class/object.
+	"""Recursive feature-selection class/object.
 	
 	Purpose:
 	    Performs recursive feature elimination with an sklearn-compatible estimator. The
@@ -2148,12 +2148,12 @@ class RFE( Selector ):
 			exception = Error( e )
 			exception.module = 'mathy'
 			exception.cause = 'RFE'
-			exception.method = 'split_data( self, *args ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]'
+			exception.method = 'split_data( self, *args ) -> Tuple'
 			Logger( ).write( exception )
 			raise exception
 	
 	def train( self, X: np.ndarray, y: np.ndarray ) -> object | None:
-		"""Fit RFE.
+		"""Trains RFE.
 		
 		Purpose:
 		    Fits recursive feature elimination to feature and target arrays so selected features
