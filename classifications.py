@@ -898,8 +898,8 @@ class LeastSquares( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix_values: Optional[ np.ndarray ]
 	
-	def __init__( self, alpha: float=0.0001, eta: float=0.01, iters: int=1000, shuffle: bool=False,
-		penalty: Optional[ str ] = 'l2', random: int=42 ) -> None:
+	def __init__( self, alpha: float=0.0001, eta: float=0.01, iters: int=1000,
+		shuffle: bool=False, penalty: Optional[ str ]='l2', random: int=42 ) -> None:
 		"""Initialize LeastSquares.
 		
 		Purpose:
@@ -2266,8 +2266,8 @@ class Lasso( Classifier ):
 	classification_report: Optional[ Dict[ str, Any ] ]
 	confusion_matrix: Optional[ np.ndarray ]
 	
-	def __init__( self, alpha: float=1.0, iters: int=500, rando: int=42, threshold: float=0.5,
-			selection: str='random' ) -> None:
+	def __init__( self, alpha: float=1.0, iters: int=500, rando: int=42,
+		threshold: float=0.5, selection: str='random' ) -> None:
 		"""Initialize Lasso.
 		
 		Purpose:
