@@ -44,7 +44,7 @@
 ******************************************************************************************"""
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, List
 import numpy as np
 import sklearn.impute as im
 from .boogr import Error, Logger
@@ -103,7 +103,7 @@ class Imputer( ):
 		    None: This method initializes the object and does not return a value."""
 		self.transformed_data = None
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> object | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> object | None:
 		"""Fit an imputer.
 		
 		Purpose:
@@ -123,7 +123,7 @@ class Imputer( ):
 		    NotImplementedError: Raised when the base method is called directly."""
 		raise NotImplementedError( )
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Transform missing values.
 		
 		Purpose:
@@ -142,7 +142,7 @@ class Imputer( ):
 		    NotImplementedError: Raised when the base method is called directly."""
 		raise NotImplementedError( )
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Fit and transform missing values.
 		
 		Purpose:
@@ -201,7 +201,7 @@ class MeanImputer( Imputer ):
 	imputer: im.SimpleImputer
 	transformed_data: Optional[ np.ndarray ]
 	
-	def __init__( self, strategy: str = 'mean', add_indicator: bool = False ) -> None:
+	def __init__( self, strategy: str='mean', add_indicator: bool=False ) -> None:
 		"""Initialize MeanImputer.
 		
 		Purpose:
@@ -234,7 +234,7 @@ class MeanImputer( Imputer ):
 		return [ 'imputer', 'transformed_data', 'strategy', 'add_indicator', 'train', 'transform',
 			'train_transform', 'inverse_transform' ]
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> MeanImputer | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> MeanImputer | None:
 		"""Fit MeanImputer.
 		
 		Purpose:
@@ -242,7 +242,8 @@ class MeanImputer( Imputer ):
 		    the current class/object for consistent preprocessing chains.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used to learn imputation statistics.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where n_samples is the number
+		        of samples and n_features is the number of features.
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -262,7 +263,7 @@ class MeanImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Transform with MeanImputer.
 		
 		Purpose:
@@ -270,7 +271,8 @@ class MeanImputer( Imputer ):
 		    during fitting and stores the imputed matrix on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix transformed by the fitted imputer.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where n_samples is the number
+		        of samples and n_features is the number of features.
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -290,7 +292,7 @@ class MeanImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Fit and transform with MeanImputer.
 		
 		Purpose:
@@ -298,7 +300,8 @@ class MeanImputer( Imputer ):
 		    the same matrix immediately, and stores the imputed result on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used for fitting and imputation.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where n_samples is the number
+		        of samples and n_features is the number of features.
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -318,40 +321,8 @@ class MeanImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def inverse_transform( self, X: np.ndarray ) -> np.ndarray:
-		"""Invert MeanImputer output.
-		
-		Purpose:
-		    Reconstructs a feature matrix toward its pre-imputed form using  inverse
-		    transformation when missing-value indicator columns were included during fitting.
-		
-		Args:
-		    X (np.ndarray): Transformed feature matrix to invert.
-		
-		Returns:
-		    np.ndarray: Reconstructed feature matrix produced by the  imputer.
-		
-		Raises:
-		    Error: Raised when validation fails, indicator columns are unavailable, or inverse
-		           transformation fails.
-		    ValueError: Raised when the `inverse_transform` operation cannot complete."""
-		try:
-			throw_if( 'X', X )
-			if not self.add_indicator:
-				raise ValueError(
-					'inverse_transform requires add_indicator=True in the '
-					'underlying .impute.SimpleImputer.' )
-			return self.imputer.inverse_transform( X )
-		except Exception as e:
-			exception = Error( e )
-			exception.module = 'mathy'
-			exception.cause = 'MeanImputer'
-			exception.method = 'inverse_transform( self, X: np.ndarray ) -> np.ndarray'
-			Logger( ).write( exception )
-			raise exception
-
 class NearestImputer( Imputer ):
-	"""Wrap KNNImputer.
+	""" Nearest Neighbor Imputer.
 	
 	Purpose:
 	    Replaces missing values using values from nearest neighboring samples. The class/object
@@ -367,7 +338,7 @@ class NearestImputer( Imputer ):
 	imputer: im.KNNImputer
 	transformed_data: Optional[ np.ndarray ]
 	
-	def __init__( self, neighbors: int = 5 ) -> None:
+	def __init__( self, neighbors: int=5 ) -> None:
 		"""Initialize NearestImputer.
 		
 		Purpose:
@@ -397,7 +368,7 @@ class NearestImputer( Imputer ):
 		return [ 'imputer', 'transformed_data', 'n_neighbors', 'train', 'transform',
 			'train_transform' ]
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> NearestImputer | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> NearestImputer | None:
 		"""Fit NearestImputer.
 		
 		Purpose:
@@ -405,7 +376,8 @@ class NearestImputer( Imputer ):
 		    the current class/object for consistent preprocessing chains.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used to learn nearest-neighbor imputation structure.
+		    X (np.ndarray): shape [n_samples, n_features]. Input data, where n_samples is the number
+		        of samples and n_features is the number of features
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -425,7 +397,7 @@ class NearestImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Transform with NearestImputer.
 		
 		Purpose:
@@ -433,7 +405,7 @@ class NearestImputer( Imputer ):
 		    statistics learned during fitting and stores the imputed matrix on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix transformed by the fitted imputer.
+	 	    X (np.ndarray): shape (n_samples, n_features). The input data to complete.
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -453,7 +425,7 @@ class NearestImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Fit and transform with NearestImputer.
 		
 		Purpose:
@@ -461,7 +433,7 @@ class NearestImputer( Imputer ):
 		    same matrix immediately, and stores the imputed result on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used for fitting and imputation.
+		    X (np.ndarray): shape [n_samples, n_features]. Feature matrix used for fitting and imputation.
 		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
 		
 		Returns:
@@ -535,7 +507,7 @@ class IterativeImputer( Imputer ):
 		return [ 'imputer', 'transformed_data', 'max_iter', 'random_state', 'train', 'transform',
 			'train_transform' ]
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> IterativeImputer | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> IterativeImputer | None:
 		"""Fit IterativeImputer.
 		
 		Purpose:
@@ -543,8 +515,9 @@ class IterativeImputer( Imputer ):
 		    returns the current class/object for consistent preprocessing chains.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used to learn iterative imputation models.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where “n_samples” is the
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): Ignored target array accepted for API compatibility.
 		
 		Returns:
 		    IterativeImputer | None: Fitted iterative-imputer class/object.
@@ -563,7 +536,7 @@ class IterativeImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Transform with IterativeImputer.
 		
 		Purpose:
@@ -591,7 +564,7 @@ class IterativeImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Fit and transform with IterativeImputer.
 		
 		Purpose:
@@ -599,8 +572,9 @@ class IterativeImputer( Imputer ):
 		    the same matrix immediately, and stores the imputed result on the class/object.
 		
 		Args:
-		    X (np.ndarray): Feature matrix used for fitting and imputation.
-		    y (Optional[np.ndarray]): Optional target array accepted for API compatibility.
+		    X (np.ndarray): shape (n_samples, n_features). Input data, where “n_samples” is the 
+		        number of samples and “n_features” is the number of features.
+		    y (Optional[np.ndarray]): ignored target array accepted for API compatibility.
 		
 		Returns:
 		    np.ndarray: Imputed feature matrix produced after fitting the iterative imputer.
@@ -645,8 +619,8 @@ class SimpleImputer( Imputer ):
 	add_indicator: bool
 	keep_empty_features: bool
 	
-	def __init__( self, strategy: str = 'mean', fill_value: object = 0.0,
-			add_indicator: bool = False, keep_empty_features: bool = False ) -> None:
+	def __init__( self, strategy: str='mean', fill_value: object=0.0,
+			add_indicator: bool=False, keep_empty_features: bool=False ) -> None:
 		"""Initialize SimpleImputer.
 		
 		Purpose:
@@ -673,7 +647,7 @@ class SimpleImputer( Imputer ):
 			add_indicator=self.add_indicator, keep_empty_features=self.keep_empty_features )
 		self.transformed_data = None
 	
-	def __dir__( self ) -> list[ str ]:
+	def __dir__( self ) -> List[ str ]:
 		"""List public members.
 		
 		Purpose:
@@ -685,7 +659,7 @@ class SimpleImputer( Imputer ):
 		return [ 'imputer', 'transformed_data', 'strategy', 'fill_value', 'add_indicator',
 			'keep_empty_features', 'train', 'transform', 'train_transform', 'inverse_transform' ]
 	
-	def train( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> SimpleImputer | None:
+	def train( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> SimpleImputer | None:
 		"""Fit SimpleImputer.
 		
 		Purpose:
@@ -713,7 +687,7 @@ class SimpleImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Transform with SimpleImputer.
 		
 		Purpose:
@@ -741,7 +715,7 @@ class SimpleImputer( Imputer ):
 			Logger( ).write( exception )
 			raise exception
 	
-	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ] = None ) -> np.ndarray:
+	def train_transform( self, X: np.ndarray, y: Optional[ np.ndarray ]=None ) -> np.ndarray:
 		"""Fit and transform with SimpleImputer.
 		
 		Purpose:
