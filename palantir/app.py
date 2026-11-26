@@ -1005,6 +1005,27 @@ def processed_to_working( ) -> None:
 	st.session_state[ 'df_processed' ] = df_reset.copy( )
 	commit_frame( df_reset )
 
+def is_unmodified_model_input( df_source: pd.DataFrame, df_input: pd.DataFrame, columns: list[ str ] ) -> bool:
+	"""Determine whether model inputs match the selected source data.
+
+	Purpose:
+	    Detects changed values, generated columns, and removed or reordered rows before
+	    reporting a split of the processed dataset as a held-out evaluation.
+
+	Args:
+	    df_source (pd.DataFrame): Working dataset before feature engineering.
+	    df_input (pd.DataFrame): Prepared dataset supplied to the model.
+	    columns (list[str]): Selected predictor and target columns.
+
+	Returns:
+	    bool: True when selected columns and row values match the working dataset.
+	"""
+	if not df_source.columns.is_unique or not df_input.columns.is_unique:
+		return False
+	if any( column not in df_source.columns or column not in df_input.columns for column in columns ):
+		return False
+	return df_source[ columns ].equals( df_input[ columns ] )
+
 def commit_cca_columns( df_frame: pd.DataFrame, X_cols: list[ str ], y_cols: list[ str ], result: tuple ) -> pd.DataFrame:
 	"""Preserve separate predictor and target roles for canonical scores.
 
@@ -7385,6 +7406,18 @@ elif mode == 'Classification Models':
 		if len( active_targets ) != 1:
 			st.warning( '⚠️ Classification models requires exactly one processed target column.' )
 			st.stop( )
+		if set( active_features ).intersection( active_targets ):
+			st.warning( '⚠️ Classification predictors and targets must be disjoint.' )
+			st.stop( )
+		if not is_unmodified_model_input( df_working, df_processed, active_features + active_targets ):
+			st.warning( 'Feature engineering was applied before the train/test split. '
+				'Performance scores may be optimistic and are not independent validation.' )
+			if not st.checkbox( 'Allow exploratory model evaluation', value=False,
+				key='classification_allow_exploratory_evaluation',
+				help='Enable only for exploratory analysis. A leakage-safe evaluation must fit '
+					'preprocessing exclusively on training data.' ):
+				st.stop( )
+
 		
 		target_name = active_targets[ 0 ]
 		df_model = df_processed[ active_features + [ target_name ] ].copy( )
@@ -11919,6 +11952,15 @@ elif mode == 'Regression Models':
 		if target_name in active_features:
 			st.warning( '⚠️ The regression target cannot also be used as a feature.' )
 			st.stop( )
+		if not is_unmodified_model_input( df_working, df_processed, active_features + active_targets ):
+			st.warning( 'Feature engineering was applied before the train/test split. '
+				'Performance scores may be optimistic and are not independent validation.' )
+			if not st.checkbox( 'Allow exploratory model evaluation', value=False,
+				key='regression_allow_exploratory_evaluation',
+				help='Enable only for exploratory analysis. A leakage-safe evaluation must fit '
+					'preprocessing exclusively on training data.' ):
+				st.stop( )
+
 		
 		required_columns = active_features + [ target_name ]
 		missing_columns = [ column for column in required_columns if
