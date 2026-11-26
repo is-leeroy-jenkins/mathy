@@ -1198,9 +1198,9 @@ class Agglomerative( Cluster ):
 				n_clusters = None
 				compute_full_tree = True
 			
-			return skc.AgglomerativeClustering( n_clusters=self.n_clusters, metric=self.metric,
+			return skc.AgglomerativeClustering( n_clusters=n_clusters, metric=self.metric,
 				memory=self.memory, connectivity=self.connectivity,
-				compute_full_tree=self.compute_full_tree, linkage=self.linkage,
+				compute_full_tree=compute_full_tree, linkage=self.linkage,
 				distance_threshold=self.distance_threshold,
 				compute_distances=self.compute_distances )
 		except Exception as e:
